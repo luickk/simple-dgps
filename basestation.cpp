@@ -1,21 +1,43 @@
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
+#include <sstream>
 #include <iostream>
+#include <limits>
 
 #include <wiringSerial.h>
+#include <wiringPi.h>
 
-int main ()
+int main(int argc, char **argv)
 {
-  int fd ;
+  int fd;
+  char input;
 
-  if((fd=serialOpen("/dev/ttyACM0",9600))<0){
-    fprintf(stderr,"Unable to open serial device: %s\n",strerror(errno));
-    return 1;
-  }
+  std::cout << "Starting DGPS basestation" << std::endl;
 
-  while (1)
+	if (wiringPiSetup () == -1)
   {
-    std::cout << serialGetchar(fd) << std::endl;
+    fprintf (stdout, "Unable to start wiringPi") ;
   }
+  REINIT:if ((fd = serialOpen ("/dev/ttyS0", 9600)) < 0)
+  {
+   fprintf (stderr, "Unable to open serial device");
+  }
+
+  std::cout << "Opened GPS receiver serial con" << std::endl;
+
+  while(1)
+  {
+    while (serialDataAvail (fd))
+    {
+      input = serialGetchar (fd);
+
+      std::cout << input << std::endl;
+
+      std::cout << "-----" << std::endl;
+
+      if(input==-1){
+        goto REINIT;
+      }
+    }
+  }
+
+  return 0;
 }
