@@ -25,6 +25,7 @@ int main(int argc, char **argv)
   {
     fprintf (stdout, "Unable to start wiringPi") ;
   }
+
   REINIT:if ((fd = serialOpen ("/dev/ttyS0", 9600)) < 0)
   {
    fprintf (stderr, "Unable to open serial device");

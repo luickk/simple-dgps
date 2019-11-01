@@ -1,4 +1,9 @@
 #include <iostream>
+#include <dirent.h>
+#include <time.h>
+#include <sys/time.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "ubx_defines.h"
 #include "data.h"
@@ -7,19 +12,19 @@
 class M8T
 {
 
-  static void decode_UBX_RXM_SFRBX_msg(raw_sfrbx_msg raw, unsigned char data)
+  static void decode_UBX_RXM_SFRBX_msg(raw_t raw, unsigned char data)
   {
     /* synchronize frame */
     if (raw.nbyte==0) {
-        if (!sync_ubx(raw.data_msg_buff, data)) printf("msg syncing failed");
+        if (!sync_ubx(raw.buff, data)) printf("msg syncing failed");
         raw.nbyte=2;
         //return 0;
     }
 
-    raw.data_msg_buff[raw.nbyte++]=data;
+    raw.buff[raw.nbyte++]=data;
 
     if (raw.nbyte==6) {
-        if ((raw.len=U2(raw.data_msg_buff+4)+8)>MAXRAWLEN) {
+        if ((raw.len=U2(raw.buff+4)+8)>MAXRAWLEN) {
             printf("ubx length error: len=%d\n",raw.len);
             raw.nbyte=0;
             // return -1;
@@ -29,12 +34,12 @@ class M8T
     if (raw.nbyte<6||raw.nbyte<raw.len) printf("len err");
     raw.nbyte=0;
 
-    int type=(U1(raw.data_msg_buff+2)<<8)+U1(raw.data_msg_buff+3);
+    int type=(U1(raw.buff+2)<<8)+U1(raw.buff+3);
 
     printf("decode_ubx: type=%04x len=%d\n",type,raw.len);
 
     /* checksum */
-    if (!checksum(raw.data_msg_buff,raw.len)) {
+    if (!checksum(raw.buff,raw.len)) {
         printf("ubx checksum error: type=%04x len=%d\n",type,raw.len);
         // return -1;
     }
@@ -42,7 +47,7 @@ class M8T
     // decode_rxmsfrbx(raw);
 
     int prn,sat,sys;
-    unsigned char *p=raw.data_msg_buff+6;
+    unsigned char *p=raw.buff+6;
 
     printf("decode_rxmsfrbx: len=%d\n",raw.len);
 
@@ -60,12 +65,12 @@ class M8T
         // return -1;
     }
     switch (sys) {
-        case SYS_GPS: return decode_nav (raw,sat,8);
-        case SYS_QZS: return decode_nav (raw,sat,8);
-        case SYS_GAL: return decode_enav(raw,sat,8);
-        case SYS_CMP: return decode_cnav(raw,sat,8);
-        case SYS_GLO: return decode_gnav(raw,sat,8,U1(p+3));
-        case SYS_SBS: return decode_snav(raw,sat,8);
+        case SYS_GPS: decode_nav (&raw,sat,8);
+        case SYS_QZS: decode_nav (&raw,sat,8);
+        case SYS_GAL: decode_enav(&raw,sat,8);
+        case SYS_CMP: decode_cnav(&raw,sat,8);
+        case SYS_GLO: decode_gnav(&raw,sat,8,U1(p+3));
+        case SYS_SBS: decode_snav(&raw,sat,8);
     }
   }
 

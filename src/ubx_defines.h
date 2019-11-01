@@ -1,3 +1,8 @@
+#define P2_34       5.820766091346740E-11 /* 2^-34 */
+#define P2_46       1.421085471520200E-14 /* 2^-46 */
+#define P2_59       1.734723475976810E-18 /* 2^-59 */
+#define P2_66       1.355252715606881E-20 /* 2^-66 for BeiDou ephemeris */
+
 #define UBXSYNC1    0xB5        /* ubx message sync code 1 */
 #define UBXSYNC2    0x62        /* ubx message sync code 2 */
 #define UBXCFG      0x06        /* ubx message cfg-??? */
