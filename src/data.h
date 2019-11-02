@@ -21,14 +21,14 @@ static char codepris[7][MAXFREQ][16]={  /* code priority table */
     {""        ,""          ,"ABCX"    ,""       ,""       ,""      ,"ABCX"}  /* IRN */
 };
 
-static char *obscodes[]={       /* observation code strings */
+static char *obscodes[]={       /* observation code strings, casting to char, ugly but works */
 
-    ""  ,"1C","1P","1W","1Y", "1M","1N","1S","1L","1E", /*  0- 9 */
-    "1A","1B","1X","1Z","2C", "2D","2S","2L","2X","2P", /* 10-19 */
-    "2W","2Y","2M","2N","5I", "5Q","5X","7I","7Q","7X", /* 20-29 */
-    "6A","6B","6C","6X","6Z", "6S","6L","8L","8Q","8X", /* 30-39 */
-    "2I","2Q","6I","6Q","3I", "3Q","3X","1I","1Q","5A", /* 40-49 */
-    "5B","5C","9A","9B","9C", "9X",""  ,""  ,""  ,""    /* 50-59 */
+     (char*)""  , (char*)"1C", (char*)"1P", (char*)"1W", (char*)"1Y", (char*) "1M", (char*)"1N", (char*)"1S", (char*)"1L", (char*)"1E", (char*) /*  0- 9 */
+    "1A", (char*)"1B", (char*)"1X", (char*)"1Z", (char*)"2C", (char*) "2D", (char*)"2S", (char*)"2L", (char*)"2X", (char*)"2P", (char*) /* 10-19 */
+    "2W", (char*)"2Y", (char*)"2M", (char*)"2N", (char*)"5I", (char*) "5Q", (char*)"5X", (char*)"7I", (char*)"7Q", (char*)"7X", (char*) /* 20-29 */
+    "6A", (char*)"6B", (char*)"6C", (char*)"6X", (char*)"6Z", (char*) "6S", (char*)"6L", (char*)"8L", (char*)"8Q", (char*)"8X", (char*) /* 30-39 */
+    "2I", (char*)"2Q", (char*)"6I", (char*)"6Q", (char*)"3I", (char*) "3Q", (char*)"3X", (char*)"1I", (char*)"1Q", (char*)"5A", (char*) /* 40-49 */
+    "5B", (char*)"5C", (char*)"9A", (char*)"9B", (char*)"9C", (char*) "9X", (char*)""  , (char*)""  , (char*)""  , (char*)""    /* 50-59 */
 };
 
 

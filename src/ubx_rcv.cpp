@@ -9,47 +9,49 @@
 #include "data.h"
 #include "nav_data_decoding.cpp"
 
+/* class contains methods to decode raw ubx sfrbx data msgs */
+
 class M8T
 {
 
-  static void decode_UBX_RXM_SFRBX_msg(raw_t raw, unsigned char data)
+  static void decode_UBX_RXM_SFRBX_msg(raw_t* raw, unsigned char data)
   {
     /* synchronize frame */
-    if (raw.nbyte==0) {
-        if (!sync_ubx(raw.buff, data)) printf("msg syncing failed");
-        raw.nbyte=2;
+    if (raw->nbyte==0) {
+        if (!sync_ubx(raw->buff, data)) printf("msg syncing failed");
+        raw->nbyte=2;
         //return 0;
     }
 
-    raw.buff[raw.nbyte++]=data;
+    raw->buff[raw->nbyte++]=data;
 
-    if (raw.nbyte==6) {
-        if ((raw.len=U2(raw.buff+4)+8)>MAXRAWLEN) {
-            printf("ubx length error: len=%d\n",raw.len);
-            raw.nbyte=0;
+    if (raw->nbyte==6) {
+        if ((raw->len=U2(raw->buff+4)+8)>MAXRAWLEN) {
+            printf("ubx length error: len=%d\n",raw->len);
+            raw->nbyte=0;
             // return -1;
         }
     }
 
-    if (raw.nbyte<6||raw.nbyte<raw.len) printf("len err");
-    raw.nbyte=0;
+    if (raw->nbyte<6||raw->nbyte<raw->len) printf("len err");
+    raw->nbyte=0;
 
-    int type=(U1(raw.buff+2)<<8)+U1(raw.buff+3);
+    int type=(U1(raw->buff+2)<<8)+U1(raw->buff+3);
 
-    printf("decode_ubx: type=%04x len=%d\n",type,raw.len);
+    printf("decode_ubx: type=%04x len=%d\n",type,raw->len);
 
     /* checksum */
-    if (!checksum(raw.buff,raw.len)) {
-        printf("ubx checksum error: type=%04x len=%d\n",type,raw.len);
+    if (!checksum(raw->buff,raw->len)) {
+        printf("ubx checksum error: type=%04x len=%d\n",type,raw->len);
         // return -1;
     }
 
     // decode_rxmsfrbx(raw);
 
     int prn,sat,sys;
-    unsigned char *p=raw.buff+6;
+    unsigned char *p=raw->buff+6;
 
-    printf("decode_rxmsfrbx: len=%d\n",raw.len);
+    printf("decode_rxmsfrbx: len=%d\n",raw->len);
 
     if (!(sys=ubx_sys(U1(p)))) {
         printf("ubx rxmsfrbx sys id error: sys=%d\n",U1(p));
@@ -65,12 +67,12 @@ class M8T
         // return -1;
     }
     switch (sys) {
-        case SYS_GPS: decode_nav (&raw,sat,8);
-        case SYS_QZS: decode_nav (&raw,sat,8);
-        case SYS_GAL: decode_enav(&raw,sat,8);
-        case SYS_CMP: decode_cnav(&raw,sat,8);
-        case SYS_GLO: decode_gnav(&raw,sat,8,U1(p+3));
-        case SYS_SBS: decode_snav(&raw,sat,8);
+        case SYS_GPS: decode_nav (raw,sat,8);
+        case SYS_QZS: decode_nav (raw,sat,8);
+        case SYS_GAL: decode_enav(raw,sat,8);
+        case SYS_CMP: decode_cnav(raw,sat,8);
+        case SYS_GLO: decode_gnav(raw,sat,8,U1(p+3));
+        case SYS_SBS: decode_snav(raw,sat,8);
     }
   }
 
