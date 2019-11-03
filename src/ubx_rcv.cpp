@@ -14,26 +14,24 @@
 class M8T
 {
 
-  static void decode_UBX_RXM_SFRBX_msg(raw_t* raw, unsigned char data)
+  static int decode_UBX_RXM_SFRBX_msg(raw_t* raw, unsigned char data)
   {
     /* synchronize frame */
     if (raw->nbyte==0) {
-        if (!sync_ubx(raw->buff, data)) printf("msg syncing failed");
-        raw->nbyte=2;
-        //return 0;
+      if (!sync_ubx(raw->buff,data)) return 0;
+      raw->nbyte=2;
+      return 0;
     }
-
     raw->buff[raw->nbyte++]=data;
 
     if (raw->nbyte==6) {
-        if ((raw->len=U2(raw->buff+4)+8)>MAXRAWLEN) {
-            printf("ubx length error: len=%d\n",raw->len);
-            raw->nbyte=0;
-            // return -1;
-        }
+      if ((raw->len=U2(raw->buff+4)+8)>MAXRAWLEN) {
+          printf("ubx length error: len=%d\n",raw->len);
+          raw->nbyte=0;
+          return -1;
+      }
     }
-
-    if (raw->nbyte<6||raw->nbyte<raw->len) printf("len err");
+    if (raw->nbyte<6||raw->nbyte<raw->len) return 0;
     raw->nbyte=0;
 
     int type=(U1(raw->buff+2)<<8)+U1(raw->buff+3);
@@ -43,37 +41,26 @@ class M8T
     /* checksum */
     if (!checksum(raw->buff,raw->len)) {
         printf("ubx checksum error: type=%04x len=%d\n",type,raw->len);
-        // return -1;
+        return -1;
     }
 
-    // decode_rxmsfrbx(raw);
+    decode_rxmsfrbx(raw);
 
-    int prn,sat,sys;
-    unsigned char *p=raw->buff+6;
-
-    printf("decode_rxmsfrbx: len=%d\n",raw->len);
-
-    if (!(sys=ubx_sys(U1(p)))) {
-        printf("ubx rxmsfrbx sys id error: sys=%d\n",U1(p));
-        // return -1;
+    // switch (type) {
+    //     case ID_RXMRAW  : return decode_rxmraw  (raw);
+    //     case ID_RXMRAWX : return decode_rxmrawx (raw);
+    //     case ID_RXMSFRB : return decode_rxmsfrb (raw);
+    //     case ID_RXMSFRBX: return decode_rxmsfrbx(raw);
+    //     case ID_NAVSOL  : return decode_navsol  (raw);
+    //     case ID_NAVTIME : return decode_navtime (raw);
+    //     case ID_TRKMEAS : return decode_trkmeas (raw);
+    //     case ID_TRKD5   : return decode_trkd5   (raw);
+    //     case ID_TRKSFRBX: return decode_trksfrbx(raw);
+    // }
+    if (raw->outtype) {
+      sprintf(raw->msgtype,"UBX 0x%02X 0x%02X (%4d)",type>>8,type&0xF, raw->len);
     }
-
-    prn=U1(p+1)+(sys==SYS_QZS?192:0);
-    if (!(sat=satno(sys,prn))) {
-        if (sys==SYS_GLO&&prn==255) {
-            // return 0; /* suppress error for unknown glo satellite */
-        }
-        printf("ubx rxmsfrbx sat number error: sys=%d prn=%d\n",sys,prn);
-        // return -1;
-    }
-    switch (sys) {
-        case SYS_GPS: decode_nav (raw,sat,8);
-        case SYS_QZS: decode_nav (raw,sat,8);
-        case SYS_GAL: decode_enav(raw,sat,8);
-        case SYS_CMP: decode_cnav(raw,sat,8);
-        case SYS_GLO: decode_gnav(raw,sat,8,U1(p+3));
-        case SYS_SBS: decode_snav(raw,sat,8);
-    }
+    return 0;
   }
 
   /* ubx gnssid to system (ref [2] 25) -----------------------------------------*/

@@ -855,3 +855,13 @@ typedef struct {        /* RTK server type */
     int prcout;         /* missing observation data count */
     lock_t lock;        /* lock flag */
 } rtksvr_t;
+
+typedef struct {
+  int  satno; // satellite catalog number
+  eph_t *eph; // GPS/QZS/GAL ephemeris
+  geph_t *geph; // GLONASS ephemeris
+  seph_t *seph; // SBAS ephemeris
+  peph_t *peph; // precise ephemeris 
+  double pos[3]; // satellite ecef position x,y,z
+
+} sat_pos;
