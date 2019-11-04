@@ -49,10 +49,6 @@ extern gtime_t epoch2time(const double *ep)
     return time;
 }
 
-
-
-
-
 /* time difference -------------------------------------------------------------
 * difference between gtime_t structs
 * args   : gtime_t t1,t2    I   gtime_t structs

@@ -14,6 +14,8 @@
 
 #include "src/ubx_rcv.cpp"
 
+#include "src/dgps.cpp"
+
 int main(int argc, char **argv)
 {
   int fd;
