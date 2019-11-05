@@ -2,6 +2,13 @@
 
 class dgps
 {
+
+  double A;
+  double M_0;
+  double sqrtA;
+  double e;
+  double dn;
+
   // calculating sat ecef position at the moment of calculation, from satellite ephemeris
   void ephemeris2ecefpos(sat_pos *sp, gtime_t t)
   {
@@ -9,7 +16,31 @@ class dgps
 
     // Time from ephemeris reference epoch
     // double t_k = TimeFromEpoch(t, t_oe)
-    double t_k = timediff(t, sp->eph->toe)
+
+    /* TODO: check for which ephemeris contains the data geph, peph etc. */
+    gtime_t toe_gtime = sp->eph->toe; // eph reference epoch with week in gtime_t struct
+    double t_oe = sp->eph->toe.time; // epg reference epoch in secs with weeks
+
+    // IMPORTANT sqrtA could not be the same as eph param A
+    sqrtA = sp->eph->A;
+    // IMPORTANT
+    e = sp->eph->e; // Eccentricity
+    dn = sp->eph->deln; // delta n, mean anomalyat ref. epoch
+    double i_0 = sp->eph->i0; // inclincation at ref. epoch
+    double OMEGA_0 = sp->eph->OMG0; // long of ascending node at the beginning of the week
+    double omega = sp->eph->omg; // rate of node'S right ascension
+    M_0 = sp->eph->M0; // mean anomaly at ref. epoch
+    double OMEGA_dot = sp->eph->OMGd; // rate of nodes right ascension
+    double IDOT = sp->eph->idot; // rate if inclination angle
+
+    double C_rc = sp->eph->crc; // orbital radius correction
+    double C_rs = sp->eph->crs; // orbital radius correction
+    double C_uc = sp->eph->cuc; // lat arg. correction
+    double C_us = sp->eph->cus; // lat arg. correction
+    double C_ic = sp->eph->cic; // inclination correction
+    double C_is = sp->eph->cis; // inclination correction
+
+    double t_k = timediff(t, toe_gtime);
 
     // Eccentric Anomaly
     double E_k = EccentricAnomaly(t_k);

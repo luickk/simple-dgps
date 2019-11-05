@@ -41,9 +41,8 @@ int main(int argc, char **argv)
     {
       input = serialGetchar (fd);
 
-      std::cout << input << std::endl;
-
-      std::cout << "-----" << std::endl;
+      // std::cout << input << std::endl;
+      // std::cout << "-----" << std::endl;
 
       if(input==-1){
         goto REINIT;
