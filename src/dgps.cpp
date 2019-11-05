@@ -10,6 +10,7 @@ class dgps
   double dn;
 
   // calculating sat ecef position at the moment of calculation, from satellite ephemeris
+  // http://www.aholme.co.uk/GPS/SRC/2013/C++/ephemeris.cpp
   void ephemeris2ecefpos(sat_pos *sp, gtime_t t)
   {
     // return ephemeris to ecef pos
@@ -81,9 +82,17 @@ class dgps
   }
 
   // calculating ecef postion from latitude longitude and height
-  void latlon2ecefpos(double lat, double lon, double height, double *x, double *y, double *z)
+  // https://github.com/swift-nav/libswiftnav/blob/master/src/coord_system.c
+  // llh = lat lon height
+  // ecef = x,y,z
+  void latlon2ecefpos(double llh[2], double ecef[2])
   {
-    x,y,z = 0;
+    double d = WGS84_E * sin(llh[0]);
+    double N = WGS84_A / sqrt(1. - d * d);
+
+    ecef[0] = (N + llh[2]) * cos(llh[0]) * cos(llh[1]);
+    ecef[1] = (N + llh[2]) * cos(llh[0]) * sin(llh[1]);
+    ecef[2] = ((1 - WGS84_E * WGS84_E) * N + llh[2]) * sin(llh[0]);
   }
 
   // calculates pseudrange basestation correction value,

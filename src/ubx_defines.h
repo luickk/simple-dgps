@@ -3,6 +3,9 @@
 const double MU = 3.986005e14;          // WGS 84: earth's gravitational constant for GPS user
 const double OMEGA_E = 7.2921151467e-5; // WGS 84: earth's rotation rate
 
+#define WGS84_A   6378137.0
+#define WGS84_E   0.0818191908
+
 #define P2_34       5.820766091346740E-11 /* 2^-34 */
 #define P2_46       1.421085471520200E-14 /* 2^-46 */
 #define P2_59       1.734723475976810E-18 /* 2^-59 */
