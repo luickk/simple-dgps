@@ -8,15 +8,16 @@ There are a few technologies available which offer accuracy of up to a few mm, b
 
 ## Simple Differential GPS Approach 
 
-The aim of SDGPS is to find a cheap, accurate and easy to implement DGPS C++ lib solution. The accuracy the project is aiming for is 2-1 meters. The used DGPS technique is Code Range DGPS which corrects the pseudo range of each satellite. 
+The aim of SDGPS is to find a cheap, accurate and easy to implement DGPS C++ lib solution. The accuracy the project is aiming for is 2-1 meters. The used DGPS technique is Code Range DGPS which corrects the pseudo range of each satellite. First the pseudo range correction is calculated by substracting the observed pseudo range from the calculated pseudo range (from ephemeris). If ephemeris data is available and the corrected pseudo range value is calculated, single point positioning is applied, to triangulate the final position.  
+
 
 ## Introduction to DGPS 
 
-Differential GPS or DGPS makes use of a nearby base station which knows it's true position and calculates the difference in  position to send that correction via. any means of communication to it's clients, for example a rover which already has a GPS module on board which is accurate up to a few meters, with the corrections applied it can achieve accuracies of even a quarter of a meter, assuming it's in the range of the basestation. The achieved accuracy can be even up to a mm range, but the receivers are still very expensive.
+Differential GPS or DGPS makes use of a nearby base station which knows it's true position and calculates the difference in  position to send that correction via. any means of communication to it's clients, for example a rover which already has a GPS module on board which is accurate up to a few meters, with the corrections applied it can achieve accuracies of even a quarter of a meter, assuming it's in the range of the basestation.
 
 ### RTK DGPS
 
-RTK DGPS makes use of the Phase rotation as an indicator for the pseudo range. So the basestation calculates the true phase rotation per satellite and compares it to the actual rotation, the difference of both equals the correction value that's transmitted to the rover. The achieved accuracy is extremely high.
+Real Time Kinematic makes use of the phase rotation as an indicator for the pseudo range. The basestation measures the phase rotation and divides it by the satellites carrier frequency which returns a time, which can be used to estimate the the atmospheric error. The achieved accuracy is extremely high.
 
 ### Position DGPS
 
@@ -26,14 +27,13 @@ The only disadvantage is that, if the set of satellites changes, the correction 
 
 ### Code Range DGPS 
  
-Code Range DGPS takes the difference in pseudo range as correction value, so the basestation compares the difference between the observed pseudo range and actual true pseudo range and takes it as the correction value. As with the RTK DGPS the correction values are send for each satellite, which increases the usability dramatically. Another huge advantage is that it does not require any expensive receivers.
-The only requirement for the receiver is that it supports raw data output, that can output Ephemeris and raw pseudo range data. 
+Code Range DGPS takes the difference in pseudo range as correction value, so the basestation compares the difference between the observed pseudo range and actual true pseudo range and takes it as the correction value. As with the RTK DGPS the correction values are calculated for each satellite, which increases the usability dramatically. Another huge advantage is that it does not require any expensive receivers.
+The only requirement for the receiver is that it supports raw data output, that can output ephemeris and raw pseudo range data. 
 
 ## Available Correction algorithms
 
 Most of the GPS receivers already have several correction algorithms applied on there standard output, which mostly because they are relatively easy to calculate and behave linearly. 
-Corrected biases are, for example the satellite clock bias such as the receiver's clocks bias, multipath. Also ionosphere, troposphere do affect the results.
-Those values/ corrections are known and can be removed relatively easily, if not removed even state of the art receivers would only have an accuracy of a few meters. 
+Corrected biases are, for example the satellite clock bias such as the receiver's clocks bias. Also the ionosphere, troposphere do affect the results. Those values/ corrections are known and can be removed relatively easily, if not removed even state of the art receivers would only have an accuracy of a few meters. 
 
 # Technical realisation
 
