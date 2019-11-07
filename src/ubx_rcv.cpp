@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "ubx_defines.h"
+#include "sdgps_defines.h"
 #include "data.h"
 #include "nav_data_decoding.cpp"
 

@@ -1,7 +1,17 @@
 /* contains predefined important constants  */
 
+const double C = 2.99792458e8; // Speed of light
+
 const double MU = 3.986005e14;          // WGS 84: earth's gravitational constant for GPS user
 const double OMEGA_E = 7.2921151467e-5; // WGS 84: earth's rotation rate
+
+const double F = -4.442807633e-10; // -2*sqrt(MU)/pow(C,2)
+
+#define MAX_ITER 20
+
+#define WGS84_F_INV (298.257223563)
+#define WGS84_B     (6356752.31424518)
+#define WGS84_E2    (0.00669437999014132)
 
 #define WGS84_A   6378137.0
 #define WGS84_E   0.0818191908

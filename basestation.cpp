@@ -14,7 +14,7 @@
 
 #include "src/ubx_rcv.cpp"
 
-#include "src/dgps.cpp"
+#include "src/gps_differential.cpp"
 
 int main(int argc, char **argv)
 {

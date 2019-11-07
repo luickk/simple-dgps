@@ -858,14 +858,17 @@ typedef struct {        /* RTK server type */
 
 typedef struct {
   int  satno; // satellite catalog number
+
+  double SNR; // signal strength (0.25 dBHz)
+
+  time_t time_of_eph_observation;
   eph_t *eph; // GPS/QZS/GAL ephemeris
   geph_t *geph; // GLONASS ephemeris
-  seph_t *seph; // SBAS ephemeris
-  peph_t *peph; // precise ephemeris
+
   double pos[2]; // satellite ecef position x,y,z
 
   double pseudo_range_observed; // pseudo range with only clock bias applied
   double pseudo_range_basestation_correction; // pseudo range correction -> difference between observed and calculated distance between satellite and basestation
-  double pseudo_range_corrected; // pseudo range with standard and prc apllied, final value
+  double pseudo_range_corrected; // pseudo range with standard corrections and prc apllied -> final value
 
 } sat_pos;
