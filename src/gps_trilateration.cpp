@@ -155,7 +155,7 @@ double GetClockCorrection(double t, eph_t *eph) {
          + eph->f2 * pow(t, 2) + t_R - eph->tgd[0];
 }
 
-static int Solve(sat_pos *sp[], double *x_n, double *y_n, double *z_n, double *t_bias) {
+static int solve_trilat(sat_pos *sp[], double *x_n, double *y_n, double *z_n, double *t_bias) {
     int i, j, r, c;
 
     int n_sats = sizeof(&sp);
@@ -272,25 +272,3 @@ static int Solve(sat_pos *sp[], double *x_n, double *y_n, double *z_n, double *t
     // UserStat(STAT_TIME, t_rx);
     return j;
 }
-
-// void SolveTask() {
-//     double x, y, z, t_b, lat, lon, alt;
-//     for (;;) {
-//         TimerWait(4000);
-//         int chans = LoadReplicas();
-//         if (chans<4) continue;
-//         int iter = Solve(chans, &x, &y, &z, &t_b);
-//         if (iter==MAX_ITER) continue;
-//         LatLonAlt(x, y, z, lat, lon, alt);
-//         UserStat(STAT_LAT, lat*180/PI);
-//         UserStat(STAT_LON, lon*180/PI);
-//         UserStat(STAT_ALT, alt, chans);
-//         printf(
-//             "\n%d,%3d,%10.6f,"
-// //          "%10.0f,%10.0f,%10.0f,"
-//             "%10.5f,%10.5f,%8.2f\n\n",
-//             chans, iter, t_b,
-// //          x, y, z,
-//             lat*180/PI, lon*180/PI, alt);
-//     }
-// }
