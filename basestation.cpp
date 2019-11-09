@@ -21,6 +21,9 @@ int main(int argc, char **argv)
   int fd;
   char input;
 
+  // exact position of base station
+  double base_station_position[2];
+
   std::cout << "Starting DGPS basestation" << std::endl;
 
 	if (wiringPiSetup () == -1)

@@ -155,10 +155,12 @@ double GetClockCorrection(double t, eph_t *eph) {
          + eph->f2 * pow(t, 2) + t_R - eph->tgd[0];
 }
 
-static int solve_trilat(sat_pos *sp[], double *x_n, double *y_n, double *z_n, double *t_bias) {
+// solves trilateration via. taylor series approximations without using determinant equation
+// applies proportional clock correction for all sats
+static int solve_trilat(std::vector <sat_pos> *sp, double *x_n, double *y_n, double *z_n, double *t_bias) {
     int i, j, r, c;
 
-    int n_sats = sizeof(&sp);
+    int n_sats = sp->size();
 
     double t_tx[n_sats]; // Clock replicas in seconds since start of week
 
@@ -178,27 +180,23 @@ static int solve_trilat(sat_pos *sp[], double *x_n, double *y_n, double *z_n, do
     *x_n = *y_n = *z_n = *t_bias = t_pc = 0;
 
     for (i=0; i<n_sats; i++) {
-        // NextTask();
 
-        weight[i] = sp[i]->SNR;
+        weight[i] = (*sp)[i].SNR;
 
         // Un-corrected time of transmission
-        t_tx[i] = sp[i]->time_of_eph_observation;
+        t_tx[i] = (*sp)[i].time_of_eph_observation;
 
         // Clock correction
-        t_tx[i] -= GetClockCorrection(t_tx[i], sp[i]->eph);
+        t_tx[i] -= GetClockCorrection(t_tx[i], (*sp)[i].eph);
 
         gtime_t t_tx_;
         t_tx_.time = t_tx[i];
 
-        ephemeris2ecefpos(*sp, t_tx_);
+        ephemeris2ecefpos(&(*sp)[i], t_tx_);
 
-        // Get SV position in ECEF coords
-        // Replicas[i].eph.GetXYZ(x_sv+i, y_sv+i, z_sv+i, t_tx[i]);
-
-        x_sv[i] = sp[i]->pos[0]+i;
-        y_sv[i] = sp[i]->pos[1]+i;
-        z_sv[i] = sp[i]->pos[2]+i;
+        x_sv[i] = (*sp)[i].pos[0]+i;
+        y_sv[i] = (*sp)[i].pos[1]+i;
+        z_sv[i] = (*sp)[i].pos[2]+i;
 
         t_pc += t_tx[i];
     }
