@@ -8,6 +8,8 @@
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
+#include <algorithm>
+#include <vector>
 
 #include <wiringSerial.h>
 #include <wiringPi.h>
@@ -20,9 +22,12 @@ int main(int argc, char **argv)
 {
   int fd;
   char input;
+  dgps differential_gps;
 
-  // exact position of base station
-  double base_station_position[2];
+  double bs_lat_lon_pos[3] = {53.2734, -7.77832031, 52};
+  // exact position of base station in ecef coordinates
+  double ecef_base_station_position[3] = {0, 0, 0}; // x, y, z
+  latloheightn2ecefpos(bs_lat_lon_pos, ecef_base_station_position);
 
   std::cout << "Starting DGPS basestation" << std::endl;
 
@@ -38,6 +43,13 @@ int main(int argc, char **argv)
 
   std::cout << "Opened GPS receiver serial con" << std::endl;
 
+  raw_t raw_data;
+
+  vector<sat_pos> satellites_array;
+
+
+  vector<sat_pos> rsp;
+
   while(1)
   {
     while (serialDataAvail (fd))
@@ -46,6 +58,13 @@ int main(int argc, char **argv)
 
       // std::cout << input << std::endl;
       // std::cout << "-----" << std::endl;
+
+      M8T receiver;
+
+      receiver.decode_UBX_RXM_SFRBX_msg(&raw_data, &satellites_array, input);
+
+      // applying pseudo range correction
+      differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
 
       if(input==-1){
         goto REINIT;

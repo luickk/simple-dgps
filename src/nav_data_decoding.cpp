@@ -559,7 +559,7 @@ static int decode_alm1(int sat, raw_t *raw)
 }
 
 /* decode ephemeris ----------------------------------------------------------*/
-static int decode_ephem(int sat, raw_t *raw)
+static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
     eph_t eph={0};
 
@@ -573,6 +573,18 @@ static int decode_ephem(int sat, raw_t *raw)
         if (eph.iode==raw->nav.eph[sat-1].iode&&
             eph.iodc==raw->nav.eph[sat-1].iodc) return 0; /* unchanged */
     }
+
+    // TODO transfer eph data from eph struct pointer to sat_pos with satno
+    for(int i=0; i<satellites_array->size(); i++)
+    {
+        if((*satellites_array)[i].satno==sat)
+        {
+          (*satellites_array)[i].eph = &eph;
+        } else
+        {
+          printf("couldn't find satellite struct in sat_pos vector to store eph in");
+        }
+    }
     eph.sat=sat;
     raw->nav.eph[sat-1]=eph;
     raw->ephsat=sat;
@@ -581,7 +593,7 @@ static int decode_ephem(int sat, raw_t *raw)
 
 
 /* decode ubx-rxm-sfrb: subframe buffer --------------------------------------*/
-static int decode_rxmsfrb(raw_t *raw)
+static int decode_rxmsfrb(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
   unsigned int words[10];
   int i,prn,sat,sys,id;
@@ -605,7 +617,7 @@ static int decode_rxmsfrb(raw_t *raw)
 
   if (sys==SYS_GPS) {
       id=save_subfrm(sat,raw);
-      if (id==3) return decode_ephem(sat,raw);
+      if (id==3) return decode_ephem(sat,raw, satellites_array);
       if (id==4) return decode_alm1 (sat,raw);
       if (id==5) return decode_alm2 (sat,raw);
       return 0;
@@ -618,7 +630,7 @@ static int decode_rxmsfrb(raw_t *raw)
 }
 
 /* decode gps and qzss navigation data ---------------------------------------*/
-static int decode_nav(raw_t *raw, int sat, int off)
+static int decode_nav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satellites_array)
 {
     unsigned int words[10];
     int i,id;
@@ -644,7 +656,7 @@ static int decode_nav(raw_t *raw, int sat, int off)
     for (i=0;i<10;i++) {
         setbitu(raw->subfrm[sat-1]+(id-1)*30,i*24,24,words[i]);
     }
-    if (id==3) return decode_ephem(sat,raw);
+    if (id==3) return decode_ephem(sat,raw, satellites_array);
     if (id==4) return decode_alm1 (sat,raw);
     if (id==5) return decode_alm2 (sat,raw);
     return 0;
@@ -757,7 +769,7 @@ extern int decode_gal_inav(const unsigned char *buff, eph_t *eph)
 }
 
 /* decode galileo navigation data --------------------------------------------*/
-static int decode_enav(raw_t *raw, int sat, int off)
+static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satellites_array)
 {
     eph_t eph={0};
     unsigned char *p=raw->buff+6+off,buff[32],crc_buff[26]={0};
@@ -824,6 +836,19 @@ static int decode_enav(raw_t *raw, int sat, int off)
             timediff(eph.toe,raw->nav.eph[sat-1].toe)==0.0&&
             timediff(eph.toc,raw->nav.eph[sat-1].toc)==0.0) return 0;
     }
+
+    // TODO transfer eph data from eph struct pointer to sat_pos with satno
+    for(int i=0; i<satellites_array->size(); i++)
+    {
+    	if((*satellites_array)[i].satno==sat)
+    	{
+    	  (*satellites_array)[i].eph = &eph;
+    	} else
+    	{
+    	  printf("couldn't find satellite struct in sat_pos vector to store eph in");
+    	}
+    }
+
     eph.sat=sat;
     raw->nav.eph[sat-1]=eph;
     raw->ephsat=sat;
@@ -962,7 +987,7 @@ extern int decode_bds_d2(const unsigned char *buff, eph_t *eph)
 }
 
 /* decode beidou navigation data ---------------------------------------------*/
-static int decode_cnav(raw_t *raw, int sat, int off)
+static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satellites_array)
 {
     eph_t eph={0};
     unsigned int words[10];
@@ -1012,6 +1037,17 @@ static int decode_cnav(raw_t *raw, int sat, int off)
         if (timediff(eph.toe,raw->nav.eph[sat-1].toe)==0.0&&
             eph.iode==raw->nav.eph[sat-1].iode&&
             eph.iodc==raw->nav.eph[sat-1].iodc) return 0; /* unchanged */
+    }
+    // TODO transfer eph data from eph struct pointer to sat_pos with satno
+    for(int i=0; i<satellites_array->size(); i++)
+    {
+    	if((*satellites_array)[i].satno==sat)
+    	{
+    	  (*satellites_array)[i].eph = &eph;
+    	} else
+    	{
+    	  printf("couldn't find satellite struct in sat_pos vector to store eph in");
+    	}
     }
     eph.sat=sat;
     raw->nav.eph[sat-1]=eph;
@@ -1108,7 +1144,7 @@ extern int decode_glostr(const unsigned char *buff, geph_t *geph)
     return 1;
 }
 /* decode glonass navigation data --------------------------------------------*/
-static int decode_gnav(raw_t *raw, int sat, int off, int frq)
+static int decode_gnav(raw_t *raw, int sat, int off, int frq, std::vector<sat_pos> *satellites_array)
 {
     geph_t geph={0};
     int i,j,k,m,prn;
@@ -1151,6 +1187,18 @@ static int decode_gnav(raw_t *raw, int sat, int off, int frq)
     if (!strstr(raw->opt,"-EPHALL")) {
         if (geph.iode==raw->nav.geph[prn-1].iode) return 0; /* unchanged */
     }
+
+    // TODO transfer eph data from eph struct pointer to sat_pos with satno
+    for(int i=0; i<satellites_array->size(); i++)
+    {
+    	if((*satellites_array)[i].satno==sat)
+    	{
+    	  (*satellites_array)[i].geph = &geph;
+    	} else
+    	{
+    	  printf("couldn't find satellite struct in sat_pos vector to store eph in");
+    	}
+    }
     raw->nav.geph[prn-1]=geph;
     raw->ephsat=sat;
     return 2;
@@ -1178,36 +1226,51 @@ static int decode_snav(raw_t *raw, int sat, int off)
     return 3;
 }
 /* decode ubx-rxm-sfrbx: raw subframe data (ref [3][4][5]) -------------------*/
-static int decode_rxmsfrbx(raw_t *raw)
+static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
-    int prn,sat,sys;
-    unsigned char *p=raw->buff+6;
+  int prn,sat,sys;
+  unsigned char *p=raw->buff+6;
 
-    (4,"decode_rxmsfrbx: len=%d\n",raw->len);
+  (4,"decode_rxmsfrbx: len=%d\n",raw->len);
 
-    if (raw->outtype) {
-        sprintf(raw->msgtype,"UBX RXM-SFRBX (%4d): sys=%d prn=%3d",raw->len,
-                U1(p),U1(p+1));
+  if (raw->outtype) {
+      sprintf(raw->msgtype,"UBX RXM-SFRBX (%4d): sys=%d prn=%3d",raw->len,
+              U1(p),U1(p+1));
+  }
+  if (!(sys=ubx_sys(U1(p)))) {
+      printf("ubx rxmsfrbx sys id error: sys=%d\n",U1(p));
+      return -1;
+  }
+  prn=U1(p+1)+(sys==SYS_QZS?192:0);
+  if (!(sat=satno(sys,prn))) {
+      if (sys==SYS_GLO&&prn==255) {
+          return 0; /* suppress error for unknown glo satellite */
+      }
+      printf("ubx rxmsfrbx sat number error: sys=%d prn=%d\n",sys,prn);
+      return -1;
+  }
+
+  // sync satellite array with found sats in data frames
+  for (int i=0; i<satellites_array->size();i++)
+  {
+    if ((*satellites_array)[i].satno == sat){
+
+      break;
+    } else if(i == satellites_array->size())
+    {
+      sat_pos p;
+      p.satno = sat;
+      satellites_array->push_back(p);
     }
-    if (!(sys=ubx_sys(U1(p)))) {
-        printf("ubx rxmsfrbx sys id error: sys=%d\n",U1(p));
-        return -1;
-    }
-    prn=U1(p+1)+(sys==SYS_QZS?192:0);
-    if (!(sat=satno(sys,prn))) {
-        if (sys==SYS_GLO&&prn==255) {
-            return 0; /* suppress error for unknown glo satellite */
-        }
-        printf("ubx rxmsfrbx sat number error: sys=%d prn=%d\n",sys,prn);
-        return -1;
-    }
-    switch (sys) {
-        case SYS_GPS: return decode_nav (raw,sat,8);
-        case SYS_QZS: return decode_nav (raw,sat,8);
-        case SYS_GAL: return decode_enav(raw,sat,8);
-        case SYS_CMP: return decode_cnav(raw,sat,8);
-        case SYS_GLO: return decode_gnav(raw,sat,8,U1(p+3));
-        case SYS_SBS: return decode_snav(raw,sat,8);
-    }
-    return 0;
+  }
+
+  switch (sys) {
+      case SYS_GPS: return decode_nav (raw,sat,8, satellites_array);
+      case SYS_QZS: return decode_nav (raw,sat,8, satellites_array);
+      case SYS_GAL: return decode_enav(raw,sat,8, satellites_array);
+      case SYS_CMP: return decode_cnav(raw,sat,8, satellites_array);
+      case SYS_GLO: return decode_gnav(raw,sat,8,U1(p+3), satellites_array);
+      case SYS_SBS: return decode_snav(raw,sat,8);
+  }
+  return 0;
 }
