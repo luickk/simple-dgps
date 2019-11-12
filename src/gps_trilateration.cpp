@@ -1,3 +1,5 @@
+#include "gps_corrections.cpp"
+
 // by http://www.aholme.co.uk/GPS/SRC/2013/C++/solve.cpp
 
 double A;
