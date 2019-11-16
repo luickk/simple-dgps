@@ -47,8 +47,9 @@ int main(int argc, char **argv)
 
   vector<sat_pos> satellites_array;
 
-
   vector<sat_pos> rsp;
+
+  M8T receiver;
 
   while(1)
   {
@@ -59,12 +60,13 @@ int main(int argc, char **argv)
       // std::cout << input << std::endl;
       // std::cout << "-----" << std::endl;
 
-      M8T receiver;
 
       receiver.decode_UBX_RXM_SFRBX_msg(&raw_data, &satellites_array, input);
 
+      // std::cout << satellites_array.size() << std::endl;
+
       // applying pseudo range correction
-      differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
+      // differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
 
       if(input==-1){
         goto REINIT;

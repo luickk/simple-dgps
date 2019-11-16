@@ -99,7 +99,7 @@ extern double tropmapf(gtime_t time, const double pos[], const double azel[],
 }
 
 /* troposphere model -----------------------------------------------------------
-* compute tropospheric delay by standard atmosphere and saastamoinen model but less precise than trop_model_precise
+* compute tropospheric delay by standard atmosphere and saastamoinen model
 * args   : gtime_t time     I   time
 *          double *pos      I   receiver position {lat,lon,h} (rad,m)
 *          double *azel     I   azimuth/elevation angle {az,el} (rad)
@@ -126,35 +126,6 @@ extern double tropmodel(gtime_t time, const double *pos, const double *azel,
     trph=0.0022768*pres/(1.0-0.00266*cos(2.0*pos[0])-0.00028*hgt/1E3)/cos(z);
     trpw=0.002277*(1255.0/temp+0.05)*e/cos(z);
     return trph+trpw;
-}
-
-/* precise tropospheric model ------------------------------------------------*/
-static double trop_model_precise(gtime_t time, const double *pos,
-                              const double *azel, const double *x, double *dtdx,
-                              double *var)
-{
-    const double zazel[]={0.0,PI/2.0};
-    double zhd,m_h,m_w,cotz,grad_n,grad_e;
-
-    /* zenith hydrostatic delay */
-    zhd=tropmodel(time,pos,zazel,0.0);
-
-    /* mapping function */
-    m_h=tropmapf(time,pos,azel,&m_w);
-
-    if (azel[1]>0.0) {
-
-        /* m_w=m_0+m_0*cot(el)*(Gn*cos(az)+Ge*sin(az)): ref [6] */
-        cotz=1.0/tan(azel[1]);
-        grad_n=m_w*cotz*cos(azel[0]);
-        grad_e=m_w*cotz*sin(azel[0]);
-        m_w+=grad_n*x[1]+grad_e*x[2];
-        dtdx[1]=grad_n*(x[0]-zhd);
-        dtdx[2]=grad_e*(x[0]-zhd);
-    }
-    dtdx[0]=m_w;
-    *var=SQR(0.01);
-    return m_h*zhd+m_w*(x[0]-zhd);
 }
 
 /* tropospheric correction */

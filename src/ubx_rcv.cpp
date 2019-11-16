@@ -46,18 +46,7 @@ class M8T
       }
 
       decode_rxmsfrbx(raw, satellites_array);
-
-      // switch (type) {
-      //     case ID_RXMRAW  : return decode_rxmraw  (raw);
-      //     case ID_RXMRAWX : return decode_rxmrawx (raw);
-      //     case ID_RXMSFRB : return decode_rxmsfrb (raw);
-      //     case ID_RXMSFRBX: return decode_rxmsfrbx(raw);
-      //     case ID_NAVSOL  : return decode_navsol  (raw);
-      //     case ID_NAVTIME : return decode_navtime (raw);
-      //     case ID_TRKMEAS : return decode_trkmeas (raw);
-      //     case ID_TRKD5   : return decode_trkd5   (raw);
-      //     case ID_TRKSFRBX: return decode_trksfrbx(raw);
-      // }
+      
       if (raw->outtype) {
         sprintf(raw->msgtype,"UBX 0x%02X 0x%02X (%4d)",type>>8,type&0xF, raw->len);
       }

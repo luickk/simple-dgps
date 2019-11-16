@@ -70,5 +70,4 @@ Installation:
 - wiringPi
 
 ## TODO
-- add full support for glonass
-- add iono/ troposphere corrections
+- add full support for glonass sats

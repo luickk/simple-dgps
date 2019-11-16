@@ -454,6 +454,7 @@ static int decode_subfrm4(const unsigned char *buff, alm_t *alm, double *ion,
     }
     return 4;
 }
+
 /* decode gps/qzss navigation data subframe 3 --------------------------------*/
 static int decode_subfrm3(const unsigned char *buff, eph_t *eph)
 {
@@ -461,7 +462,7 @@ static int decode_subfrm3(const unsigned char *buff, eph_t *eph)
     int i=48,iode;
 
     printf("decode_subfrm3:\n");
-    // printf("decode_subfrm3: buff="); traceb(5,buff,30);
+    // printf("decode_subfrm3: buff= %c", buff);
 
     eph->cic =getbits(buff,i,16)*P2_29;        i+=16;
     eph->OMG0=getbits(buff,i,32)*P2_31*SC2RAD; i+=32;
@@ -569,11 +570,6 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
         decode_frame(raw->subfrm[sat-1]+30,&eph,NULL,NULL,NULL,NULL)!=2||
         decode_frame(raw->subfrm[sat-1]+60,&eph,NULL,NULL,NULL,NULL)!=3) return 0;
 
-    if (!strstr(raw->opt,"-EPHALL")) {
-        if (eph.iode==raw->nav.eph[sat-1].iode&&
-            eph.iodc==raw->nav.eph[sat-1].iodc) return 0; /* unchanged */
-    }
-
     // TODO transfer eph data from eph struct pointer to sat_pos with satno
     for(int i=0; i<satellites_array->size(); i++)
     {
@@ -586,7 +582,7 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
         }
     }
     eph.sat=sat;
-    raw->nav.eph[sat-1]=eph;
+    //raw->nav.eph[sat-1]=eph;
     raw->ephsat=sat;
     return 2;
 }
@@ -1231,7 +1227,7 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
   int prn,sat,sys;
   unsigned char *p=raw->buff+6;
 
-  (4,"decode_rxmsfrbx: len=%d\n",raw->len);
+  printf("decode_rxmsfrbx: len=%d\n",raw->len);
 
   if (raw->outtype) {
       sprintf(raw->msgtype,"UBX RXM-SFRBX (%4d): sys=%d prn=%3d",raw->len,
