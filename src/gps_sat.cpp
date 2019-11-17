@@ -82,6 +82,7 @@ extern int satid2no(const char *id)
 extern void satno2id(int sat, char *id)
 {
     int prn;
+    #ifdef LOG_DECODING_MSGS
     switch (satsys(sat,&prn)) {
         case SYS_GPS: sprintf(id,"G%02d",prn-MINPRNGPS+1); return;
         case SYS_GLO: sprintf(id,"R%02d",prn-MINPRNGLO+1); return;
@@ -92,6 +93,7 @@ extern void satno2id(int sat, char *id)
         case SYS_LEO: sprintf(id,"L%02d",prn-MINPRNLEO+1); return;
         case SYS_SBS: sprintf(id,"%03d" ,prn); return;
     }
+    #endif
     strcpy(id,"");
 }
 
@@ -116,11 +118,15 @@ extern int satexclude(int sat, double var, int svh, const prcopt_t *opt)
     }
     if (sys==SYS_QZS) svh&=0xFE; /* mask QZSS LEX health */
     if (svh) {
+        #ifdef LOG_DECODING_MSGS
         printf("unhealthy satellite: sat=%3d svh=%02X\n",sat,svh);
+        #endif
         return 1;
     }
     if (var>MAX_VAR_EPH) {
-      printf("invalid ura satellite: sat=%3d ura=%.2f\n",sat,sqrt(var));
+        #ifdef LOG_DECODING_MSGS
+        printf("invalid ura satellite: sat=%3d ura=%.2f\n",sat,sqrt(var));
+        #endif
         return 1;
     }
     return 0;

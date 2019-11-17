@@ -58,7 +58,9 @@ extern unsigned int rtk_crc24q(const unsigned char *buff, int len)
     int i;
 
 
+    #ifdef LOG_DECODING_MSGS
     printf("rtk_crc24q: len=%d\n",len);
+    #endif
 
     for (i=0;i<len;i++) crc=((crc<<8)&0xFFFFFF)^tbl_CRC24Q[(crc>>16)^buff[i]];
     return crc;
@@ -138,7 +140,9 @@ extern char *code2obs(unsigned char code, int *freq)
 *-----------------------------------------------------------------------------*/
 extern void setcodepri(int sys, int freq, const char *pri)
 {
+    #ifdef LOG_DECODING_MSGS
     printf("setcodepri:sys=%d freq=%d pri=%s\n",sys,freq,pri);
+    #endif
 
     if (freq<=0||MAXFREQ<freq) return;
     if (sys&SYS_GPS) strcpy(codepris[0][freq-1],pri);
@@ -284,7 +288,9 @@ extern int sbsdecodemsg(gtime_t time, int prn, const unsigned int *words,
     unsigned char f[29];
     double tow;
 
+    #ifdef LOG_DECODING_MSGS
     printf("sbsdecodemsg: prn=%d\n",prn);
+    #endif
 
     if (time.time==0) return 0;
     tow=time2gpst(time,&sbsmsg->week);

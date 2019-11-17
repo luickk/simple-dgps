@@ -27,7 +27,9 @@ class M8T
 
       if (raw->nbyte==6) {
         if ((raw->len=U2(raw->buff+4)+8)>MAXRAWLEN) {
+            #ifdef LOG_DECODING_MSGS
             printf("ubx length error: len=%d\n",raw->len);
+            #endif
             raw->nbyte=0;
             return -1;
         }
@@ -37,7 +39,9 @@ class M8T
 
       int type=(U1(raw->buff+2)<<8)+U1(raw->buff+3);
 
+      #ifdef LOG_DECODING_MSGS
       printf("decode_ubx: type=%04x len=%d\n",type,raw->len);
+      #endif
 
       /* checksum */
       if (!checksum(raw->buff,raw->len)) {
@@ -48,15 +52,19 @@ class M8T
       decode_rxmsfrbx(raw, satellites_array);
 
       if (raw->outtype) {
+        #ifdef LOG_DECODING_MSGS
         sprintf(raw->msgtype,"UBX 0x%02X 0x%02X (%4d)",type>>8,type&0xF, raw->len);
+        #endif
       }
       return 0;
     }
 
   static void print_sat_pos_array(std::vector<sat_pos> *satellites_array)
   {
+    printf("------------------%d------------------- \n", satellites_array->size());
     for (int i=0; i<satellites_array->size();i++)
     {
+      printf("-------");
       printf("satno: %d \n time_of_ob: %d \n pseudo_range_observed: %d \n pseudo_range_basestation_correction: %d \n",
       (*satellites_array)[i].satno,(*satellites_array)[i].time_of_eph_observation,(*satellites_array)[i].pseudo_range_observed,(*satellites_array)[i].pseudo_range_basestation_correction);
       printf("GPS EPH \n iode: %d \n iodc: %d \n toe: %d \n toc: %d \n ttr: %d \n A: %d \n crc: %d \n f0: %d \n",

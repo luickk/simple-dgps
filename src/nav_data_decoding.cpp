@@ -55,7 +55,9 @@ static int save_subfrm(int sat, raw_t *raw)
     unsigned char *p=raw->buff+6,*q;
     int i,j,n,id=(U4(p+6)>>2)&0x7;
 
+    #ifdef LOG_DECODING_MSGS
     printf("save_subfrm: sat=%2d id=%d\n",sat,id);
+    #endif
 
     if (id<1||5<id) return 0;
 
@@ -127,7 +129,9 @@ extern int decode_bds_d1(const unsigned char *buff, eph_t *eph)
     unsigned int toe1,toe2,sow1,sow2,sow3;
     int i,frn1,frn2,frn3;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_bds_d1:\n");
+    #endif
 
     i=8*38*0; /* subframe 1 */
     frn1       =getbitu (buff,i+ 15, 3);
@@ -173,15 +177,21 @@ extern int decode_bds_d1(const unsigned char *buff, eph_t *eph)
 
     /* check consistency of subframe numbers, sows and toe/toc */
     if (frn1!=1||frn2!=2||frn3!=3) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_bds_d1 error: frn=%d %d %d\n",frn1,frn2,frn3);
+        #endif
         return 0;
     }
     if (sow2!=sow1+6||sow3!=sow2+6) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_bds_d1 error: sow=%d %d %d\n",sow1,sow2,sow3);
+        #endif
         return 0;
     }
     if (toc_bds!=eph->toes) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_bds_d1 error: toe=%.0f toc=%.0f\n",eph->toes,toc_bds);
+        #endif
         return 0;
     }
     eph->ttr=bdt2gpst(bdt2time(eph->week,sow1));      /* bdt -> gpst */
@@ -200,7 +210,9 @@ static int decode_subfrm1(const unsigned char *buff, eph_t *eph)
     double tow,toc;
     int i=48,week,iodc0,iodc1,tgd;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_subfrm1:\n");
+    #endif
     // printf("decode_subfrm1: buff="); traceb(5,buff,30);
 
     tow        =getbitu(buff,24,17)*6.0;           /* transmission time */
@@ -232,7 +244,9 @@ static void decode_almanac(const unsigned char *buff, int sat, alm_t *alm)
     double deltai,sqrtA,tt;
     int i=50,f0;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_almanac: sat=%2d\n",sat);
+    #endif
 
     if (!alm||alm[sat-1].week==0) return;
 
@@ -401,7 +415,9 @@ static int decode_subfrm2(const unsigned char *buff, eph_t *eph)
     double sqrtA;
     int i=48;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_subfrm2:\n");
+    #endif
     // printf("decode_subfrm2: buff="); traceb(5,buff,30);
 
     eph->iode=getbitu(buff,i, 8);              i+= 8;
@@ -426,7 +442,9 @@ static int decode_subfrm5(const unsigned char *buff, alm_t *alm, double *ion,
 {
     int dataid=getbitu(buff,48,2);
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_subfrm5: dataid=%d\n",dataid);
+    #endif
     //printf(5,"decode_subfrm5: buff="); traceb(5,buff,30);
 
     if (dataid==1) { /* gps */
@@ -442,8 +460,9 @@ static int decode_subfrm4(const unsigned char *buff, alm_t *alm, double *ion,
                           double *utc, int *leaps)
 {
     int dataid=getbitu(buff,48,2);
-
+    #ifdef LOG_DECODING_MSGS
     printf("decode_subfrm4: dataid=%d\n",dataid);
+    #endif
     // printf(5,"decode_subfrm4: buff="); traceb(5,buff,30);
 
     if (dataid==1) { /* gps */
@@ -461,7 +480,9 @@ static int decode_subfrm3(const unsigned char *buff, eph_t *eph)
     double tow,toc;
     int i=48,iode;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_subfrm3:\n");
+    #endif
     // printf("decode_subfrm3: buff= %c", buff);
 
     eph->cic =getbits(buff,i,16)*P2_29;        i+=16;
@@ -509,9 +530,9 @@ extern int decode_frame(const unsigned char *buff, eph_t *eph, alm_t *alm,
                         double *ion, double *utc, int *leaps)
 {
     int id=getbitu(buff,43,3); /* subframe id */
-
+    #ifdef LOG_DECODING_MSGS
     printf("decodefrm: id=%d\n",id);
-
+    #endif
     switch (id) {
         case 1: return decode_subfrm1(buff,eph);
         case 2: return decode_subfrm2(buff,eph);
@@ -526,9 +547,9 @@ extern int decode_frame(const unsigned char *buff, eph_t *eph, alm_t *alm,
 static int decode_alm2(int sat, raw_t *raw)
 {
   int sys=satsys(sat,NULL);
-
+  #ifdef LOG_DECODING_MSGS
   printf("decode_alm2 : sat=%2d\n",sat);
-
+  #endif
   if (sys==SYS_GPS) {
       decode_frame(raw->subfrm[sat-1]+120,NULL,raw->nav.alm,NULL,NULL,NULL);
   }
@@ -543,9 +564,9 @@ static int decode_alm2(int sat, raw_t *raw)
 static int decode_alm1(int sat, raw_t *raw)
 {
   int sys=satsys(sat,NULL);
-
+  #ifdef LOG_DECODING_MSGS
   printf("decode_alm1 : sat=%2d\n",sat);
-
+  #endif
   if (sys==SYS_GPS) {
       decode_frame(raw->subfrm[sat-1]+90,NULL,raw->nav.alm,raw->nav.ion_gps,
                    raw->nav.utc_gps,&raw->nav.leaps);
@@ -563,9 +584,9 @@ static int decode_alm1(int sat, raw_t *raw)
 static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
     eph_t eph={0};
-
+    #ifdef LOG_DECODING_MSGS
     printf("decode_ephem: sat=%2d\n",sat);
-
+    #endif
     if (decode_frame(raw->subfrm[sat-1]   ,&eph,NULL,NULL,NULL,NULL)!=1||
         decode_frame(raw->subfrm[sat-1]+30,&eph,NULL,NULL,NULL,NULL)!=2||
         decode_frame(raw->subfrm[sat-1]+60,&eph,NULL,NULL,NULL,NULL)!=3) return 0;
@@ -593,19 +614,23 @@ static int decode_rxmsfrb(raw_t *raw, std::vector<sat_pos> *satellites_array)
   unsigned int words[10];
   int i,prn,sat,sys,id;
   unsigned char *p=raw->buff+6;
-
+  #ifdef LOG_DECODING_MSGS
   printf("decode_rxmsfrb: len=%d\n",raw->len);
-
+  #endif
   if (raw->outtype) {
       sprintf(raw->msgtype,"UBX RXM-SFRB  (%4d): prn=%2d",raw->len,U1(p+1));
   }
   if (raw->len<42) {
+      #ifdef LOG_DECODING_MSGS
       printf("ubx rxmsfrb length error: len=%d\n",raw->len);
+      #endif
       return -1;
   }
   prn=U1(p+1);
   if (!(sat=satno(MINPRNSBS<=prn?SYS_SBS:SYS_GPS,prn))) {
+      #ifdef LOG_DECODING_MSGS
       printf("ubx rxmsfrb satellite number error: prn=%d\n",prn);
+      #endif
       return -1;
   }
   sys=satsys(sat,&prn);
@@ -632,20 +657,26 @@ static int decode_nav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satell
     unsigned char *p=raw->buff+6+off;
 
     if (raw->len<48+off) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx length error: sat=%d len=%d\n",sat,raw->len);
+        #endif
         return -1;
     }
     if ((U4(p)>>24)==PREAMB_CNAV) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx cnav not supported sat=%d prn=%d\n",sat,
               (U4(p)>>18)&0x3F);
+        #endif
         return 0;
     }
     for (i=0;i<10;i++,p+=4) words[i]=U4(p)>>6; /* 24 bits without parity */
 
     id=(words[1]>>2)&7;
     if (id<1||5<id) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx subfrm id error: sat=%2d id=%d len=%d\n",sat,id,
               raw->len);
+        #endif
         return -1;
     }
     for (i=0;i<10;i++) {
@@ -730,23 +761,31 @@ extern int decode_gal_inav(const unsigned char *buff, eph_t *eph)
 
     /* test word types */
     if (type[0]!=0||type[1]!=1||type[2]!=2||type[3]!=3||type[4]!=4||type[5]!=5) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_gal_inav error: type=%d %d %d %d %d %d\n",type[0],
               type[1],type[2],type[3],type[4],type[5]);
+        #endif
         return 0;
     }
     /* test word type 0 time field */
     if (time_f!=2) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_gal_inav error: word0-time=%d\n",time_f);
+        #endif
         return 0;
     }
     /* test consistency of iod_nav */
     if (iod_nav[0]!=iod_nav[1]||iod_nav[0]!=iod_nav[2]||iod_nav[0]!=iod_nav[3]) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_gal_inav error: ionav=%d %d %d %d\n",iod_nav[0],
               iod_nav[1],iod_nav[2],iod_nav[3]);
+        #endif
         return 0;
     }
     if (!(eph->sat=satno(SYS_GAL,svid))) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_gal_inav svid error: svid=%d\n",svid);
+        #endif
         return 0;
     }
     eph->A=sqrtA*sqrtA;
@@ -771,7 +810,9 @@ static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     int i,j,k,part1,page1,part2,page2,type;
 
     if (raw->len<44+off) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx length error: sat=%d len=%d\n",sat,raw->len);
+        #endif
         return -1;
     }
     for (i=k=0;i<8;i++,p+=4) for (j=0;j<4;j++) {
@@ -787,14 +828,18 @@ static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
 
     /* test even-odd parts */
     if (part1!=0||part2!=1) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx gal page even/odd error: sat=%2d\n",sat);
+        #endif
         return -1;
     }
     /* test crc (4(pad) + 114 + 82 bits) */
     for (i=0,j=  4;i<15;i++,j+=8) setbitu(crc_buff,j,8,getbitu(buff   ,i*8,8));
     for (i=0,j=118;i<11;i++,j+=8) setbitu(crc_buff,j,8,getbitu(buff+16,i*8,8));
     if (rtk_crc24q(crc_buff,25)!=getbitu(buff+16,82,24)) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx gal page crc error: sat=%2d\n",sat);
+        #endif
         return -1;
     }
     type=getbitu(buff,2,6); /* word type */
@@ -823,7 +868,9 @@ static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     }
     /* test svid consistency */
     if (eph.sat!=sat) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx gal svid error: sat=%2d %2d\n",sat,eph.sat);
+        #endif
         return -1;
     }
     if (!strstr(raw->opt,"-EPHALL")) {
@@ -840,8 +887,10 @@ static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     	  (*satellites_array)[i].eph = &eph;
     	} else
     	{
+        #ifdef LOG_DECODING_MSGS
     	  printf("couldn't find satellite struct in sat_pos vector to store eph in");
-    	}
+        #endif
+      }
     }
 
     eph.sat=sat;
@@ -873,7 +922,9 @@ extern int decode_bds_d2(const unsigned char *buff, eph_t *eph)
     int i,f1p3,cucp4,ep5,cicp6,i0p7,OMGdp8,omgp9;
     int pgn1,pgn3,pgn4,pgn5,pgn6,pgn7,pgn8,pgn9,pgn10;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_bds_d2:\n");
+    #endif
 
     i=8*38*0; /* page 1 */
     pgn1       =getbitu (buff,i+ 42, 4);
@@ -949,18 +1000,24 @@ extern int decode_bds_d2(const unsigned char *buff, eph_t *eph)
     /* check consistency of page numbers, sows and toe/toc */
     if (pgn1!=1||pgn3!=3||pgn4!=4||pgn5!=5||pgn6!=6||pgn7!=7||pgn8!=8||pgn9!=9||
         pgn10!=10) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_bds_d2 error: pgn=%d %d %d %d %d %d %d %d %d\n",
               pgn1,pgn3,pgn4,pgn5,pgn6,pgn7,pgn8,pgn9,pgn10);
+        #endif
         return 0;
     }
     if (sow3!=sow1+6||sow4!=sow3+3||sow5!=sow4+3||sow6!=sow5+3||
         sow7!=sow6+3||sow8!=sow7+3||sow9!=sow8+3||sow10!=sow9+3) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_bds_d2 error: sow=%d %d %d %d %d %d %d %d %d\n",
               sow1,sow3,sow4,sow5,sow6,sow7,sow8,sow9,sow10);
+        #endif
         return 0;
     }
     if (toc_bds!=eph->toes) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_bds_d2 error: toe=%.0f toc=%.0f\n",eph->toes,toc_bds);
+        #endif
         return 0;
     }
     eph->f1  =merge_two_s(f1p3  ,f1p4  ,18)*P2_50;
@@ -990,7 +1047,9 @@ static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     unsigned char *p=raw->buff+6+off;
 
     if (raw->len<48+off) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx length error: sat=%d len=%d\n",sat,raw->len);
+        #endif
         return -1;
     }
     for (i=0;i<10;i++,p+=4) words[i]=U4(p)&0x3FFFFFFF; /* 30 bits */
@@ -998,7 +1057,9 @@ static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     satsys(sat,&prn);
     id=(words[0]>>12)&0x07; /* subframe id (3bit) */
     if (id<1||5<id) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx subfrm id error: sat=%2d\n",sat);
+        #endif
         return -1;
     }
     if (prn>5&&prn<59) { /* IGSO/MEO */
@@ -1017,7 +1078,9 @@ static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
         /* subframe 1 */
         pgn=(words[1]>>14)&0x0F; /* page number (4bit) */
         if (pgn<1||10<pgn) {
+            #ifdef LOG_DECODING_MSGS
             printf("ubx rawsfrbx page number error: sat=%2d\n",sat);
+            #endif
             return -1;
         }
         for (i=0;i<10;i++) {
@@ -1041,8 +1104,10 @@ static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     	  (*satellites_array)[i].eph = &eph;
     	} else
     	{
+        #ifdef LOG_DECODING_MSGS
     	  printf("couldn't find satellite struct in sat_pos vector to store eph in");
-    	}
+        #endif
+      }
     }
     eph.sat=sat;
     raw->nav.eph[sat-1]=eph;
@@ -1074,7 +1139,9 @@ extern int decode_glostr(const unsigned char *buff, geph_t *geph)
     int P,P1,P2,P3,P4,tk_h,tk_m,tk_s,tb,ln,NT,slot,M,week;
     int i=1,frn1,frn2,frn3,frn4;
 
+    #ifdef LOG_DECODING_MSGS
     printf("decode_glostr:\n");
+    #endif
 
     /* frame 1 */
     frn1        =getbitu(buff,i, 4);           i+= 4+2;
@@ -1117,11 +1184,15 @@ extern int decode_glostr(const unsigned char *buff, geph_t *geph)
     M           =getbitu(buff,i, 2);
 
     if (frn1!=1||frn2!=2||frn3!=3||frn4!=4) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_glostr error: frn=%d %d %d %d %d\n",frn1,frn2,frn3,frn4);
+        #endif
         return 0;
     }
     if (!(geph->sat=satno(SYS_GLO,slot))) {
+        #ifdef LOG_DECODING_MSGS
         printf("decode_glostr error: slot=%d\n",slot);
+        #endif
         return 0;
     }
     geph->frq=0;
@@ -1148,7 +1219,9 @@ static int decode_gnav(raw_t *raw, int sat, int off, int frq, std::vector<sat_po
     satsys(sat,&prn);
 
     if (raw->len<24+off) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx gnav length error: len=%d\n",raw->len);
+        #endif
         return -1;
     }
     for (i=k=0;i<4;i++,p+=4) for (j=0;j<4;j++) {
@@ -1156,12 +1229,16 @@ static int decode_gnav(raw_t *raw, int sat, int off, int frq, std::vector<sat_po
     }
     /* test hamming of glonass string */
     if (!test_glostr(buff)) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx glo string hamming error: sat=%2d\n",sat);
+        #endif
         return -1;
     }
     m=getbitu(buff,1,4);
     if (m<1||15<m) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx glo string no error: sat=%2d\n",sat);
+        #endif
         return -1;
     }
     /* flush frame buffer if frame-id changed */
@@ -1202,7 +1279,9 @@ static int decode_snav(raw_t *raw, int sat, int off)
     unsigned char *p=raw->buff+6+off,buff[64];
 
     if (raw->len<40+off) {
+        #ifdef LOG_DECODING_MSGS
         printf("ubx rawsfrbx snav length error: len=%d\n",raw->len);
+        #endif
         return -1;
     }
     tow=(int)time2gpst(timeadd(raw->time,-1.0),&week);
@@ -1224,14 +1303,20 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
   int prn,sat,sys;
   unsigned char *p=raw->buff+6;
 
+  #ifdef LOG_DECODING_MSGS
   printf("decode_rxmsfrbx: len=%d\n",raw->len);
+  #endif
 
   if (raw->outtype) {
+      #ifdef LOG_DECODING_MSGS
       sprintf(raw->msgtype,"UBX RXM-SFRBX (%4d): sys=%d prn=%3d",raw->len,
               U1(p),U1(p+1));
+      #endif
   }
   if (!(sys=ubx_sys(U1(p)))) {
+      #ifdef LOG_DECODING_MSGS
       printf("ubx rxmsfrbx sys id error: sys=%d\n",U1(p));
+      #endif
       return -1;
   }
   prn=U1(p+1)+(sys==SYS_QZS?192:0);
@@ -1239,7 +1324,9 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
       if (sys==SYS_GLO&&prn==255) {
           return 0; /* suppress error for unknown glo satellite */
       }
+      #ifdef LOG_DECODING_MSGS
       printf("ubx rxmsfrbx sat number error: sys=%d prn=%d\n",sys,prn);
+      #endif
       return -1;
   }
 
@@ -1252,13 +1339,17 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 
   if(std::find_if(satellites_array->begin(), satellites_array->end(), sp) != satellites_array->end())
   {
+    #ifdef LOG_DECODING_MSGS
     printf("satno %d already in sat array \n", sat);
+    #endif
   } else
   {
     satellites_array->push_back(sp);
   }
 
+  #ifdef LOG_DECODING_MSGS
   printf("%d satellites, current frame satno %d \n" , satellites_array->size(), sat);
+  #endif
 
   switch (sys) {
       case SYS_GPS: return decode_nav (raw,sat,8, satellites_array);

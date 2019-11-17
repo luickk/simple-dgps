@@ -1,3 +1,5 @@
+// #define LOG_DECODING_MSGS
+
 #define NFREQ       3                   /* number of carrier frequencies */
 #define NFREQGLO    2                   /* number of carrier frequencies of GLONASS */
 #define MAXANT      64                  /* max length of station name/antenna type */

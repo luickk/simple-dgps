@@ -87,8 +87,10 @@ extern double tropmapf(gtime_t time, const double pos[], const double azel[],
   const double ep[]={2000,1,1,12,0,0};
   double mjd,lat,lon,hgt,zd,gmfh,gmfw;
 
+  #ifdef LOG_DECODING_MSGS
   printf("tropmapf: pos=%10.6f %11.6f %6.1f azel=%5.1f %4.1f\n",
         pos[0]*R2D,pos[1]*R2D,pos[2],azel[0]*R2D,azel[1]*R2D);
+  #endif
 
   if (pos[2]<-1000.0||pos[2]>20000.0) {
       if (mapfw) *mapfw=0.0;
