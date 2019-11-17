@@ -46,13 +46,23 @@ class M8T
       }
 
       decode_rxmsfrbx(raw, satellites_array);
-      
+
       if (raw->outtype) {
         sprintf(raw->msgtype,"UBX 0x%02X 0x%02X (%4d)",type>>8,type&0xF, raw->len);
       }
       return 0;
     }
 
+  static void print_sat_pos_array(std::vector<sat_pos> *satellites_array)
+  {
+    for (int i=0; i<satellites_array->size();i++)
+    {
+      printf("satno: %d \n time_of_ob: %d \n pseudo_range_observed: %d \n pseudo_range_basestation_correction: %d \n",
+      (*satellites_array)[i].satno,(*satellites_array)[i].time_of_eph_observation,(*satellites_array)[i].pseudo_range_observed,(*satellites_array)[i].pseudo_range_basestation_correction);
+      printf("GPS EPH \n iode: %d \n iodc: %d \n toe: %d \n toc: %d \n ttr: %d \n A: %d \n crc: %d \n f0: %d \n",
+      (*satellites_array)[i].eph->iode,(*satellites_array)[i].eph->iodc,(*satellites_array)[i].eph->toe,(*satellites_array)[i].eph->toc,(*satellites_array)[i].eph->ttr,(*satellites_array)[i].eph->A,(*satellites_array)[i].eph->crc,(*satellites_array)[i].eph->f0);
+    }
+  }
   private:
     /* ubx gnssid to system (ref [2] 25) -----------------------------------------*/
     static int ubx_sys(int gnssid)

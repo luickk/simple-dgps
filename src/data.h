@@ -856,7 +856,7 @@ typedef struct {        /* RTK server type */
     lock_t lock;        /* lock flag */
 } rtksvr_t;
 
-typedef struct {
+struct sat_pos{
   int  satno; // satellite catalog number
 
   double SNR; // signal strength (0.25 dBHz)
@@ -873,4 +873,10 @@ typedef struct {
   double pseudo_range_basestation_correction; // pseudo range correction -> difference between observed and calculated distance between satellite and basestation
   double pseudo_range_corrected; // pseudo range with standard corrections and prc apllied -> final value
 
-} sat_pos;
+  sat_pos(int satno) : satno(satno) {};
+  bool operator()(sat_pos const& m) const
+  {
+      return m.satno == satno;
+  }
+
+} ;

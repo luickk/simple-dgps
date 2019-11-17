@@ -9,7 +9,9 @@
 #include <time.h>
 #include <ctype.h>
 #include <algorithm>
+#include <unistd.h>
 #include <vector>
+#include <thread>
 
 #include <wiringSerial.h>
 #include <wiringPi.h>
@@ -17,6 +19,17 @@
 #include "src/ubx_rcv.cpp"
 
 #include "src/gps_differential.cpp"
+
+M8T receiver;
+
+void print_sata_stats(std::vector<sat_pos> *satellites_array)
+{
+  while(true)
+  {
+      usleep(10000000);
+      receiver.print_sat_pos_array(satellites_array);
+  }
+}
 
 int main(int argc, char **argv)
 {
@@ -49,7 +62,7 @@ int main(int argc, char **argv)
 
   vector<sat_pos> rsp;
 
-  M8T receiver;
+  std::thread print_sata_stats_thread (print_sata_stats, &satellites_array);
 
   while(1)
   {
@@ -73,6 +86,8 @@ int main(int argc, char **argv)
       }
     }
   }
+
+
 
   return 0;
 }

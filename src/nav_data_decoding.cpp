@@ -576,11 +576,10 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
         if((*satellites_array)[i].satno==sat)
         {
           (*satellites_array)[i].eph = &eph;
-        } else
-        {
-          printf("couldn't find satellite struct in sat_pos vector to store eph in");
         }
     }
+
+
     eph.sat=sat;
     //raw->nav.eph[sat-1]=eph;
     raw->ephsat=sat;
@@ -1190,9 +1189,6 @@ static int decode_gnav(raw_t *raw, int sat, int off, int frq, std::vector<sat_po
     	if((*satellites_array)[i].satno==sat)
     	{
     	  (*satellites_array)[i].geph = &geph;
-    	} else
-    	{
-    	  printf("couldn't find satellite struct in sat_pos vector to store eph in");
     	}
     }
     raw->nav.geph[prn-1]=geph;
@@ -1221,6 +1217,7 @@ static int decode_snav(raw_t *raw, int sat, int off)
     raw->sbsmsg.msg[28]&=0xC0;
     return 3;
 }
+
 /* decode ubx-rxm-sfrbx: raw subframe data (ref [3][4][5]) -------------------*/
 static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
@@ -1247,18 +1244,21 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
   }
 
   // sync satellite array with found sats in data frames
-  for (int i=0; i<satellites_array->size();i++)
+  sat_pos sp(sat);
+  if(satellites_array->size() == 0)
   {
-    if ((*satellites_array)[i].satno == sat){
-
-      break;
-    } else if(i == satellites_array->size())
-    {
-      sat_pos p;
-      p.satno = sat;
-      satellites_array->push_back(p);
-    }
+    satellites_array->push_back(sp);
   }
+
+  if(std::find_if(satellites_array->begin(), satellites_array->end(), sp) != satellites_array->end())
+  {
+    printf("satno %d already in sat array \n", sat);
+  } else
+  {
+    satellites_array->push_back(sp);
+  }
+
+  printf("%d satellites, current frame satno %d \n" , satellites_array->size(), sat);
 
   switch (sys) {
       case SYS_GPS: return decode_nav (raw,sat,8, satellites_array);
