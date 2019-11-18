@@ -100,6 +100,86 @@ static void adj_utcweek(gtime_t time, double *utc)
     else if (utc[3]>week+128) utc[3]-=256.0;
 }
 
+/* ubx sigid to signal ([5] Appendix B) --------------------------------------*/
+static int ubx_sig(int sys, int sigid)
+{
+    if (sys == SYS_GPS) {
+        if (sigid == 0) return CODE_L1C; /* L1C/A */
+        if (sigid == 3) return CODE_L2L; /* L2CL */
+        if (sigid == 4) return CODE_L2M; /* L2CM */
+    }
+    else if (sys == SYS_GLO) {
+        if (sigid == 0) return CODE_L1C; /* G1C/A (GLO L1 OF) */
+        if (sigid == 2) return CODE_L2C; /* G2C/A (GLO L2 OF) */
+    }
+    else if (sys == SYS_GAL) {
+        if (sigid == 0) return CODE_L1C; /* E1C */
+        if (sigid == 1) return CODE_L1B; /* E1B */
+        if (sigid == 5) return CODE_L7I; /* E5bI */
+        if (sigid == 6) return CODE_L7Q; /* E5bQ */
+    }
+    else if (sys == SYS_QZS) {
+        if (sigid == 0) return CODE_L1C; /* L1C/A */
+        if (sigid == 5) return CODE_L2L; /* L2CL (not specified in [5]) */
+    }
+    else if (sys == SYS_CMP) {
+        if (sigid == 0) return CODE_L1I; /* B1I D1 (rinex 3.02) */
+        if (sigid == 1) return CODE_L1I; /* B1I D2 (rinex 3.02) */
+        if (sigid == 2) return CODE_L7I; /* B2I D1 */
+        if (sigid == 3) return CODE_L7I; /* B2I D2 */
+    }
+    else if (sys == SYS_SBS) {
+        return CODE_L1C; /* L1C/A (not in [5]) */
+    }
+    return CODE_NONE;
+}
+/* signal index in obs data --------------------------------------------------*/
+static int sig_idx(int sys, int code)
+{
+    if (sys == SYS_GPS) {
+        if (code==CODE_L1C) return 1;
+        if (code==CODE_L2L) return 2;
+        if (code==CODE_L2M) return NFREQ+1;
+    }
+    else if (sys == SYS_GLO) {
+        if (code==CODE_L1C) return 1;
+        if (code==CODE_L2C) return 2;
+    }
+    else if (sys == SYS_GAL) {
+        if (code==CODE_L1C) return 1;
+        if (code==CODE_L1B) return NFREQ+1;
+        if (code==CODE_L7I) return 2; /* E5bI */
+        if (code==CODE_L7Q) return 2; /* E5bQ */
+    }
+    else if (sys == SYS_QZS) {
+        if (code==CODE_L1C) return 1;
+        if (code==CODE_L2L) return 2;
+    }
+    else if (sys == SYS_CMP) {
+        if (code==CODE_L1I) return 1;
+        if (code==CODE_L7I) return 2;
+    }
+    else if (sys == SYS_SBS) {
+        if (code==CODE_L1C) return 1;
+    }
+    return 0;
+}
+/* freq index to frequency ---------------------------------------------------*/
+static double sig_freq(int sys, int f, int fcn)
+{
+    static const double freq_glo[8]={FREQ1_GLO,FREQ2_GLO,FREQ3_GLO};
+    static const double dfrq_glo[8]={DFRQ1_GLO,DFRQ2_GLO};
+    static const double freq_bds[8]={FREQ1_CMP,0,0,FREQ3_CMP,FREQ2_CMP};
+
+    if (sys == SYS_GLO) {
+        return freq_glo[f-1]+dfrq_glo[f-1]*fcn;
+    }
+    else if (sys == SYS_CMP) {
+        return freq_bds[f-1];
+    }
+    return CLIGHT/lam_carr[f-1];
+}
+
 /* ubx gnssid to system (ref [2] 25) -----------------------------------------*/
 static int ubx_sys(int gnssid)
 {
@@ -112,6 +192,113 @@ static int ubx_sys(int gnssid)
         case 6: return SYS_GLO;
     }
     return 0;
+}
+
+/* free receiver raw data control ----------------------------------------------
+* free observation and ephemeris buffer in receiver raw data control struct
+* args   : raw_t  *raw   IO     receiver raw data control struct
+* return : none
+*-----------------------------------------------------------------------------*/
+extern void free_raw(raw_t *raw)
+{
+    printf("free_raw:\n");
+
+    free(raw->obs.data ); raw->obs.data =NULL; raw->obs.n =0;
+    free(raw->obuf.data); raw->obuf.data=NULL; raw->obuf.n=0;
+    free(raw->nav.eph  ); raw->nav.eph  =NULL; raw->nav.n =0;
+    free(raw->nav.alm  ); raw->nav.alm  =NULL; raw->nav.na=0;
+    free(raw->nav.geph ); raw->nav.geph =NULL; raw->nav.ng=0;
+    free(raw->nav.seph ); raw->nav.seph =NULL; raw->nav.ns=0;
+}
+
+/* initialize receiver raw data control ----------------------------------------
+* initialize receiver raw data control struct and reallocate obsevation and
+* epheris buffer
+* args   : raw_t  *raw   IO     receiver raw data control struct
+* return : status (1:ok,0:memory allocation error)
+*-----------------------------------------------------------------------------*/
+extern int init_raw(raw_t *raw)
+{
+    const double lam_glo[NFREQ]={CLIGHT/FREQ1_GLO,CLIGHT/FREQ2_GLO};
+    gtime_t time0={0};
+    obsd_t data0={{0}};
+    eph_t  eph0 ={0,-1,-1};
+    alm_t  alm0 ={0,-1};
+    geph_t geph0={0,-1};
+    seph_t seph0={0};
+    sbsmsg_t sbsmsg0={0};
+    lexmsg_t lexmsg0={0};
+    int i,j,sys,ret=1;
+
+
+    raw->time=time0;
+    raw->ephsat=0;
+    raw->sbsmsg=sbsmsg0;
+    raw->msgtype[0]='\0';
+    for (i=0;i<MAXSAT;i++) {
+        for (j=0;j<380;j++) raw->subfrm[i][j]=0;
+        for (j=0;j<NFREQ+NEXOBS;j++) {
+            raw->tobs [i][j]=time0;
+            raw->lockt[i][j]=0.0;
+            raw->halfc[i][j]=0;
+        }
+        raw->icpp[i]=raw->off[i]=raw->prCA[i]=raw->dpCA[i]=0.0;
+    }
+    for (i=0;i<MAXOBS;i++) raw->freqn[i]=0;
+    raw->lexmsg=lexmsg0;
+    raw->icpc=0.0;
+    raw->nbyte=raw->len=0;
+    raw->iod=raw->flag=raw->tbase=raw->outtype=0;
+    raw->tod=-1;
+    for (i=0;i<MAXRAWLEN;i++) raw->buff[i]=0;
+    raw->opt[0]='\0';
+
+    raw->obs.data =NULL;
+    raw->obuf.data=NULL;
+    raw->nav.eph  =NULL;
+    raw->nav.alm  =NULL;
+    raw->nav.geph =NULL;
+    raw->nav.seph =NULL;
+
+    if (!(raw->obs.data =(obsd_t *)malloc(sizeof(obsd_t)*MAXOBS))||
+        !(raw->obuf.data=(obsd_t *)malloc(sizeof(obsd_t)*MAXOBS))||
+        !(raw->nav.eph  =(eph_t  *)malloc(sizeof(eph_t )*MAXSAT))||
+        !(raw->nav.alm  =(alm_t  *)malloc(sizeof(alm_t )*MAXSAT))||
+        !(raw->nav.geph =(geph_t *)malloc(sizeof(geph_t)*NSATGLO))||
+        !(raw->nav.seph =(seph_t *)malloc(sizeof(seph_t)*NSATSBS*2))) {
+        free_raw(raw);
+        return 0;
+    }
+    raw->obs.n =0;
+    raw->obuf.n=0;
+    raw->nav.n =MAXSAT;
+    raw->nav.na=MAXSAT;
+    raw->nav.ng=NSATGLO;
+    raw->nav.ns=NSATSBS*2;
+    for (i=0;i<MAXOBS   ;i++) raw->obs.data [i]=data0;
+    for (i=0;i<MAXOBS   ;i++) raw->obuf.data[i]=data0;
+    for (i=0;i<MAXSAT   ;i++) raw->nav.eph  [i]=eph0;
+    for (i=0;i<MAXSAT   ;i++) raw->nav.alm  [i]=alm0;
+    for (i=0;i<NSATGLO  ;i++) raw->nav.geph [i]=geph0;
+    for (i=0;i<NSATSBS*2;i++) raw->nav.seph [i]=seph0;
+    for (i=0;i<MAXSAT;i++) for (j=0;j<NFREQ;j++) {
+        if (!(sys=satsys(i+1,NULL))) continue;
+        raw->nav.lam[i][j]=sys==SYS_GLO?lam_glo[j]:lam_carr[j];
+    }
+    raw->sta.name[0]=raw->sta.marker[0]='\0';
+    raw->sta.antdes[0]=raw->sta.antsno[0]='\0';
+    raw->sta.rectype[0]=raw->sta.recver[0]=raw->sta.recsno[0]='\0';
+    raw->sta.antsetup=raw->sta.itrf=raw->sta.deltype=0;
+    for (i=0;i<3;i++) {
+        raw->sta.pos[i]=raw->sta.del[i]=0.0;
+    }
+    raw->sta.hgt=0.0;
+
+    if (!ret) {
+        free_raw(raw);
+        return 0;
+    }
+    return 1;
 }
 
 /* decode BeiDou D1 ephemeris --------------------------------------------------
@@ -591,7 +778,6 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
         decode_frame(raw->subfrm[sat-1]+30,&eph,NULL,NULL,NULL,NULL)!=2||
         decode_frame(raw->subfrm[sat-1]+60,&eph,NULL,NULL,NULL,NULL)!=3) return 0;
 
-    // TODO transfer eph data from eph struct pointer to sat_pos with satno
     for(int i=0; i<satellites_array->size(); i++)
     {
         if((*satellites_array)[i].satno==sat)
@@ -606,7 +792,6 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
     raw->ephsat=sat;
     return 2;
 }
-
 
 /* decode ubx-rxm-sfrb: subframe buffer --------------------------------------*/
 static int decode_rxmsfrb(raw_t *raw, std::vector<sat_pos> *satellites_array)
@@ -879,7 +1064,6 @@ static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
             timediff(eph.toc,raw->nav.eph[sat-1].toc)==0.0) return 0;
     }
 
-    // TODO transfer eph data from eph struct pointer to sat_pos with satno
     for(int i=0; i<satellites_array->size(); i++)
     {
     	if((*satellites_array)[i].satno==sat)
@@ -1096,7 +1280,7 @@ static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
             eph.iode==raw->nav.eph[sat-1].iode&&
             eph.iodc==raw->nav.eph[sat-1].iodc) return 0; /* unchanged */
     }
-    // TODO transfer eph data from eph struct pointer to sat_pos with satno
+
     for(int i=0; i<satellites_array->size(); i++)
     {
     	if((*satellites_array)[i].satno==sat)
@@ -1260,7 +1444,7 @@ static int decode_gnav(raw_t *raw, int sat, int off, int frq, std::vector<sat_po
         if (geph.iode==raw->nav.geph[prn-1].iode) return 0; /* unchanged */
     }
 
-    // TODO transfer eph data from eph struct pointer to sat_pos with satno
+
     for(int i=0; i<satellites_array->size(); i++)
     {
     	if((*satellites_array)[i].satno==sat)
@@ -1296,6 +1480,7 @@ static int decode_snav(raw_t *raw, int sat, int off)
     raw->sbsmsg.msg[28]&=0xC0;
     return 3;
 }
+
 
 /* decode ubx-rxm-sfrbx: raw subframe data (ref [3][4][5]) -------------------*/
 static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
@@ -1360,4 +1545,151 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
       case SYS_SBS: return decode_snav(raw,sat,8);
   }
   return 0;
+}
+
+/* decode ubx-rxm-rawx: multi-gnss raw measurement data (ref [3][4][5]) ------*/
+static int decode_rxmrawx(raw_t *raw)
+{
+    gtime_t time;
+    unsigned char *p=raw->buff+6;
+    char *q,tstr[64];
+    double tow,P,L,D,tn,tadj=0.0,toff=0.0;
+    int i,j,k,f,sys,prn,sat,code,slip,halfv,halfc,LLI,n=0,std_slip=0;
+    int week,nmeas,ver,gnss,svid,sigid,frqid,lockt,cn0,cpstd,tstat;
+
+    #ifdef LOG_DECODING_MSGS
+    printf("decode_rxmrawx: len=%d\n",raw->len);
+    #endif
+
+    if (raw->len<24) {
+
+        #ifdef LOG_DECODING_MSGS
+        printf("ubx rxmrawx length error: len=%d\n",raw->len);
+        #endif
+        return -1;
+    }
+    tow  =R8(p   ); /* rcvTow (s) */
+    week =U2(p+ 8); /* week */
+    nmeas=U1(p+11); /* numMeas */
+    ver  =U1(p+13); /* version ([5] 5.15.3.1) */
+
+    if (raw->len<24+32*nmeas) {
+
+        #ifdef LOG_DECODING_MSGS
+        printf("ubx rxmrawx length error: len=%d nmeas=%d\n",raw->len,nmeas);
+        #endif
+        return -1;
+    }
+    if (week==0) {
+
+        #ifdef LOG_DECODING_MSGS
+        printf("ubx rxmrawx week=0 error: len=%d nmeas=%d\n",raw->len,nmeas);
+        #endif
+        return 0;
+    }
+    time=gpst2time(week,tow);
+
+    if (raw->outtype) {
+        time2str(time,tstr,2);
+        sprintf(raw->msgtype,"UBX RXM-RAWX  (%4d): time=%s nmeas=%d ver=%d",
+                raw->len,tstr,nmeas,ver);
+    }
+    /* time tag adjustment option (-TADJ) */
+    if ((q=strstr(raw->opt,"-TADJ="))) {
+        sscanf(q,"-TADJ=%lf",&tadj);
+    }
+    /* slip theshold of std-dev of carreir-phase (-STD_SLIP) */
+    if ((q=strstr(raw->opt,"-STD_SLIP="))) {
+        sscanf(q,"-STD_SLIP=%d",&std_slip);
+    }
+    /* time tag adjustment */
+    if (tadj>0.0) {
+        tn=time2gpst(time,&week)/tadj;
+        toff=(tn-floor(tn+0.5))*tadj;
+        time=timeadd(time,-toff);
+    }
+    for (i=0,p+=16;i<nmeas&&n<MAXOBS;i++,p+=32) {
+        P    =R8(p   );    /* prMes (m) */
+        L    =R8(p+ 8);    /* cpMes (cyc) */
+        D    =R4(p+16);    /* doMes (hz) */
+        gnss =U1(p+20);    /* gnssId */
+        svid =U1(p+21);    /* svId */
+        sigid=U1(p+22);    /* sigId ([5] 5.15.3.1) */
+        frqid=U1(p+23);    /* freqId (fcn + 7) */
+        lockt=U2(p+24);    /* locktime (ms) */
+        cn0  =U1(p+26);    /* cn0 (dBHz) */
+        cpstd=U1(p+28)&15; /* cpStdev (m) */
+        tstat=U1(p+30);    /* trkStat */
+        if (!(tstat&1)) P=0.0;
+        if (!(tstat&2)||L==-0.5||cpstd>CPSTD_VALID) L=0.0;
+
+        if (!(sys=ubx_sys(gnss))) {
+            #ifdef LOG_DECODING_MSGS
+            printf("ubx rxmrawx: system error gnss=%d\n", gnss);
+            #endif
+            continue;
+        }
+        prn=svid+(sys==SYS_QZS?192:0);
+        if (!(sat=satno(sys,prn))) {
+            if (sys==SYS_GLO&&prn==255) {
+                continue; /* suppress warning for unknown glo satellite */
+            }
+            #ifdef LOG_DECODING_MSGS
+            printf("ubx rxmrawx sat number error: sys=%2d prn=%2d\n",sys,prn);
+            #endif
+            continue;
+        }
+        if (ver>=1) {
+            code=ubx_sig(sys,sigid);
+        }
+        else {
+            code=(sys==SYS_CMP)?CODE_L1I:((sys==SYS_GAL)?CODE_L1X:CODE_L1C);
+        }
+        /* signal index in obs data */
+        f=sig_idx(sys,code);
+
+        if (f==0||f>NFREQ+NEXOBS) {
+            #ifdef LOG_DECODING_MSGS
+            printf("ubx rxmrawx signal error: sat=%2d sigid=%d\n",sat,sigid);
+            #endif
+            continue;
+        }
+        /* offset by time tag adjustment */
+        if (toff!=0.0) {
+            P-=toff*CLIGHT;
+            L-=toff*sig_freq(sys,f,frqid-7);
+        }
+        halfv=tstat&4?1:0; /* half cycle valid */
+        halfc=tstat&8?1:0; /* half cycle subtracted from phase */
+        slip=lockt==0||lockt*1E-3<raw->lockt[sat-1][f-1]||
+             halfc!=raw->halfc[sat-1][f-1]||(std_slip&&cpstd>=std_slip);
+        raw->lockt[sat-1][f-1]=lockt*1E-3;
+        raw->halfc[sat-1][f-1]=halfc;
+        LLI=(slip?LLI_SLIP:0)|(!halfv?LLI_HALFC:0);
+
+    //     for (j=0;j<n;j++) {
+    //         if (raw->obs.data[j].sat==sat) break;
+    //     }
+    //     if (j>=n) {
+    //         raw->obs.data[n].time=time;
+    //         raw->obs.data[n].sat=sat;
+    //         raw->obs.data[n].rcv=0;
+    //         for (k=0;k<NFREQ+NEXOBS;k++) {
+    //             raw->obs.data[n].L[k]=raw->obs.data[n].P[k]=0.0;
+    //             raw->obs.data[n].D[k]=0.0;
+    //             raw->obs.data[n].SNR[k]=raw->obs.data[n].LLI[k]=0;
+    //             raw->obs.data[n].code[k]=CODE_NONE;
+    //         }
+    //         n++;
+    //     }
+    //     raw->obs.data[j].L[f-1]=L;
+    //     raw->obs.data[j].P[f-1]=P;
+    //     raw->obs.data[j].D[f-1]=(float)D;
+    //     raw->obs.data[j].SNR[f-1]=(unsigned char)(cn0*4);
+    //     raw->obs.data[j].LLI[f-1]=(unsigned char)LLI;
+    //     raw->obs.data[j].code[f-1]=(unsigned char)code;
+    }
+    // raw->time=time;
+    // raw->obs.n=n;
+    return 1;
 }

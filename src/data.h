@@ -10,6 +10,12 @@
 #define thread_t    pthread_t
 #define lock_t      pthread_mutex_t
 
+// global var
+extern const double lam_carr[];      /* carrier wave length (m) {L1,L2,...} */
+const double lam_carr[MAXFREQ]={ /* carrier wave length (m) */
+    CLIGHT/FREQ1,CLIGHT/FREQ2,CLIGHT/FREQ5,CLIGHT/FREQ6,CLIGHT/FREQ7,
+    CLIGHT/FREQ8,CLIGHT/FREQ9
+};
 
 static char codepris[7][MAXFREQ][16]={  /* code priority table */
 

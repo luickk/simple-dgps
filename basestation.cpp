@@ -58,6 +58,9 @@ int main(int argc, char **argv)
 
   raw_t raw_data;
 
+  // not initiating raw struct since no storage is foreseen
+  // init_raw(&raw_data);
+
   vector<sat_pos> satellites_array;
 
   vector<sat_pos> rsp;
@@ -74,7 +77,9 @@ int main(int argc, char **argv)
       // std::cout << "-----" << std::endl;
 
 
-      receiver.decode_UBX_RXM_SFRBX_msg(&raw_data, &satellites_array, input);
+      receiver.decode_ubx_msgs(&raw_data, &satellites_array, input);
+
+      //std::cout << raw_data.obs.data->P[1] << std::endl;
 
       // std::cout << satellites_array.size() << std::endl;
 

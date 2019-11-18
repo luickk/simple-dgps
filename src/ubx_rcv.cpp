@@ -15,7 +15,7 @@
 class M8T
 {
   public:
-    static int decode_UBX_RXM_SFRBX_msg(raw_t* raw, std::vector<sat_pos> *satellites_array, unsigned char data)
+    static int decode_ubx_msgs(raw_t* raw, std::vector<sat_pos> *satellites_array, unsigned char data)
     {
       /* synchronize frame */
       if (raw->nbyte==0) {
@@ -52,6 +52,10 @@ class M8T
       }
 
       decode_rxmsfrbx(raw, satellites_array);
+      // switch (type) {
+      //     case ID_RXMRAWX : return decode_rxmrawx(raw);
+      //     case ID_RXMSFRBX: return decode_rxmsfrbx(raw, satellites_array);
+      // }
 
       if (raw->outtype) {
         #ifdef LOG_DECODING_MSGS
@@ -64,14 +68,16 @@ class M8T
   static void print_sat_pos_array(std::vector<sat_pos> *satellites_array)
   {
     printf("------------------%d------------------- \n", satellites_array->size());
-    for (int i=0; i<satellites_array->size();i++)
-    {
-      eph_t sp_eph = (*(*satellites_array)[i].eph);
-      printf("-------");
-      printf("satno: %d \n time_of_ob: %d \n pseudo_range_observed: %d \n pseudo_range_basestation_correction: %d \n",
-      (*satellites_array)[i].satno,(*satellites_array)[i].time_of_eph_observation,(*satellites_array)[i].pseudo_range_observed,(*satellites_array)[i].pseudo_range_basestation_correction);
-      printf("iode: %d \n iodc: %d \n sva: %d \n svh: %d \n week: %d \n code: %d \n flag: %d \n toe: %d \n toc: %d \n ttr: %d \n A: %d \n e: %d \n i0: %d \n OMG0: %d \n omg: %d \n M0: %d \n deln: %d \n OMGd: %d \n idot: crc: %d \n crs: %d \n cuc: %d \n cus: %d \n cic: %d \n cis: %d \n toes: %d \n fit: %d \n f0: %d \n f1: %d \n f2: %d \n tgd: %d \n Adot: %d \n ndot: %d \n ",
-      sp_eph.iode,sp_eph.iodc,sp_eph.sva,sp_eph.svh,sp_eph.week,sp_eph.code,sp_eph.flag,sp_eph.toe,sp_eph.toc,sp_eph.ttr,sp_eph.A,sp_eph.e,sp_eph.i0,sp_eph.OMG0,sp_eph.omg,sp_eph.M0,sp_eph.deln,sp_eph.OMGd,sp_eph.idot,sp_eph.crc,sp_eph.crs,sp_eph.cuc,sp_eph.cus,sp_eph.cic,sp_eph.cis,sp_eph.toes,sp_eph.fit,sp_eph.f0,sp_eph.f1,sp_eph.f2,sp_eph.tgd,sp_eph.Adot,sp_eph.ndot);
+    if(satellites_array->size()>0){
+      for (int i=0; i<satellites_array->size();i++)
+      {
+        eph_t sp_eph = (*(*satellites_array)[i].eph);
+        printf("-------");
+        printf("satno: %d \n time_of_ob: %d \n pseudo_range_observed: %d \n pseudo_range_basestation_correction: %d \n",
+        (*satellites_array)[i].satno,(*satellites_array)[i].time_of_eph_observation,(*satellites_array)[i].pseudo_range_observed,(*satellites_array)[i].pseudo_range_basestation_correction);
+        printf("iode: %d \n iodc: %d \n sva: %d \n svh: %d \n week: %d \n code: %d \n flag: %d \n toe: %d \n toc: %d \n ttr: %d \n A: %d \n e: %d \n i0: %d \n OMG0: %d \n omg: %d \n M0: %d \n deln: %d \n OMGd: %d \n idot: crc: %d \n crs: %d \n cuc: %d \n cus: %d \n cic: %d \n cis: %d \n toes: %d \n fit: %d \n f0: %d \n f1: %d \n f2: %d \n tgd: %d \n Adot: %d \n ndot: %d \n ",
+        sp_eph.iode,sp_eph.iodc,sp_eph.sva,sp_eph.svh,sp_eph.week,sp_eph.code,sp_eph.flag,sp_eph.toe,sp_eph.toc,sp_eph.ttr,sp_eph.A,sp_eph.e,sp_eph.i0,sp_eph.OMG0,sp_eph.omg,sp_eph.M0,sp_eph.deln,sp_eph.OMGd,sp_eph.idot,sp_eph.crc,sp_eph.crs,sp_eph.cuc,sp_eph.cus,sp_eph.cic,sp_eph.cis,sp_eph.toes,sp_eph.fit,sp_eph.f0,sp_eph.f1,sp_eph.f2,sp_eph.tgd,sp_eph.Adot,sp_eph.ndot);
+      }
     }
   }
   private:

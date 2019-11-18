@@ -1,4 +1,17 @@
-/* contains predefined important constants  */
+/* contains important predefined constants  */
+
+#define ID_NAVSOL   0x0106      /* ubx message id: nav solution info */
+#define ID_NAVTIME  0x0120      /* ubx message id: nav time gps */
+#define ID_RXMRAW   0x0210      /* ubx message id: raw measurement data */
+#define ID_RXMSFRB  0x0211      /* ubx message id: subframe buffer */
+#define ID_RXMSFRBX 0x0213      /* ubx message id: raw subframe data */
+#define ID_RXMRAWX  0x0215      /* ubx message id: multi-gnss raw meas data */
+#define ID_TRKD5    0x030A      /* ubx message id: trace mesurement data */
+#define ID_TRKMEAS  0x0310      /* ubx message id: trace mesurement data */
+#define ID_TRKSFRBX 0x030F      /* ubx message id: trace subframe buffer */
+
+#define CPSTD_VALID 5           /* std-dev threshold of carrier-phase valid */
+
 
 const double C = 2.99792458e8; // Speed of light
 
