@@ -58,8 +58,7 @@ int main(int argc, char **argv)
 
   raw_t raw_data;
 
-  // not initiating raw struct since no storage is foreseen
-  // init_raw(&raw_data);
+  init_raw(&raw_data);
 
   vector<sat_pos> satellites_array;
 

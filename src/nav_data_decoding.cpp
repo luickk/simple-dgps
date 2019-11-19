@@ -1482,9 +1482,29 @@ static int decode_snav(raw_t *raw, int sat, int off)
 }
 
 
+static void init_sat_pos(sat_pos *isp)
+{
+  isp->SNR=0;
+  isp->time_of_eph_observation=0;
+  isp->ion_params[1]=0;
+  isp->ion_params[2]=0;
+  isp->ion_params[3]=0;
+  isp->ion_params[4]=0;
+  isp->ion_params[5]=0;
+  isp->ion_params[6]=0;
+  isp->ion_params[7]=0;
+  isp->ion_params[8]=0;
+  isp->pos[1]=0;
+  isp->pos[2]=0;
+  isp->pseudo_range_observed=0;
+  isp->pseudo_range_basestation_correction=0;
+  isp->pseudo_range_corrected=0;
+}
+
 /* decode ubx-rxm-sfrbx: raw subframe data (ref [3][4][5]) -------------------*/
 static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
+  printf("decode rxmsfrbx");
   int prn,sat,sys;
   unsigned char *p=raw->buff+6;
 
@@ -1519,6 +1539,7 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
   sat_pos sp(sat);
   if(satellites_array->size() == 0)
   {
+    init_sat_pos(&sp);
     satellites_array->push_back(sp);
   }
 
@@ -1529,6 +1550,7 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
     #endif
   } else
   {
+    init_sat_pos(&sp);
     satellites_array->push_back(sp);
   }
 
@@ -1548,8 +1570,9 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 }
 
 /* decode ubx-rxm-rawx: multi-gnss raw measurement data (ref [3][4][5]) ------*/
-static int decode_rxmrawx(raw_t *raw)
+static int decode_rxmrawx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
+    printf("decode rxmrawx");
     gtime_t time;
     unsigned char *p=raw->buff+6;
     char *q,tstr[64];
@@ -1667,29 +1690,56 @@ static int decode_rxmrawx(raw_t *raw)
         raw->halfc[sat-1][f-1]=halfc;
         LLI=(slip?LLI_SLIP:0)|(!halfv?LLI_HALFC:0);
 
-    //     for (j=0;j<n;j++) {
-    //         if (raw->obs.data[j].sat==sat) break;
-    //     }
-    //     if (j>=n) {
-    //         raw->obs.data[n].time=time;
-    //         raw->obs.data[n].sat=sat;
-    //         raw->obs.data[n].rcv=0;
-    //         for (k=0;k<NFREQ+NEXOBS;k++) {
-    //             raw->obs.data[n].L[k]=raw->obs.data[n].P[k]=0.0;
-    //             raw->obs.data[n].D[k]=0.0;
-    //             raw->obs.data[n].SNR[k]=raw->obs.data[n].LLI[k]=0;
-    //             raw->obs.data[n].code[k]=CODE_NONE;
-    //         }
-    //         n++;
-    //     }
-    //     raw->obs.data[j].L[f-1]=L;
-    //     raw->obs.data[j].P[f-1]=P;
-    //     raw->obs.data[j].D[f-1]=(float)D;
-    //     raw->obs.data[j].SNR[f-1]=(unsigned char)(cn0*4);
-    //     raw->obs.data[j].LLI[f-1]=(unsigned char)LLI;
-    //     raw->obs.data[j].code[f-1]=(unsigned char)code;
+        //sync satellite array with found sats in data frames
+        sat_pos sp(sat);
+        if(satellites_array->size() == 0)
+        {
+          init_sat_pos(&sp);
+          satellites_array->push_back(sp);
+        }
+
+        if(std::find_if(satellites_array->begin(), satellites_array->end(), sp) != satellites_array->end())
+        {
+          #ifdef LOG_DECODING_MSGS
+          printf("satno %d already in sat array \n", sat);
+          #endif
+        } else
+        {
+          init_sat_pos(&sp);
+          satellites_array->push_back(sp);
+        }
+
+        for (j=0;j<n;j++) {
+            if (raw->obs.data[j].sat==sat) break;
+        }
+        if (j>=n) {
+            raw->obs.data[n].time=time;
+            raw->obs.data[n].sat=sat;
+            raw->obs.data[n].rcv=0;
+            for (k=0;k<NFREQ+NEXOBS;k++) {
+                raw->obs.data[n].L[k]=raw->obs.data[n].P[k]=0.0;
+                raw->obs.data[n].D[k]=0.0;
+                raw->obs.data[n].SNR[k]=raw->obs.data[n].LLI[k]=0;
+                raw->obs.data[n].code[k]=CODE_NONE;
+            }
+            n++;
+        }
+        raw->obs.data[j].L[f-1]=L;
+        raw->obs.data[j].P[f-1]=P;
+        raw->obs.data[j].D[f-1]=(float)D;
+        raw->obs.data[j].SNR[f-1]=(unsigned char)(cn0*4);
+        raw->obs.data[j].LLI[f-1]=(unsigned char)LLI;
+        raw->obs.data[j].code[f-1]=(unsigned char)code;
     }
-    // raw->time=time;
-    // raw->obs.n=n;
+
+    for(int i=0; i<satellites_array->size(); i++)
+    {
+    	if((*satellites_array)[i].satno==sat)
+    	{
+    	  (*satellites_array)[i].pseudo_range_observed = P;
+    	}
+    }
+    raw->time=time;
+    raw->obs.n=n;
     return 1;
 }
