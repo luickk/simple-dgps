@@ -4,7 +4,8 @@
 
 GPS is an widely used and relatively cheap technology, as with everything the price behaves proportionally to the performance. That said, a 20$ GPS module can achieve an accuracy of roughly 7 meters, in good conditions. A 70$ receiver does have a few advantages as for example in the variety of protocols or reading speed but none in accuracy.
 
-There are a few technologies available which offer accuracy of up to a few mm, but those are not just expensive but also very costly to implement and use. Technologies such as RTK(Real Time Kinematic) that rely on Phaseshift measurements to calculate the required pseudo ranges etc. cost up to a few thousand dollars and are very sensible, which often makes them dependent on corrections by nearby correction stations.
+There are a few technologies available which offer accuracy of up to a few mm, but those are not just expensive but also very costly to implement and use. Technologies such as RTK(Real Time Kinematic) that rely on phaseshift measurements to calculate the required pseudo ranges etc. cost up to a few thousand dollars and are very sensible, and dependent on at least 6 sats in order
+to be reliable.
 
 ## Simple Differential GPS Approach
 

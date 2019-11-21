@@ -75,10 +75,7 @@ int main(int argc, char **argv)
       // std::cout << input << std::endl;
       // std::cout << "-----" << std::endl;
 
-
       receiver.decode_ubx_msgs(&raw_data, &satellites_array, input);
-
-      //std::cout << raw_data.obs.data->P[1] << std::endl;
 
       // std::cout << satellites_array.size() << std::endl;
 

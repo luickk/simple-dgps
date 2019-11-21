@@ -788,7 +788,7 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
 
 
     eph.sat=sat;
-    //raw->nav.eph[sat-1]=eph;
+    raw->nav.eph[sat-1]=eph;
     raw->ephsat=sat;
     return 2;
 }
@@ -1504,7 +1504,7 @@ static void init_sat_pos(sat_pos *isp)
 /* decode ubx-rxm-sfrbx: raw subframe data (ref [3][4][5]) -------------------*/
 static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
-  printf("decode rxmsfrbx");
+  //printf("decode rxmsfrbx");
   int prn,sat,sys;
   unsigned char *p=raw->buff+6;
 
@@ -1572,7 +1572,7 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 /* decode ubx-rxm-rawx: multi-gnss raw measurement data (ref [3][4][5]) ------*/
 static int decode_rxmrawx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 {
-    printf("decode rxmrawx");
+    //printf("decode rxmrawx");
     gtime_t time;
     unsigned char *p=raw->buff+6;
     char *q,tstr[64];
