@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
   vector<sat_pos> satellites_array;
 
-  vector<sat_pos> rsp;
+  vector<sat_pos> rsp = satellites_array;
 
   std::thread print_sata_stats_thread (print_sata_stats, &satellites_array);
 
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
       // std::cout << satellites_array.size() << std::endl;
 
       // applying pseudo range correction
-      // differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
+      //differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
 
       if(input==-1){
         goto REINIT;

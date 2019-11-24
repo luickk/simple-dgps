@@ -869,7 +869,6 @@ struct sat_pos{
 
   double SNR; // signal strength (0.25 dBHz)
 
-  time_t time_of_eph_observation;
   eph_t *eph; // GPS/QZS/GAL ephemeris
   geph_t *geph; // GLONASS ephemeris
 

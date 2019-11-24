@@ -1485,7 +1485,6 @@ static int decode_snav(raw_t *raw, int sat, int off)
 static void init_sat_pos(sat_pos *isp)
 {
   isp->SNR=0;
-  isp->time_of_eph_observation=0;
   isp->ion_params[1]=0;
   isp->ion_params[2]=0;
   isp->ion_params[3]=0;

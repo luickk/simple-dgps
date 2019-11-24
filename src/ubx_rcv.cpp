@@ -74,18 +74,16 @@ class M8T
       for (int i=0; i<satellites_array->size();i++)
       {
         eph_t sp_eph = (*(*satellites_array)[i].eph);
-        printf("-------");
 
-        // printf("satno: %d \n pr: %lf \n time_of_ob: %lf \n pseudo_range_observed: %lf \n pseudo_range_basestation_correction: %lf \n",
-        // (*satellites_array)[i].satno,(*satellites_array)[i].pseudo_range_observed,(*satellites_array)[i].time_of_eph_observation,(*satellites_array)[i].pseudo_range_observed,(*satellites_array)[i].pseudo_range_basestation_correction);
-        // printf("iode: %d \n iodc: %d \n sva: %d \n svh: %d \n week: %d \n code: %d \n flag: %d \n toe: %d \n toc: %d \n ttr: %d \n A: %lf \n e: %lf \n i0: %lf \n OMG0: %lf \n omg: %lf \n M0: %lf \n deln: %lf \n OMGd: %lf \n idot:%lf \n crc: %lf \n crs: %lf \n cuc: %lf \n cus: %lf \n cic: %lf \n cis: %lf \n toes: %lf \n fit: %lf \n f0: %lf \n f1: %lf \n f2: %lf \n tgd: %lf \n Adot: %lf \n ndot: %lf \n ",
-        // sp_eph.iode,sp_eph.iodc,sp_eph.sva,sp_eph.svh,sp_eph.week,sp_eph.code,sp_eph.flag,sp_eph.toe,sp_eph.toc,sp_eph.ttr,sp_eph.A,sp_eph.e,sp_eph.i0,sp_eph.OMG0,sp_eph.omg,sp_eph.M0,sp_eph.deln,sp_eph.OMGd,sp_eph.idot,sp_eph.crc,sp_eph.crs,sp_eph.cuc,sp_eph.cus,sp_eph.cic,sp_eph.cis,sp_eph.toes,sp_eph.fit,sp_eph.f0,sp_eph.f1,sp_eph.f2,sp_eph.tgd,sp_eph.Adot,sp_eph.ndot);
+        std::cout << "-------------" << std::endl;
 
         std::cout << "satno: " << (*satellites_array)[i].satno << std::endl;
         std::cout << "pseudo_range_observed: " << (*satellites_array)[i].pseudo_range_observed << std::endl;
-        std::cout << "time_of_eph_observation: " << (*satellites_array)[i].time_of_eph_observation << std::endl;
-        std::cout << "pseudo_range_observed: " << (*satellites_array)[i].pseudo_range_observed << std::endl;
         std::cout << "pseudo_range_basestation_correction: " << (*satellites_array)[i].pseudo_range_basestation_correction << std::endl;
+        std::cout << "SNR: " << (*satellites_array)[i].SNR << std::endl;
+        std::cout << "ecef x pos: " << (*satellites_array)[i].pos[1] << std::endl;
+        std::cout << "ecef y pos: " << (*satellites_array)[i].pos[2] << std::endl;
+        std::cout << "ecef z pos: " << (*satellites_array)[i].pos[3] << std::endl;
 
         std::cout << "iode: " << sp_eph.iode << std::endl;
         std::cout << "iodc: " << sp_eph.iodc << std::endl;
@@ -94,6 +92,11 @@ class M8T
         std::cout << "week: " << sp_eph.week << std::endl;
         std::cout << "code: " << sp_eph.code << std::endl;
         std::cout << "flag: " << sp_eph.flag << std::endl;
+
+        std::cout << "toe: " << sp_eph.toe.time << std::endl;
+        std::cout << "toc: " << sp_eph.toc.time << std::endl;
+        std::cout << "ttr: " << sp_eph.ttr.time << std::endl;
+
         std::cout << "A: " << sp_eph.A << std::endl;
         std::cout << "e: " << sp_eph.e << std::endl;
         std::cout << "i0: " << sp_eph.i0 << std::endl;
@@ -103,16 +106,23 @@ class M8T
         std::cout << "deln: " << sp_eph.deln << std::endl;
         std::cout << "OMGd: " << sp_eph.OMGd << std::endl;
         std::cout << "idot: " << sp_eph.idot << std::endl;
+
         std::cout << "crc: " << sp_eph.crc << std::endl;
         std::cout << "crs: " << sp_eph.crs << std::endl;
         std::cout << "cuc: " << sp_eph.cuc << std::endl;
         std::cout << "cus: " << sp_eph.cus << std::endl;
         std::cout << "cic: " << sp_eph.cic << std::endl;
         std::cout << "cis: " << sp_eph.cis << std::endl;
+
         std::cout << "toes: " << sp_eph.toes << std::endl;
+        std::cout << "fit: " << sp_eph.fit << std::endl;
         std::cout << "f0: " << sp_eph.f0 << std::endl;
         std::cout << "f1: " << sp_eph.f1 << std::endl;
         std::cout << "f2: " << sp_eph.f2 << std::endl;
+        std::cout << "tgd 1: " << sp_eph.tgd[1] << std::endl;
+        std::cout << "tgd 2: " << sp_eph.tgd[2] << std::endl;
+        std::cout << "tgd 3: " << sp_eph.tgd[3] << std::endl;
+        std::cout << "tgd 4: " << sp_eph.tgd[4] << std::endl;
         std::cout << "Adot: " << sp_eph.Adot << std::endl;
         std::cout << "ndot: " << sp_eph.ndot  << std::endl;
 

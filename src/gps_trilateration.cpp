@@ -186,7 +186,7 @@ static int solve_trilat(std::vector <sat_pos> *sp, double *x_n, double *y_n, dou
         weight[i] = (*sp)[i].SNR;
 
         // Un-corrected time of transmission
-        t_tx[i] = (*sp)[i].time_of_eph_observation;
+        t_tx[i] = (*sp)[i].eph->toe.time;
 
         // Clock correction
         t_tx[i] -= GetClockCorrection(t_tx[i], (*sp)[i].eph);
