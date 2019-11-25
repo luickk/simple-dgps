@@ -72,12 +72,7 @@ int main(int argc, char **argv)
     {
       input = serialGetchar (fd);
 
-      // std::cout << input << std::endl;
-      // std::cout << "-----" << std::endl;
-
       receiver.decode_ubx_msgs(&raw_data, &satellites_array, input);
-
-      // std::cout << satellites_array.size() << std::endl;
 
       // applying pseudo range correction
       //differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);

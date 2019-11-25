@@ -73,7 +73,7 @@ class M8T
     if(satellites_array->size()>0){
       for (int i=0; i<satellites_array->size();i++)
       {
-        eph_t sp_eph = (*(*satellites_array)[i].eph);
+        eph_t sp_eph = (*satellites_array)[i].eph;
 
         std::cout << "-------------" << std::endl;
 
@@ -81,9 +81,9 @@ class M8T
         std::cout << "pseudo_range_observed: " << (*satellites_array)[i].pseudo_range_observed << std::endl;
         std::cout << "pseudo_range_basestation_correction: " << (*satellites_array)[i].pseudo_range_basestation_correction << std::endl;
         std::cout << "SNR: " << (*satellites_array)[i].SNR << std::endl;
-        std::cout << "ecef x pos: " << (*satellites_array)[i].pos[1] << std::endl;
-        std::cout << "ecef y pos: " << (*satellites_array)[i].pos[2] << std::endl;
-        std::cout << "ecef z pos: " << (*satellites_array)[i].pos[3] << std::endl;
+        std::cout << "ecef x pos: " << (*satellites_array)[i].pos[0] << std::endl;
+        std::cout << "ecef y pos: " << (*satellites_array)[i].pos[1] << std::endl;
+        std::cout << "ecef z pos: " << (*satellites_array)[i].pos[2] << std::endl;
 
         std::cout << "iode: " << sp_eph.iode << std::endl;
         std::cout << "iodc: " << sp_eph.iodc << std::endl;
@@ -119,10 +119,8 @@ class M8T
         std::cout << "f0: " << sp_eph.f0 << std::endl;
         std::cout << "f1: " << sp_eph.f1 << std::endl;
         std::cout << "f2: " << sp_eph.f2 << std::endl;
+        std::cout << "tgd 0: " << sp_eph.tgd[0] << std::endl;
         std::cout << "tgd 1: " << sp_eph.tgd[1] << std::endl;
-        std::cout << "tgd 2: " << sp_eph.tgd[2] << std::endl;
-        std::cout << "tgd 3: " << sp_eph.tgd[3] << std::endl;
-        std::cout << "tgd 4: " << sp_eph.tgd[4] << std::endl;
         std::cout << "Adot: " << sp_eph.Adot << std::endl;
         std::cout << "ndot: " << sp_eph.ndot  << std::endl;
 

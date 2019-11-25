@@ -869,10 +869,10 @@ struct sat_pos{
 
   double SNR; // signal strength (0.25 dBHz)
 
-  eph_t *eph; // GPS/QZS/GAL ephemeris
-  geph_t *geph; // GLONASS ephemeris
+  eph_t eph; // GPS/QZS/GAL ephemeris
+  geph_t geph; // GLONASS ephemeris
 
-  double ion_params[8];  /* iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
+  double ion_params[7];  /* iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} */
 
   double pos[2]; // satellite ecef position x,y,z
 

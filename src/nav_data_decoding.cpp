@@ -772,7 +772,7 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
 {
     eph_t eph={0};
     #ifdef LOG_DECODING_MSGS
-    printf("decode_ephem: sat=%2d\n",sat);
+    printf("decode_ephem: sat=% 2d \n",sat);
     #endif
     if (decode_frame(raw->subfrm[sat-1]   ,&eph,NULL,NULL,NULL,NULL)!=1||
         decode_frame(raw->subfrm[sat-1]+30,&eph,NULL,NULL,NULL,NULL)!=2||
@@ -782,10 +782,9 @@ static int decode_ephem(int sat, raw_t *raw, std::vector<sat_pos> *satellites_ar
     {
         if((*satellites_array)[i].satno==sat)
         {
-          (*satellites_array)[i].eph = &eph;
+          (*satellites_array)[i].eph = eph;
         }
     }
-
 
     eph.sat=sat;
     raw->nav.eph[sat-1]=eph;
@@ -1068,7 +1067,7 @@ static int decode_enav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     {
     	if((*satellites_array)[i].satno==sat)
     	{
-    	  (*satellites_array)[i].eph = &eph;
+    	  (*satellites_array)[i].eph = eph;
     	} else
     	{
         #ifdef LOG_DECODING_MSGS
@@ -1285,7 +1284,7 @@ static int decode_cnav(raw_t *raw, int sat, int off, std::vector<sat_pos> *satel
     {
     	if((*satellites_array)[i].satno==sat)
     	{
-    	  (*satellites_array)[i].eph = &eph;
+    	  (*satellites_array)[i].eph = eph;
     	} else
     	{
         #ifdef LOG_DECODING_MSGS
@@ -1449,7 +1448,7 @@ static int decode_gnav(raw_t *raw, int sat, int off, int frq, std::vector<sat_po
     {
     	if((*satellites_array)[i].satno==sat)
     	{
-    	  (*satellites_array)[i].geph = &geph;
+    	  (*satellites_array)[i].geph = geph;
     	}
     }
     raw->nav.geph[prn-1]=geph;
@@ -1484,7 +1483,10 @@ static int decode_snav(raw_t *raw, int sat, int off)
 
 static void init_sat_pos(sat_pos *isp)
 {
+  eph_t eph0 ={0,-1,-1};
+
   isp->SNR=0;
+  isp->ion_params[0]=0;
   isp->ion_params[1]=0;
   isp->ion_params[2]=0;
   isp->ion_params[3]=0;
@@ -1492,12 +1494,14 @@ static void init_sat_pos(sat_pos *isp)
   isp->ion_params[5]=0;
   isp->ion_params[6]=0;
   isp->ion_params[7]=0;
-  isp->ion_params[8]=0;
+  isp->pos[0]=0;
   isp->pos[1]=0;
   isp->pos[2]=0;
   isp->pseudo_range_observed=0;
   isp->pseudo_range_basestation_correction=0;
   isp->pseudo_range_corrected=0;
+
+  isp->eph = eph0;
 }
 
 /* decode ubx-rxm-sfrbx: raw subframe data (ref [3][4][5]) -------------------*/
