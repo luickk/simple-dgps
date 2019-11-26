@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
   vector<sat_pos> satellites_array;
 
-  vector<sat_pos> rsp = satellites_array;
+  vector<sat_pos> rsp;
 
   std::thread print_sata_stats_thread (print_sata_stats, &satellites_array);
 
@@ -72,10 +72,13 @@ int main(int argc, char **argv)
     {
       input = serialGetchar (fd);
 
+      // copying over data from basestatio sat array to rover for testing purposes
+      rsp = satellites_array;
+
       receiver.decode_ubx_msgs(&raw_data, &satellites_array, input);
 
       // applying pseudo range correction
-      //differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
+      differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
 
       if(input==-1){
         goto REINIT;

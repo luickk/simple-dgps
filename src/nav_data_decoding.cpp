@@ -424,6 +424,7 @@ static int decode_subfrm1(const unsigned char *buff, eph_t *eph)
 
     return 1;
 }
+
 /* decode gps/qzss almanac ---------------------------------------------------*/
 static void decode_almanac(const unsigned char *buff, int sat, alm_t *alm)
 {
