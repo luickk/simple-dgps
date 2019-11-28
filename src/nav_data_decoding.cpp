@@ -1555,6 +1555,7 @@ static int decode_rxmsfrbx(raw_t *raw, std::vector<sat_pos> *satellites_array)
   } else
   {
     init_sat_pos(&sp);
+    sp.eph.sat = sat;
     satellites_array->push_back(sp);
   }
 

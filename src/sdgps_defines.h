@@ -1,4 +1,36 @@
-/* contains important predefined constants  */
+/* constants and macros ------------------------------------------------------*/
+
+#define SQR(x)   ((x)*(x))
+
+#define RE_GLO   6378136.0        /* radius of earth (m)            ref [2] */
+#define MU_GPS   3.9860050E14     /* gravitational constant         ref [1] */
+#define MU_GLO   3.9860044E14     /* gravitational constant         ref [2] */
+#define MU_GAL   3.986004418E14   /* earth gravitational constant   ref [7] */
+#define MU_CMP   3.986004418E14   /* earth gravitational constant   ref [9] */
+#define J2_GLO   1.0826257E-3     /* 2nd zonal harmonic of geopot   ref [2] */
+
+#define OMGE_GLO 7.292115E-5      /* earth angular velocity (rad/s) ref [2] */
+#define OMGE_GAL 7.2921151467E-5  /* earth angular velocity (rad/s) ref [7] */
+#define OMGE_CMP 7.292115E-5      /* earth angular velocity (rad/s) ref [9] */
+
+#define SIN_5 -0.0871557427476582 /* sin(-5.0 deg) */
+#define COS_5  0.9961946980917456 /* cos(-5.0 deg) */
+
+#define ERREPH_GLO 5.0            /* error of glonass ephemeris (m) */
+#define TSTEP    60.0             /* integration step glonass ephemeris (s) */
+#define RTOL_KEPLER 1E-13         /* relative tolerance for Kepler equation */
+
+#define DEFURASSR 0.15            /* default accurary of ssr corr (m) */
+#define MAXECORSSR 10.0           /* max orbit correction of ssr (m) */
+#define MAXCCORSSR (1E-6*CLIGHT)  /* max clock correction of ssr (m) */
+#define MAXAGESSR 90.0            /* max age of ssr orbit and clock (s) */
+#define MAXAGESSR_HRCLK 10.0      /* max age of ssr high-rate clock (s) */
+#define STD_BRDCCLK 30.0          /* error of broadcast clock (m) */
+#define STD_GAL_NAPA 500.0        /* error of galileo ephemeris for NAPA (m) */
+
+#define MAX_ITER_KEPLER 30        /* max number of iteration of Kelpler */
+
+/* important predefined constants  */
 
 #define ID_NAVSOL   0x0106      /* ubx message id: nav solution info */
 #define ID_NAVTIME  0x0120      /* ubx message id: nav time gps */
