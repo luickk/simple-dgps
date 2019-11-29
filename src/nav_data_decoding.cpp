@@ -1,7 +1,3 @@
-#include "gps_timing.cpp"
-#include "gps_sat.cpp"
-#include "ubx_parsing.cpp"
-
 /* contains functions for decoding of ubx subframes to extract data such as ephemeris, position data */
 
 /* test hamming code of glonass ephemeris string -------------------------------

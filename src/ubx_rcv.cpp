@@ -1,17 +1,4 @@
-#include <iostream>
-#include <dirent.h>
-#include <time.h>
-#include <sys/time.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-
-#include "sdgps_defines.h"
-
-#include "data.h"
-#include "nav_data_decoding.cpp"
-
 /* class contains methods to decode raw ubx sfrbx data msgs */
-
 class M8T
 {
   public:
