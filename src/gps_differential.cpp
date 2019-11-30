@@ -22,7 +22,11 @@ class dgps
       sv_pos[1] = sp->pos[1]; // x, y, z
       sv_pos[2] = sp->pos[2]; // x, y, z
 
-      return sp->pseudo_range_observed-calc_ecef_dist(sv_pos, bs_pos);
+      double sv_bs_true_dist = calc_ecef_dist(sv_pos, bs_pos);
+
+      // std::cout << "calc. sv - bs distance: " << sv_bs_true_dist << std::endl;
+
+      return fabs(sp->pseudo_range_observed-sv_bs_true_dist);
     }
 
   public:

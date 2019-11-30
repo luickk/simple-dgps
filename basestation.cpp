@@ -49,7 +49,7 @@ void print_sata_stats(std::vector<sat_pos> *satellites_array)
   while(true)
   {
       usleep(10000000);
-      // receiver.print_sat_pos_array(satellites_array);
+      receiver.print_sat_pos_array(satellites_array);
   }
 }
 
@@ -65,8 +65,6 @@ int main(int argc, char **argv)
 
   double *ecef_x,*ecef_y,*ecef_z;
   latLonToEcef(bs_lat_lon_pos, ecef_base_station_position);
-
-  std::cout << ecef_base_station_position[0] << ", " << ecef_base_station_position[1] << ", " << ecef_base_station_position[2] << std::endl;
 
   std::cout << "Starting DGPS basestation" << std::endl;
 
