@@ -66,6 +66,7 @@ class M8T
 
         std::cout << "satno: " << (*satellites_array)[i].satno << std::endl;
         std::cout << "pseudo_range_observed: " << (*satellites_array)[i].pseudo_range_observed << std::endl;
+        std::cout << "pseudo_range_corrected: " << (*satellites_array)[i].pseudo_range_corrected << std::endl;
         std::cout << "pseudo_range_basestation_correction: " << (*satellites_array)[i].pseudo_range_basestation_correction << std::endl;
         std::cout << "SNR: " << (*satellites_array)[i].SNR << std::endl;
         std::cout << "ecef x pos: " << (*satellites_array)[i].pos[0] << std::endl;

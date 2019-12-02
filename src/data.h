@@ -886,4 +886,4 @@ struct sat_pos{
       return m.satno == satno;
   }
 
-} ;
+};

@@ -44,12 +44,20 @@
 
 M8T receiver;
 
-void print_sata_stats(std::vector<sat_pos> *satellites_array)
+Gps_Corrections gps_corr;
+
+Trilateration trillat;
+
+void print_sata_stats(std::vector<sat_pos> *satellites_array, double x, double y, double z)
 {
   while(true)
   {
       usleep(10000000);
       receiver.print_sat_pos_array(satellites_array);
+
+      std::cout << "-- receiver pos --" << std::endl;
+
+      std::cout << "x: " << x << "y: " << y << "z: " << z << std::endl;
   }
 }
 
@@ -88,7 +96,10 @@ int main(int argc, char **argv)
 
   vector<sat_pos> rsp;
 
-  std::thread print_sata_stats_thread (print_sata_stats, &satellites_array);
+
+  double x_n,y_n,z_n,t_bias = 0;
+
+  std::thread print_sata_stats_thread (print_sata_stats, &satellites_array,x_n,y_n,z_n);
 
   while(1)
   {
@@ -99,10 +110,16 @@ int main(int argc, char **argv)
       // copying over data from basestatio sat array to rover for testing purposes
       rsp = satellites_array;
 
+      // decoding incoming ubx rawx and sfrbx msgs and writing resulting data to raw_data and sat pos arr
       receiver.decode_ubx_msgs(&raw_data, &satellites_array, input);
 
       // applying pseudo range correction
       differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
+
+      // calc receiver position from satellite array
+      trillat.solve_trilat(&satellites_array, &x_n, &y_n, &z_n, &t_bias);
+
+
 
       if(input==-1){
         goto REINIT;
