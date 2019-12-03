@@ -57,7 +57,7 @@ void print_sata_stats(std::vector<sat_pos> *satellites_array, double x, double y
 
       std::cout << "-- receiver pos --" << std::endl;
 
-      std::cout << "x: " << x << "y: " << y << "z: " << z << std::endl;
+      std::cout << "x: " << x << " y: " << y << " z: " << z << std::endl;
   }
 }
 
@@ -117,17 +117,13 @@ int main(int argc, char **argv)
       differential_gps.apply_prc(&satellites_array, &rsp, ecef_base_station_position);
 
       // calc receiver position from satellite array
+      // TODO: implement ion tropo correcte and change trillat pseudo range to corrected pseudo range
       trillat.solve_trilat(&satellites_array, &x_n, &y_n, &z_n, &t_bias);
-
-
 
       if(input==-1){
         goto REINIT;
       }
     }
   }
-
-
-
   return 0;
 }

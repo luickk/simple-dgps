@@ -171,3 +171,9 @@ extern int satno(int sys, int prn)
     }
     return 0;
 }
+
+// checks if required eph parameter are avaiable
+int full_eph_avail(eph_t eph)
+{
+  return (eph.toe.time != 0 && eph.A != 0 && eph.e != 0 && eph.deln != 0 && eph.i0 != 0 && eph.OMG0 != 0 && eph.omg != 0 && eph.M0 != 0 && eph.OMGd != 0 && eph.idot != 0 && eph.crc != 0 && eph.crs != 0 && eph.cuc != 0 && eph.cus != 0 && eph.cic != 0 && eph.cis != 0);
+}

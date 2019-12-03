@@ -1735,10 +1735,11 @@ static int decode_rxmrawx(raw_t *raw, std::vector<sat_pos> *satellites_array)
 
     for(int i=0; i<satellites_array->size(); i++)
     {
-    	if((*satellites_array)[i].satno==sat)
+    	if((*satellites_array)[i].satno==sat && P > 0)
     	{
-    	  (*satellites_array)[i].pseudo_range_observed = P;
-    	}
+        (*satellites_array)[i].pseudo_range_observed = P;
+
+      }
     }
     raw->time=time;
     raw->obs.n=n;

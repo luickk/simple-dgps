@@ -51,7 +51,7 @@ class Trilateration
                  z_sv[n_sats];
 
           double t_pc;  // Uncorrected system time when clock replica snapshots taken
-          double t_rx;    // Corrected GPS time
+          double t_rx;  // Corrected GPS time
 
           double dPR[n_sats]; // Pseudo range error
 
@@ -63,24 +63,27 @@ class Trilateration
 
           for (i=0; i<n_sats; i++) {
 
-              weight[i] = (*sp)[i].SNR;
+              if(full_eph_avail((*sp)[i].eph)){
+                // weight[i] = (*sp)[i].SNR;
+                weight[i] = 1; // for debugging
 
-              // Un-corrected time of transmission
-              t_tx[i] = (*sp)[i].eph.toe.time;
+                // Un-corrected time of transmission
+                t_tx[i] = (*sp)[i].eph.toe.time;
 
-              // Clock correction
-              // t_tx[i] -= GetClockCorrection(t_tx[i], &(*sp)[i].eph);
+                // Clock correction already done by ublox receiver
+                // t_tx[i] -= GetClockCorrection(t_tx[i], &(*sp)[i].eph);
 
-              gtime_t t_tx_;
-              t_tx_.time = t_tx[i];
+                gtime_t t_tx_;
+                t_tx_.time = t_tx[i];
 
-              eph2pos(t_tx_, &(*sp)[i].eph,  &(*sp)[i]);
+                eph2pos(t_tx_, &(*sp)[i].eph,  &(*sp)[i]);
 
-              x_sv[i] = (*sp)[i].pos[0]+i;
-              y_sv[i] = (*sp)[i].pos[1]+i;
-              z_sv[i] = (*sp)[i].pos[2]+i;
+                x_sv[i] = (*sp)[i].pos[0]+i;
+                y_sv[i] = (*sp)[i].pos[1]+i;
+                z_sv[i] = (*sp)[i].pos[2]+i;
 
-              t_pc += t_tx[i];
+                t_pc += t_tx[i];
+              }
           }
 
           // Approximate starting value for receiver clock
@@ -93,6 +96,8 @@ class Trilateration
               t_rx = t_pc - *t_bias;
 
               for (i=0; i<n_sats; i++) {
+                if(full_eph_avail((*sp)[i].eph))
+                {
                   // Convert SV position to ECI coords (20.3.3.4.3.3.2)
                   double theta = (t_tx[i] - t_rx) * OMEGA_E;
 
@@ -105,13 +110,17 @@ class Trilateration
                                    pow(*y_n - y_sv_eci, 2) +
                                    pow(*z_n - z_sv_eci, 2));
 
-                  dPR[i] = C*(t_rx - t_tx[i]) - gr;
+                  // dPR[i] = C*(t_rx - t_tx[i]) - gr;
+                  dPR[i] = (*sp)[i].pseudo_range_corrected - gr;
 
                   jac[i][0] = (*x_n - x_sv_eci) / gr;
                   jac[i][1] = (*y_n - y_sv_eci) / gr;
                   jac[i][2] = (*z_n - z_sv_eci) / gr;
                   jac[i][3] = C;
+                }
               }
+
+              // here begins the taylor series approximations
 
               // ma = transpose(H) * W * H
               for (r=0; r<4; r++)

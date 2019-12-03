@@ -47,7 +47,7 @@ class dgps
           double bs_pos[2]; // x, y, z
           double bs_t_bias;
 
-          if ((*bssp)[i].eph.toe.time != 0 && (*bssp)[i].eph.A != 0 && (*bssp)[i].eph.e != 0 && (*bssp)[i].eph.deln != 0 && (*bssp)[i].eph.i0 != 0 && (*bssp)[i].eph.OMG0 != 0 && (*bssp)[i].eph.omg != 0 && (*bssp)[i].eph.M0 != 0 && (*bssp)[i].eph.OMGd != 0 && (*bssp)[i].eph.idot != 0 && (*bssp)[i].eph.crc != 0 && (*bssp)[i].eph.crs != 0 && (*bssp)[i].eph.cuc != 0 && (*bssp)[i].eph.cus != 0 && (*bssp)[i].eph.cic != 0 && (*bssp)[i].eph.cis != 0)
+          if (full_eph_avail((*bssp)[i].eph))
           {
 
             // calculating ecef coordinates of sat from ephemeris parameters
