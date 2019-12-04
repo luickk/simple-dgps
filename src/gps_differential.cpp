@@ -16,17 +16,23 @@ class dgps
     // needs to be applied to pseudo range from rover
     static double calc_bprc(sat_pos *sp, double bs_pos[3])
     {
-      // pseudo_range_observed - true distance
-      double sv_pos[2];
-      sv_pos[0] = sp->pos[0]; // x, y, z
-      sv_pos[1] = sp->pos[1]; // x, y, z
-      sv_pos[2] = sp->pos[2]; // x, y, z
+      double bprc=0;
+      if(full_eph_avail((*sp).eph))
+      {
+        // pseudo_range_observed - true distance
+        double sv_pos[2];
+        sv_pos[0] = sp->pos[0]; // x, y, z
+        sv_pos[1] = sp->pos[1]; // x, y, z
+        sv_pos[2] = sp->pos[2]; // x, y, z
 
-      double sv_bs_true_dist = calc_ecef_dist(sv_pos, bs_pos);
+        double sv_bs_true_dist = calc_ecef_dist(sv_pos, bs_pos);
 
-      // std::cout << "calc. sv - bs distance: " << sv_bs_true_dist << std::endl;
+        // std::cout << "calc. sv - bs distance: " << sv_bs_true_dist << std::endl;
+        sp->pseudo_range_calc = sv_bs_true_dist;
 
-      return fabs(sp->pseudo_range_observed-sv_bs_true_dist);
+        bprc = fabs(sp->pseudo_range_observed-sv_bs_true_dist);
+      }
+      return bprc;
     }
 
   public:
@@ -47,9 +53,8 @@ class dgps
           double bs_pos[2]; // x, y, z
           double bs_t_bias;
 
-          if (full_eph_avail((*bssp)[i].eph))
+          if (full_eph_avail((*bssp)[i].eph) && check_gps_data_validity(&(*bssp)[i]))
           {
-
             // calculating ecef coordinates of sat from ephemeris parameters
             gtime_t time_now;
             time_now.time = std::time(0);
@@ -63,12 +68,12 @@ class dgps
             // applying on base station satellites structs
             (*bssp)[i].pseudo_range_basestation_correction = prc;
 
-            (*bssp)[i].pseudo_range_corrected = (*bssp)[i].pseudo_range_observed-(*bssp)[i].pseudo_range_basestation_correction;
+            (*bssp)[i].pseudo_range_corrected = fabs((*bssp)[i].pseudo_range_observed-(*bssp)[i].pseudo_range_basestation_correction);
 
             // applying on rover satellites structs
             (*rsp)[i].pseudo_range_basestation_correction = prc;
 
-            (*rsp)[i].pseudo_range_corrected = (*rsp)[i].pseudo_range_observed-(*rsp)[i].pseudo_range_basestation_correction;
+            (*rsp)[i].pseudo_range_corrected = fabs((*rsp)[i].pseudo_range_observed-(*rsp)[i].pseudo_range_basestation_correction);
 
             // std::cout << "PRC is calculated \n" << std::endl;
           }

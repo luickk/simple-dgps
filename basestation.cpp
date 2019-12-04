@@ -53,7 +53,7 @@ void print_sata_stats(std::vector<sat_pos> *satellites_array, double x, double y
   while(true)
   {
       usleep(10000000);
-      receiver.print_sat_pos_array(satellites_array);
+      receiver.print_sat_pos_array(satellites_array, 1);
 
       std::cout << "-- receiver pos --" << std::endl;
 

@@ -877,6 +877,7 @@ struct sat_pos{
   double pos[2]; // satellite ecef position x,y,z
 
   double pseudo_range_observed; // pseudo range with only clock bias applied
+  double pseudo_range_calc; // pseudo range calculated by differential gps
   double pseudo_range_basestation_correction; // pseudo range correction -> difference between observed and calculated distance between satellite and basestation
   double pseudo_range_corrected; // pseudo range with standard corrections and prc apllied -> final value
 

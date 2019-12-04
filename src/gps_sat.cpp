@@ -175,5 +175,24 @@ extern int satno(int sys, int prn)
 // checks if required eph parameter are avaiable
 int full_eph_avail(eph_t eph)
 {
-  return (eph.toe.time != 0 && eph.A != 0 && eph.e != 0 && eph.deln != 0 && eph.i0 != 0 && eph.OMG0 != 0 && eph.omg != 0 && eph.M0 != 0 && eph.OMGd != 0 && eph.idot != 0 && eph.crc != 0 && eph.crs != 0 && eph.cuc != 0 && eph.cus != 0 && eph.cic != 0 && eph.cis != 0);
+  int valid=0;
+  if (eph.toe.time != 0 && eph.A != 0 && eph.e != 0 && eph.deln != 0 && eph.i0 != 0 && eph.OMG0 != 0 && eph.omg != 0 && eph.M0 != 0 && eph.OMGd != 0 && eph.idot != 0 && eph.crc != 0 && eph.crs != 0 && eph.cuc != 0 && eph.cus != 0 && eph.cic != 0 && eph.cis != 0)
+  {
+    valid=1;
+  }
+  return valid;  
+}
+
+// checks for data integrity of sp struct
+int check_gps_data_validity(sat_pos *sp)
+{
+  int valid=0;
+  if(isnan(sp->pseudo_range_observed) || isnan(sp->pseudo_range_calc) || isnan(sp->pseudo_range_basestation_correction) || isnan(sp->pseudo_range_corrected) || sp->pseudo_range_observed<0 || sp->pseudo_range_calc<0 || sp->pseudo_range_basestation_correction<0 || sp->pseudo_range_corrected<0)
+  {
+    valid = 0;
+  } else
+  {
+    valid = 1;
+  }
+  return valid;
 }
