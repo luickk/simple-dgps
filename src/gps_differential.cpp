@@ -5,9 +5,17 @@ class dgps
   private:
     static double calc_ecef_dist(double pos1[2], double pos2[2])
     {
+      double dist;
       // formular for dist. calc.:
       // d=√(17−7)2+(6−4)2+(2−3)2
-      return sqrt(pow(pos1[0]-pos2[0], 2) + pow(pos1[1]-pos2[1], 2) + pow(pos1[2]-pos2[2], 2));
+      if(pos1[0]!=0 && pos1[1]!=0 && pos1[2]!=0 && pos2[0]!=0 && pos2[1]!=0 && pos2[2]!=0)
+      {
+        dist = sqrt(pow(pos1[0]-pos2[0], 2) + pow(pos1[1]-pos2[1], 2) + pow(pos1[2]-pos2[2], 2));
+      } else
+      {
+        dist = 0;
+      }
+      return dist;
     }
 
     // calculates pseudrange basestation correction value for a single satellite,
