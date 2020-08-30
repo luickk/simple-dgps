@@ -1,0 +1,5 @@
+/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles/rebuild_cache.dir
+/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles/edit_cache.dir
+/Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/rebuild_cache.dir
+/Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/edit_cache.dir
+/Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/gpsCore.dir
