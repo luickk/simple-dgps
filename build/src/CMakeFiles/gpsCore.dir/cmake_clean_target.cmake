@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "libgpsCore.a"
+  "libGpsCore.a"
 )

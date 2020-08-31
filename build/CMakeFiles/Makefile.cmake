@@ -12,6 +12,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.18.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.18.0/CMakeSystem.cmake"
   "../src/CMakeLists.txt"
+  "../test/CMakeLists.txt"
   "/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/share/cmake-3.18/Modules/CMakeCCompiler.cmake.in"
   "/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/share/cmake-3.18/Modules/CMakeCCompilerABI.c"
   "/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/share/cmake-3.18/Modules/CMakeCInformation.cmake"
@@ -117,9 +118,11 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/3.18.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "src/CMakeFiles/gpsCore.dir/DependInfo.cmake"
+  "src/CMakeFiles/GpsCore.dir/DependInfo.cmake"
+  "test/CMakeFiles/coreTest.dir/DependInfo.cmake"
   )

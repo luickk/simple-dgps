@@ -75,6 +75,52 @@ CMAKE_BINARY_DIR = /Users/luickklippel/Documents/projekte/simple-dgps/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -130,17 +176,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named gpsCore
+# Target rules for targets named GpsCore
 
 # Build rule for target.
-gpsCore: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gpsCore
-.PHONY : gpsCore
+GpsCore: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 GpsCore
+.PHONY : GpsCore
 
 # fast build rule for target.
-gpsCore/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/gpsCore.dir/build.make src/CMakeFiles/gpsCore.dir/build
-.PHONY : gpsCore/fast
+GpsCore/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/build
+.PHONY : GpsCore/fast
+
+#=============================================================================
+# Target rules for targets named coreTest
+
+# Build rule for target.
+coreTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 coreTest
+.PHONY : coreTest
+
+# fast build rule for target.
+coreTest/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/build
+.PHONY : coreTest/fast
 
 # Help Target
 help:
@@ -149,8 +208,13 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... gpsCore"
+	@echo "... GpsCore"
+	@echo "... coreTest"
 .PHONY : help
 
 

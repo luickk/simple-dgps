@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
+project(simple-dgps)
 
-add_library (gpsCore gpsCore.cpp)
+add_library (GpsCore gpsCore.cpp)
 
-target_include_directories (gpsCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+install(TARGETS GpsCore DESTINATION ${DIVISIBLE_INSTALL_LIB_DIR})

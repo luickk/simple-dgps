@@ -5,6 +5,6 @@
 #ifndef PROJECT_MAIN_H
 #define PROJECT_MAIN_H
 
-
+void test();
 
 #endif //PROJECT_MAIN_H

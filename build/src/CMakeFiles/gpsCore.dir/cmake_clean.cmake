@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/gpsCore.dir/gpsCore.cpp.o"
-  "libgpsCore.a"
-  "libgpsCore.pdb"
+  "CMakeFiles/GpsCore.dir/gpsCore.cpp.o"
+  "libGpsCore.a"
+  "libGpsCore.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
 foreach(lang CXX)
-  include(CMakeFiles/gpsCore.dir/cmake_clean_${lang}.cmake OPTIONAL)
+  include(CMakeFiles/GpsCore.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()

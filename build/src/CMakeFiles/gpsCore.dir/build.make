@@ -68,51 +68,51 @@ CMAKE_SOURCE_DIR = /Users/luickklippel/Documents/projekte/simple-dgps
 CMAKE_BINARY_DIR = /Users/luickklippel/Documents/projekte/simple-dgps/build
 
 # Include any dependencies generated for this target.
-include src/CMakeFiles/gpsCore.dir/depend.make
+include src/CMakeFiles/GpsCore.dir/depend.make
 
 # Include the progress variables for this target.
-include src/CMakeFiles/gpsCore.dir/progress.make
+include src/CMakeFiles/GpsCore.dir/progress.make
 
 # Include the compile flags for this target's objects.
-include src/CMakeFiles/gpsCore.dir/flags.make
+include src/CMakeFiles/GpsCore.dir/flags.make
 
-src/CMakeFiles/gpsCore.dir/gpsCore.cpp.o: src/CMakeFiles/gpsCore.dir/flags.make
-src/CMakeFiles/gpsCore.dir/gpsCore.cpp.o: ../src/gpsCore.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/gpsCore.dir/gpsCore.cpp.o"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gpsCore.dir/gpsCore.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/src/gpsCore.cpp
+src/CMakeFiles/GpsCore.dir/gpsCore.cpp.o: src/CMakeFiles/GpsCore.dir/flags.make
+src/CMakeFiles/GpsCore.dir/gpsCore.cpp.o: ../src/gpsCore.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/GpsCore.dir/gpsCore.cpp.o"
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GpsCore.dir/gpsCore.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/src/gpsCore.cpp
 
-src/CMakeFiles/gpsCore.dir/gpsCore.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gpsCore.dir/gpsCore.cpp.i"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/src/gpsCore.cpp > CMakeFiles/gpsCore.dir/gpsCore.cpp.i
+src/CMakeFiles/GpsCore.dir/gpsCore.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GpsCore.dir/gpsCore.cpp.i"
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/src/gpsCore.cpp > CMakeFiles/GpsCore.dir/gpsCore.cpp.i
 
-src/CMakeFiles/gpsCore.dir/gpsCore.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gpsCore.dir/gpsCore.cpp.s"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/src/gpsCore.cpp -o CMakeFiles/gpsCore.dir/gpsCore.cpp.s
+src/CMakeFiles/GpsCore.dir/gpsCore.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GpsCore.dir/gpsCore.cpp.s"
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/src/gpsCore.cpp -o CMakeFiles/GpsCore.dir/gpsCore.cpp.s
 
-# Object files for target gpsCore
-gpsCore_OBJECTS = \
-"CMakeFiles/gpsCore.dir/gpsCore.cpp.o"
+# Object files for target GpsCore
+GpsCore_OBJECTS = \
+"CMakeFiles/GpsCore.dir/gpsCore.cpp.o"
 
-# External object files for target gpsCore
-gpsCore_EXTERNAL_OBJECTS =
+# External object files for target GpsCore
+GpsCore_EXTERNAL_OBJECTS =
 
-src/libgpsCore.a: src/CMakeFiles/gpsCore.dir/gpsCore.cpp.o
-src/libgpsCore.a: src/CMakeFiles/gpsCore.dir/build.make
-src/libgpsCore.a: src/CMakeFiles/gpsCore.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libgpsCore.a"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && $(CMAKE_COMMAND) -P CMakeFiles/gpsCore.dir/cmake_clean_target.cmake
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/gpsCore.dir/link.txt --verbose=$(VERBOSE)
+src/libGpsCore.a: src/CMakeFiles/GpsCore.dir/gpsCore.cpp.o
+src/libGpsCore.a: src/CMakeFiles/GpsCore.dir/build.make
+src/libGpsCore.a: src/CMakeFiles/GpsCore.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libGpsCore.a"
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && $(CMAKE_COMMAND) -P CMakeFiles/GpsCore.dir/cmake_clean_target.cmake
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GpsCore.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/CMakeFiles/gpsCore.dir/build: src/libgpsCore.a
+src/CMakeFiles/GpsCore.dir/build: src/libGpsCore.a
 
-.PHONY : src/CMakeFiles/gpsCore.dir/build
+.PHONY : src/CMakeFiles/GpsCore.dir/build
 
-src/CMakeFiles/gpsCore.dir/clean:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && $(CMAKE_COMMAND) -P CMakeFiles/gpsCore.dir/cmake_clean.cmake
-.PHONY : src/CMakeFiles/gpsCore.dir/clean
+src/CMakeFiles/GpsCore.dir/clean:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && $(CMAKE_COMMAND) -P CMakeFiles/GpsCore.dir/cmake_clean.cmake
+.PHONY : src/CMakeFiles/GpsCore.dir/clean
 
-src/CMakeFiles/gpsCore.dir/depend:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/luickklippel/Documents/projekte/simple-dgps /Users/luickklippel/Documents/projekte/simple-dgps/src /Users/luickklippel/Documents/projekte/simple-dgps/build /Users/luickklippel/Documents/projekte/simple-dgps/build/src /Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/gpsCore.dir/DependInfo.cmake --color=$(COLOR)
-.PHONY : src/CMakeFiles/gpsCore.dir/depend
+src/CMakeFiles/GpsCore.dir/depend:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/luickklippel/Documents/projekte/simple-dgps /Users/luickklippel/Documents/projekte/simple-dgps/src /Users/luickklippel/Documents/projekte/simple-dgps/build /Users/luickklippel/Documents/projekte/simple-dgps/build/src /Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/GpsCore.dir/DependInfo.cmake --color=$(COLOR)
+.PHONY : src/CMakeFiles/GpsCore.dir/depend
 

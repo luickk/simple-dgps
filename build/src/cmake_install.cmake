@@ -37,3 +37,19 @@ if(NOT DEFINED CMAKE_OBJDUMP)
   set(CMAKE_OBJDUMP "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/objdump")
 endif()
 
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/Users/luickklippel/Documents/projekte/simple-dgps/lib/libGpsCore.a")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/Users/luickklippel/Documents/projekte/simple-dgps/lib" TYPE STATIC_LIBRARY FILES "/Users/luickklippel/Documents/projekte/simple-dgps/build/src/libGpsCore.a")
+  if(EXISTS "$ENV{DESTDIR}/Users/luickklippel/Documents/projekte/simple-dgps/lib/libGpsCore.a" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/Users/luickklippel/Documents/projekte/simple-dgps/lib/libGpsCore.a")
+    execute_process(COMMAND "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib" "$ENV{DESTDIR}/Users/luickklippel/Documents/projekte/simple-dgps/lib/libGpsCore.a")
+  endif()
+endif()
+
