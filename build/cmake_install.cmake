@@ -39,6 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
+  include("/Users/luickklippel/Documents/projekte/simple-dgps/build/include/cc.ublox.commsdsl/cmake_install.cmake")
   include("/Users/luickklippel/Documents/projekte/simple-dgps/build/src/cmake_install.cmake")
   include("/Users/luickklippel/Documents/projekte/simple-dgps/build/test/cmake_install.cmake")
 

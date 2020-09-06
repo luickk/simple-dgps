@@ -72,22 +72,84 @@ CMAKE_BINARY_DIR = /Users/luickklippel/Documents/projekte/simple-dgps/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: include/cc.ublox.commsdsl/all
 all: src/all
 all: test/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
+preinstall: include/cc.ublox.commsdsl/preinstall
 preinstall: src/preinstall
 preinstall: test/preinstall
 
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: include/cc.ublox.commsdsl/clean
 clean: src/clean
 clean: test/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory include/cc.ublox.commsdsl
+
+# Recursive "all" directory target.
+include/cc.ublox.commsdsl/all: include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all
+include/cc.ublox.commsdsl/all: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
+include/cc.ublox.commsdsl/all: include/cc.ublox.commsdsl/examples/all
+
+.PHONY : include/cc.ublox.commsdsl/all
+
+# Recursive "preinstall" directory target.
+include/cc.ublox.commsdsl/preinstall: include/cc.ublox.commsdsl/examples/preinstall
+
+.PHONY : include/cc.ublox.commsdsl/preinstall
+
+# Recursive "clean" directory target.
+include/cc.ublox.commsdsl/clean: include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/clean
+include/cc.ublox.commsdsl/clean: include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/clean
+include/cc.ublox.commsdsl/clean: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/clean
+include/cc.ublox.commsdsl/clean: include/cc.ublox.commsdsl/examples/clean
+
+.PHONY : include/cc.ublox.commsdsl/clean
+
+#=============================================================================
+# Directory level rules for directory include/cc.ublox.commsdsl/examples
+
+# Recursive "all" directory target.
+include/cc.ublox.commsdsl/examples/all: include/cc.ublox.commsdsl/examples/simple_pos/all
+
+.PHONY : include/cc.ublox.commsdsl/examples/all
+
+# Recursive "preinstall" directory target.
+include/cc.ublox.commsdsl/examples/preinstall: include/cc.ublox.commsdsl/examples/simple_pos/preinstall
+
+.PHONY : include/cc.ublox.commsdsl/examples/preinstall
+
+# Recursive "clean" directory target.
+include/cc.ublox.commsdsl/examples/clean: include/cc.ublox.commsdsl/examples/simple_pos/clean
+
+.PHONY : include/cc.ublox.commsdsl/examples/clean
+
+#=============================================================================
+# Directory level rules for directory include/cc.ublox.commsdsl/examples/simple_pos
+
+# Recursive "all" directory target.
+include/cc.ublox.commsdsl/examples/simple_pos/all: include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/all
+
+.PHONY : include/cc.ublox.commsdsl/examples/simple_pos/all
+
+# Recursive "preinstall" directory target.
+include/cc.ublox.commsdsl/examples/simple_pos/preinstall:
+
+.PHONY : include/cc.ublox.commsdsl/examples/simple_pos/preinstall
+
+# Recursive "clean" directory target.
+include/cc.ublox.commsdsl/examples/simple_pos/clean: include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/clean
+
+.PHONY : include/cc.ublox.commsdsl/examples/simple_pos/clean
 
 #=============================================================================
 # Directory level rules for directory src
@@ -126,6 +188,115 @@ test/clean: test/CMakeFiles/coreTest.dir/clean
 .PHONY : test/clean
 
 #=============================================================================
+# Target rules for target include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir
+
+# All Build rule for target.
+include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/all
+include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/depend
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=3,4 "Built target cc.ublox.commsdsl"
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all
+
+# Build rule for subdir invocation for target.
+include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/rule
+
+# Convenience name for target.
+cc.ublox.commsdsl: include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/rule
+
+.PHONY : cc.ublox.commsdsl
+
+# clean rule for target.
+include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/clean:
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/clean
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/clean
+
+#=============================================================================
+# Target rules for target include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir
+
+# All Build rule for target.
+include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/all:
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/depend
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num= "Built target rm_tmp_tgt"
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/all
+
+# Build rule for subdir invocation for target.
+include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/rule
+
+# Convenience name for target.
+rm_tmp_tgt: include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/rule
+
+.PHONY : rm_tmp_tgt
+
+# clean rule for target.
+include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/clean:
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/clean
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/clean
+
+#=============================================================================
+# Target rules for target include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir
+
+# All Build rule for target.
+include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all:
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/depend
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=9,10,11,12,13,14,15,16 "Built target commsdsl_tgt"
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
+
+# Build rule for subdir invocation for target.
+include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/rule
+
+# Convenience name for target.
+commsdsl_tgt: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/rule
+
+.PHONY : commsdsl_tgt
+
+# clean rule for target.
+include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/clean:
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/clean
+.PHONY : include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/clean
+
+#=============================================================================
+# Target rules for target include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir
+
+# All Build rule for target.
+include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/all: include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build.make include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/depend
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build.make include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=5,6,7,8 "Built target cc_ublox_simple_pos_example"
+.PHONY : include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/all
+
+# Build rule for subdir invocation for target.
+include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 14
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
+.PHONY : include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/rule
+
+# Convenience name for target.
+cc_ublox_simple_pos_example: include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/rule
+
+.PHONY : cc_ublox_simple_pos_example
+
+# clean rule for target.
+include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/clean:
+	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build.make include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/clean
+.PHONY : include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/GpsCore.dir
 
 # All Build rule for target.
@@ -159,7 +330,7 @@ src/CMakeFiles/GpsCore.dir/clean:
 test/CMakeFiles/coreTest.dir/all: src/CMakeFiles/GpsCore.dir/all
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=3,4 "Built target coreTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=17,18 "Built target coreTest"
 .PHONY : test/CMakeFiles/coreTest.dir/all
 
 # Build rule for subdir invocation for target.
