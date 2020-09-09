@@ -9,9 +9,7 @@ set(DIVISIBLE_INSTALL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(DIVISIBLE_INSTALL_BIN_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(DIVISIBLE_INSTALL_LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 
-add_subdirectory(${DIVISIBLE_INSTALL_INCLUDE_DIR}/cc.ublox.commsdsl)
-include_directories(${DIVISIBLE_INSTALL_INCLUDE_DIR})
-link_directories(${DIVISIBLE_INSTALL_INCLUDE_DIR})
+add_subdirectory(include/cc.ublox.commsdsl)
 
 add_subdirectory(src)
 add_subdirectory(test)
