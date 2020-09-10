@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(coreTest)
+project(simple-dgps)
 
 add_executable(coreTest coreTest.cpp)
 

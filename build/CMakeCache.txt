@@ -296,16 +296,10 @@ cc.ublox.commsdsl_BINARY_DIR:STATIC=/Users/luickklippel/Documents/projekte/simpl
 cc.ublox.commsdsl_SOURCE_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl
 
 //Value Computed by CMake
-coreTest_BINARY_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/build/test
+simple-dgps_BINARY_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/build/test
 
 //Value Computed by CMake
-coreTest_SOURCE_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/test
-
-//Value Computed by CMake
-simple-dgps_BINARY_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/build/src
-
-//Value Computed by CMake
-simple-dgps_SOURCE_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/src
+simple-dgps_SOURCE_DIR:STATIC=/Users/luickklippel/Documents/projekte/simple-dgps/test
 
 
 ########################
