@@ -155,6 +155,7 @@ include/cc.ublox.commsdsl/examples/simple_pos/clean: include/cc.ublox.commsdsl/e
 # Directory level rules for directory src
 
 # Recursive "all" directory target.
+src/all: src/CMakeFiles/CommCore.dir/all
 src/all: src/CMakeFiles/GpsCore.dir/all
 
 .PHONY : src/all
@@ -165,6 +166,7 @@ src/preinstall:
 .PHONY : src/preinstall
 
 # Recursive "clean" directory target.
+src/clean: src/CMakeFiles/CommCore.dir/clean
 src/clean: src/CMakeFiles/GpsCore.dir/clean
 
 .PHONY : src/clean
@@ -195,7 +197,7 @@ include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox
 include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/depend
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=3,4 "Built target cc.ublox.commsdsl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=5,6 "Built target cc.ublox.commsdsl"
 .PHONY : include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all
 
 # Build rule for subdir invocation for target.
@@ -249,7 +251,7 @@ include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/clean:
 include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all:
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/depend
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=9,10,11,12,13,14,15,16 "Built target commsdsl_tgt"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=11,12,13,14,15,16,17,18 "Built target commsdsl_tgt"
 .PHONY : include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
 
 # Build rule for subdir invocation for target.
@@ -276,7 +278,7 @@ include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/clean:
 include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/all: include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build.make include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/depend
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build.make include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=5,6,7,8 "Built target cc_ublox_simple_pos_example"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=7,8,9,10 "Built target cc_ublox_simple_pos_example"
 .PHONY : include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/all
 
 # Build rule for subdir invocation for target.
@@ -297,13 +299,40 @@ include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_exa
 .PHONY : include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/clean
 
 #=============================================================================
+# Target rules for target src/CMakeFiles/CommCore.dir
+
+# All Build rule for target.
+src/CMakeFiles/CommCore.dir/all:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/depend
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=1,2 "Built target CommCore"
+.PHONY : src/CMakeFiles/CommCore.dir/all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/CommCore.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/CommCore.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/CommCore.dir/rule
+
+# Convenience name for target.
+CommCore: src/CMakeFiles/CommCore.dir/rule
+
+.PHONY : CommCore
+
+# clean rule for target.
+src/CMakeFiles/CommCore.dir/clean:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/clean
+.PHONY : src/CMakeFiles/CommCore.dir/clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/GpsCore.dir
 
 # All Build rule for target.
 src/CMakeFiles/GpsCore.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=1,2 "Built target GpsCore"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=3,4 "Built target GpsCore"
 .PHONY : src/CMakeFiles/GpsCore.dir/all
 
 # Build rule for subdir invocation for target.
@@ -330,7 +359,7 @@ src/CMakeFiles/GpsCore.dir/clean:
 test/CMakeFiles/coreTest.dir/all: src/CMakeFiles/GpsCore.dir/all
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=17,18 "Built target coreTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=19,20 "Built target coreTest"
 .PHONY : test/CMakeFiles/coreTest.dir/all
 
 # Build rule for subdir invocation for target.

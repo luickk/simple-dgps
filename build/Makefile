@@ -228,6 +228,19 @@ cc_ublox_simple_pos_example/fast:
 .PHONY : cc_ublox_simple_pos_example/fast
 
 #=============================================================================
+# Target rules for targets named CommCore
+
+# Build rule for target.
+CommCore: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CommCore
+.PHONY : CommCore
+
+# fast build rule for target.
+CommCore/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/build
+.PHONY : CommCore/fast
+
+#=============================================================================
 # Target rules for targets named GpsCore
 
 # Build rule for target.
@@ -268,6 +281,7 @@ help:
 	@echo "... cc.ublox.commsdsl"
 	@echo "... commsdsl_tgt"
 	@echo "... rm_tmp_tgt"
+	@echo "... CommCore"
 	@echo "... GpsCore"
 	@echo "... cc_ublox_simple_pos_example"
 	@echo "... coreTest"

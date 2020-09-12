@@ -1,8 +1,6 @@
 #ifndef PROJECT_MAIN_H
 #define PROJECT_MAIN_H
 
-void test();
-
 // ephemeris data from sat
 struct ephemeris {
     double week;

@@ -32,6 +32,7 @@
 /Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/list_install_components.dir
 /Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/rebuild_cache.dir
 /Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/edit_cache.dir
+/Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/CommCore.dir
 /Users/luickklippel/Documents/projekte/simple-dgps/build/src/CMakeFiles/GpsCore.dir
 /Users/luickklippel/Documents/projekte/simple-dgps/build/test/CMakeFiles/install/local.dir
 /Users/luickklippel/Documents/projekte/simple-dgps/build/test/CMakeFiles/rebuild_cache.dir

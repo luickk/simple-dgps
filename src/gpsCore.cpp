@@ -5,18 +5,16 @@
 
 using namespace std;
 
-void test() {
-  cout << "core GPS test!";
-}
-
-static double calcTimeFromEpoch(double t, double t_ref) {
+static double calcTimeFromEpoch(double t, double t_ref) 
+{
   t-= t_ref;
   if      (t> 302400) t -= 604800;
   else if (t<-302400) t += 604800;
   return t;
 }
 
-static double calcEccentricAnomaly(ephemeris *ephem, double t_k) {
+static double calcEccentricAnomaly(ephemeris *ephem, double t_k) 
+{
   // Semi-major axis
   int A = ephem->sqrtA*ephem->sqrtA;
 
@@ -41,7 +39,8 @@ static double calcEccentricAnomaly(ephemeris *ephem, double t_k) {
   return E_k;
 }
 
-static ecefPos calcSatPos(ephemeris *ephem, double t) { // Get satellite position at time t
+static ecefPos calcSatPos(ephemeris *ephem, double t) 
+{ // Get satellite position at time t
   // Time from ephemeris reference epoch
   double t_k = calcTimeFromEpoch(t, ephem->t_oe);
 
@@ -83,7 +82,8 @@ static ecefPos calcSatPos(ephemeris *ephem, double t) { // Get satellite positio
   return satPos;
 }
 
-static satRanges calcSatRangeCorrection(satRanges trueRanges, satRanges pseudoRanges) {
+static satRanges calcSatRangeCorrection(satRanges trueRanges, satRanges pseudoRanges) 
+{
   for ( it = trueRanges.ranges.begin(); it != trueRanges.ranges.end(); it++ )
   {
     trueRangeMap = trueRanges.ranges.find(it->first)
@@ -93,7 +93,7 @@ static satRanges calcSatRangeCorrection(satRanges trueRanges, satRanges pseudoRa
 
     if (trueRangeMap != trueRanges.ranges.end() && pseudoRangeMap != pseudoRanges.ranges.end()) 
     {
-      double correction = abs(trueRangeMap->second-pseudoRangeMap->second)
+      double correction = abs(trueRangeMap->second-pseudoRangeMap->second)s
       rangeCorrection.ranges.insert(std::pair<int, double>(it->first, correction));
     }
   }

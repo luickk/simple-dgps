@@ -176,6 +176,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+src/CMakeFiles/CommCore.dir/rule:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/CommCore.dir/rule
+.PHONY : src/CMakeFiles/CommCore.dir/rule
+
+# Convenience name for target.
+CommCore: src/CMakeFiles/CommCore.dir/rule
+
+.PHONY : CommCore
+
+# fast build rule for target.
+CommCore/fast:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/build
+.PHONY : CommCore/fast
+
+# Convenience name for target.
 src/CMakeFiles/GpsCore.dir/rule:
 	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/GpsCore.dir/rule
 .PHONY : src/CMakeFiles/GpsCore.dir/rule
@@ -189,6 +204,33 @@ GpsCore: src/CMakeFiles/GpsCore.dir/rule
 GpsCore/fast:
 	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/build
 .PHONY : GpsCore/fast
+
+commCore.o: commCore.cpp.o
+
+.PHONY : commCore.o
+
+# target to build an object file
+commCore.cpp.o:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/commCore.cpp.o
+.PHONY : commCore.cpp.o
+
+commCore.i: commCore.cpp.i
+
+.PHONY : commCore.i
+
+# target to preprocess a source file
+commCore.cpp.i:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/commCore.cpp.i
+.PHONY : commCore.cpp.i
+
+commCore.s: commCore.cpp.s
+
+.PHONY : commCore.s
+
+# target to generate assembly for a file
+commCore.cpp.s:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/commCore.cpp.s
+.PHONY : commCore.cpp.s
 
 gpsCore.o: gpsCore.cpp.o
 
@@ -229,7 +271,11 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... CommCore"
 	@echo "... GpsCore"
+	@echo "... commCore.o"
+	@echo "... commCore.i"
+	@echo "... commCore.s"
 	@echo "... gpsCore.o"
 	@echo "... gpsCore.i"
 	@echo "... gpsCore.s"
