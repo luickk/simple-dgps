@@ -480,7 +480,7 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/local/lib/cmake/Boost-1.73.0/BoostConfig.cmake][cfound components: program_options system ][v1.73.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/local/lib/cmake/Boost-1.73.0/BoostConfig.cmake][c ][v1.73.0(1.40)]
 //Details about finding CC_COMMS
 FIND_PACKAGE_MESSAGE_DETAILS_CC_COMMS:INTERNAL=[/Users/luickklippel/Documents/projekte/simple-dgps/build/include/cc.ublox.commsdsl/comms_champion/install/include][v()]
 //Details about finding Git
