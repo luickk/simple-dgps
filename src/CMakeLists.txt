@@ -5,6 +5,8 @@ FIND_PACKAGE( Boost 1.40 REQUIRED )
 message(STATUS "Boost version: ${Boost_VERSION}")
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
+include_directories("${CMAKE_SOURCE_DIR}/build/output/include/")
+
 add_library (GpsCore gpsCore.cpp)
 add_library (CommCore commCore.cpp)
 
