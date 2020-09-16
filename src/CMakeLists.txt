@@ -6,6 +6,8 @@ message(STATUS "Boost version: ${Boost_VERSION}")
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 include_directories("${CMAKE_SOURCE_DIR}/build/output/include/")
+include_directories("${CMAKE_SOURCE_DIR}/src/include/")
+include_directories("${CMAKE_SOURCE_DIR}/build/include/cc.ublox.commsdsl/comms_champion/install/include/")
 
 add_library (GpsCore gpsCore.cpp)
 add_library (CommCore commCore.cpp)

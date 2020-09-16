@@ -1,6 +1,12 @@
 #ifndef PROJECT_MAIN_H
 #define PROJECT_MAIN_H
 
+#include <iostream>
+#include <cmath>
+#include <map>
+
+using namespace std;
+
 // ephemeris data from sat
 struct ephemeris {
     double week;
@@ -39,7 +45,7 @@ struct ecefPos {
 
 struct satRanges {
     // sat id, range
-    map<int, double> ranges;
+    std::map<int, double> ranges;
 };
 
 struct latLonAltPos {

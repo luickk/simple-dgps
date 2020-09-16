@@ -1,9 +1,4 @@
-#include <iostream>
-#include <cmath>
-
 #include "gpsCore.h"
-
-using namespace std;
 
 static double calcTimeFromEpoch(double t, double t_ref) 
 {
@@ -84,17 +79,22 @@ static ecefPos calcSatPos(ephemeris *ephem, double t)
 
 static satRanges calcSatRangeCorrection(satRanges trueRanges, satRanges pseudoRanges) 
 {
+
+  // Declaring iterator to a vector 
+  std::map<int, double>::iterator it; 
+  std::map<int, double>::iterator trueRangeMap, pseudoRangeMap;
   for ( it = trueRanges.ranges.begin(); it != trueRanges.ranges.end(); it++ )
   {
-    trueRangeMap = trueRanges.ranges.find(it->first)
-    pseudoRangeMap = pseudoRanges.ranges.find(it->first)
+    trueRangeMap = trueRanges.ranges.find(it->first);
+    pseudoRangeMap = pseudoRanges.ranges.find(it->first);
 
     satRanges rangeCorrection;
 
     if (trueRangeMap != trueRanges.ranges.end() && pseudoRangeMap != pseudoRanges.ranges.end()) 
     {
-      double correction = abs(trueRangeMap->second-pseudoRangeMap->second)s
+      double correction = abs(trueRangeMap->second-pseudoRangeMap->second);
       rangeCorrection.ranges.insert(std::pair<int, double>(it->first, correction));
     }
   }
+  return rangeCorrection
 }
