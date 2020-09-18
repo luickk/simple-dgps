@@ -9,6 +9,7 @@ using namespace std;
 
 // conts for coord conversion transformation
 const double  A = 6378137.0;              //WGS-84 semi-major axis
+const double EARTH_RADIUS_KM = 6378.8; // earth radius in km
 const double E2 = 6.6943799901377997e-3;  //WGS-84 first eccentricity squared
 const double A1 = 4.2697672707157535e+4;  //A1 = a*e2
 const double A2 = 1.8230912546075455e+9;  //A2 = a1*a1
@@ -73,7 +74,16 @@ static ecefPos calcSatPos(ephemeris eph, double t);
 static latLonAltPos ecefToLatLonAlt(ecefPos ecef);
 static ecefPos latLonAltToEcef(latLonAltPos latlonAlt);
 
-static satRanges calcTrueRange(ecefPos satPos, latLonAltPos baseStationPos);
+// latLonAlt distance calculations
+// by https://stackoverflow.com/questions/10198985/calculating-the-distance-between-2-latitudes-and-longitudes-that-are-saved-in-a
+static double deg2rad(double deg);
+static double rad2deg(double rad); 
+double distanceEarthLatLonAlt(double lat1d, double lon1d, double lat2d, double lon2d);
+
+// calculates non geodetic distance (straight line)
+static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos);
+
+static satRanges calcSatRangeCorrection(satRanges pseudoRanges, ecefPos satPos[], latLonAltPos baseStationPos);
 
 
 #endif //PROJECT_MAIN_H
