@@ -9,9 +9,9 @@ include_directories("${CMAKE_SOURCE_DIR}/build/output/include/")
 include_directories("${CMAKE_SOURCE_DIR}/src/include/")
 include_directories("${CMAKE_SOURCE_DIR}/build/include/cc.ublox.commsdsl/comms_champion/install/include/")
 
-add_library (GpsCore gpsCore.cpp)
+add_library (SimpleDGps simpleDGps.cpp)
 add_library (CommCore commCore.cpp)
 
 
-install(TARGETS GpsCore DESTINATION ${DIVISIBLE_INSTALL_LIB_DIR})
+install(TARGETS SimpleDGps DESTINATION ${DIVISIBLE_INSTALL_LIB_DIR})
 install(TARGETS CommCore DESTINATION ${DIVISIBLE_INSTALL_LIB_DIR})

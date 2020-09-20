@@ -156,7 +156,7 @@ include/cc.ublox.commsdsl/examples/simple_pos/clean: include/cc.ublox.commsdsl/e
 
 # Recursive "all" directory target.
 src/all: src/CMakeFiles/CommCore.dir/all
-src/all: src/CMakeFiles/GpsCore.dir/all
+src/all: src/CMakeFiles/SimpleDGps.dir/all
 
 .PHONY : src/all
 
@@ -167,7 +167,7 @@ src/preinstall:
 
 # Recursive "clean" directory target.
 src/clean: src/CMakeFiles/CommCore.dir/clean
-src/clean: src/CMakeFiles/GpsCore.dir/clean
+src/clean: src/CMakeFiles/SimpleDGps.dir/clean
 
 .PHONY : src/clean
 
@@ -326,37 +326,37 @@ src/CMakeFiles/CommCore.dir/clean:
 .PHONY : src/CMakeFiles/CommCore.dir/clean
 
 #=============================================================================
-# Target rules for target src/CMakeFiles/GpsCore.dir
+# Target rules for target src/CMakeFiles/SimpleDGps.dir
 
 # All Build rule for target.
-src/CMakeFiles/GpsCore.dir/all:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/depend
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=3,4 "Built target GpsCore"
-.PHONY : src/CMakeFiles/GpsCore.dir/all
+src/CMakeFiles/SimpleDGps.dir/all:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/depend
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=3,4 "Built target SimpleDGps"
+.PHONY : src/CMakeFiles/SimpleDGps.dir/all
 
 # Build rule for subdir invocation for target.
-src/CMakeFiles/GpsCore.dir/rule: cmake_check_build_system
+src/CMakeFiles/SimpleDGps.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/GpsCore.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/SimpleDGps.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles 0
-.PHONY : src/CMakeFiles/GpsCore.dir/rule
+.PHONY : src/CMakeFiles/SimpleDGps.dir/rule
 
 # Convenience name for target.
-GpsCore: src/CMakeFiles/GpsCore.dir/rule
+SimpleDGps: src/CMakeFiles/SimpleDGps.dir/rule
 
-.PHONY : GpsCore
+.PHONY : SimpleDGps
 
 # clean rule for target.
-src/CMakeFiles/GpsCore.dir/clean:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/clean
-.PHONY : src/CMakeFiles/GpsCore.dir/clean
+src/CMakeFiles/SimpleDGps.dir/clean:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/clean
+.PHONY : src/CMakeFiles/SimpleDGps.dir/clean
 
 #=============================================================================
 # Target rules for target test/CMakeFiles/coreTest.dir
 
 # All Build rule for target.
-test/CMakeFiles/coreTest.dir/all: src/CMakeFiles/GpsCore.dir/all
+test/CMakeFiles/coreTest.dir/all: src/CMakeFiles/SimpleDGps.dir/all
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/coreTest.dir/build.make test/CMakeFiles/coreTest.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=19,20 "Built target coreTest"

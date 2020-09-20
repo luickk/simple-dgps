@@ -241,17 +241,17 @@ CommCore/fast:
 .PHONY : CommCore/fast
 
 #=============================================================================
-# Target rules for targets named GpsCore
+# Target rules for targets named SimpleDGps
 
 # Build rule for target.
-GpsCore: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 GpsCore
-.PHONY : GpsCore
+SimpleDGps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SimpleDGps
+.PHONY : SimpleDGps
 
 # fast build rule for target.
-GpsCore/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/build
-.PHONY : GpsCore/fast
+SimpleDGps/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/build
+.PHONY : SimpleDGps/fast
 
 #=============================================================================
 # Target rules for targets named coreTest
@@ -282,7 +282,7 @@ help:
 	@echo "... commsdsl_tgt"
 	@echo "... rm_tmp_tgt"
 	@echo "... CommCore"
-	@echo "... GpsCore"
+	@echo "... SimpleDGps"
 	@echo "... cc_ublox_simple_pos_example"
 	@echo "... coreTest"
 .PHONY : help

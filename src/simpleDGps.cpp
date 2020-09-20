@@ -1,6 +1,8 @@
-#include "gpsCore.h"
+#include "simpleDGps.h"
 
-static double calcTimeFromEpoch(double t, double t_ref) 
+using namespace simpleDGps;
+
+static double simpleDGps::calcTimeFromEpoch(double t, double t_ref) 
 {
   t-= t_ref;
   if      (t> 302400) t -= 604800;
@@ -8,7 +10,7 @@ static double calcTimeFromEpoch(double t, double t_ref)
   return t;
 }
 
-static double calcEccentricAnomaly(ephemeris *ephem, double t_k) 
+static double simpleDGps::calcEccentricAnomaly(ephemeris *ephem, double t_k) 
 {
   // Semi-major axis
   int A = ephem->sqrtA*ephem->sqrtA;
@@ -34,8 +36,7 @@ static double calcEccentricAnomaly(ephemeris *ephem, double t_k)
   return E_k;
 }
 
-//  Convert Earth-Centered-Earth-Fixed (ECEF) to lat, Lon, Altitude
-static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
+static latLonAltPos simpleDGps::ecefToLatLonAlt(ecefPos ecef)
 {
   latLonAltPos finalLatLonPos = { 0, 0, 0 };
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
@@ -90,8 +91,7 @@ static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
   return finalLatLonPos;
 }
 
-// Convert Lat, Lon, Altitude to Earth-Centered-Earth-Fixed (ECEF)
-static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
+static ecefPos simpleDGps::latLonAltToEcef(latLonAltPos latlonAlt)
 {
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
   double g, rg, rf, u, v, m, f, p, x, y, z; 
@@ -113,13 +113,13 @@ static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 }
 
 // This function converts decimal degrees to radians
-static double deg2rad(double deg) 
+static double simpleDGps::deg2rad(double deg) 
 {
   return (deg * M_PI / 180);
 }
 
 //  This function converts radians to decimal degrees
-static double rad2deg(double rad) 
+static double simpleDGps::rad2deg(double rad) 
 {
   return (rad * 180 / M_PI);
 }
@@ -133,7 +133,7 @@ static double rad2deg(double rad)
  * @param lon2d Longitude of the second point in degrees
  * @return The distance between the two points in kilometers
  */
-static double distanceEarth(double lat1d, double lon1d, double lat2d, double lon2d) 
+static double simpleDGps::calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d) 
 {
   double lat1r, lon1r, lat2r, lon2r, u, v;
   lat1r = deg2rad(lat1d);
@@ -145,14 +145,13 @@ static double distanceEarth(double lat1d, double lon1d, double lat2d, double lon
   return 2.0 * EARTH_RADIUS_KM * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v));
 }
 
-// calculates non geodetic distance (straight line)
-static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos) 
+static double simpleDGps::calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos) 
 {
   ecefPos ecefBaseStationPoos = latLonAltToEcef(baseStationPos);
   return sqrt(pow(satPos.x-ecefBaseStationPoos.x, 2) + pow(satPos.y-ecefBaseStationPoos.y, 2) + pow(satPos.z-ecefBaseStationPoos.z, 2));
 }
 
-static ecefPos calcSatPos(ephemeris *ephem, double t) 
+static ecefPos simpleDGps::calcSatPos(ephemeris *ephem, double t) 
 { // Get satellite position at time t
   // Time from ephemeris reference epoch
   double t_k = calcTimeFromEpoch(t, ephem->t_oe);
@@ -195,27 +194,69 @@ static ecefPos calcSatPos(ephemeris *ephem, double t)
   return satPos;
 }
 
-static satRanges calcSatRangeCorrection(ecefPos satPos[], latLonAltPos baseStationPos, satRanges pseudoRanges) 
+static satRanges simpleDGps::calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges) 
 {
   satRanges trueRanges{};
 
+  ecefPos pos;
+  int id;
+  double trueRange;
 
+  std::map<int, ecefPos>::iterator it; 
 
-  // Declaring iterator to a vector 
-  std::map<int, double>::iterator it; 
+  for (it = satPos.locations.begin(); it != satPos.locations.end(); it++)
+  {
+    pos = it->second;
+    id = it->first;
+
+    trueRange = calcSatToStationRange(pos, baseStationPos);
+
+    trueRanges.ranges.insert(std::pair<int, double>(id, trueRange));
+  }
+  
+  std::map<int, double>::iterator it_; 
   std::map<int, double>::iterator trueRangeMap, pseudoRangeMap;
   satRanges rangeCorrection;
-  for ( it = trueRanges.ranges.begin(); it != trueRanges.ranges.end(); it++ )
+  double correction = 0;
+  for (it_ = trueRanges.ranges.begin(); it_ != trueRanges.ranges.end(); it_++)
   {
-    trueRangeMap = trueRanges.ranges.find(it->first);
-    pseudoRangeMap = pseudoRanges.ranges.find(it->first);
+    pseudoRangeMap = pseudoRanges.ranges.find(it_->first);
 
-
-    if (trueRangeMap != trueRanges.ranges.end() && pseudoRangeMap != pseudoRanges.ranges.end()) 
+    if (pseudoRangeMap != pseudoRanges.ranges.end()) 
     {
-      double correction = abs(trueRangeMap->second-pseudoRangeMap->second);
-      rangeCorrection.ranges.insert(std::pair<int, double>(it->first, correction));
+      correction = abs(it_->second - pseudoRangeMap->second);
+      rangeCorrection.ranges.insert(std::pair<int, double>(it_->first, correction));
+    } else
+    {
+      std::cout << "could not find pseudo range calculated true range to calc correction" << std::endl;
     }
   }
   return rangeCorrection;
+}
+
+static satRanges simpleDGps::applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges) 
+{
+  std::map<int, double>::iterator it_; 
+  std::map<int, double>::iterator pseudoRangeMap;
+  satRanges rangeCorrection;
+  double correctedRange = 0;
+  for (it_ = corrRanges.ranges.begin(); it_ != corrRanges.ranges.end(); it_++)
+  {
+    // look up for pseudo range with same sat id
+    pseudoRangeMap = pseudoRanges.ranges.find(it_->first);
+
+    if (pseudoRangeMap != pseudoRanges.ranges.end()) 
+    {
+      correctedRange = it_->second;
+      rangeCorrection.ranges.insert(std::pair<int, double>(it_->first, correctedRange));
+    } else
+    {
+      std::cout << "could not find pseudo range for available correction" << std::endl;
+    }
+  }
+}
+
+static latLonAltPos calcPosFromRange(satRanges finalRanges)
+{
+
 }

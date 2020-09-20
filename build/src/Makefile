@@ -111,16 +111,6 @@ install/fast: preinstall/fast
 	/usr/local/lib/python3.7/site-packages/cmake/data/CMake.app/Contents/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -142,6 +132,16 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -191,19 +191,19 @@ CommCore/fast:
 .PHONY : CommCore/fast
 
 # Convenience name for target.
-src/CMakeFiles/GpsCore.dir/rule:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/GpsCore.dir/rule
-.PHONY : src/CMakeFiles/GpsCore.dir/rule
+src/CMakeFiles/SimpleDGps.dir/rule:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/SimpleDGps.dir/rule
+.PHONY : src/CMakeFiles/SimpleDGps.dir/rule
 
 # Convenience name for target.
-GpsCore: src/CMakeFiles/GpsCore.dir/rule
+SimpleDGps: src/CMakeFiles/SimpleDGps.dir/rule
 
-.PHONY : GpsCore
+.PHONY : SimpleDGps
 
 # fast build rule for target.
-GpsCore/fast:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/build
-.PHONY : GpsCore/fast
+SimpleDGps/fast:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/build
+.PHONY : SimpleDGps/fast
 
 commCore.o: commCore.cpp.o
 
@@ -232,32 +232,32 @@ commCore.cpp.s:
 	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/CommCore.dir/build.make src/CMakeFiles/CommCore.dir/commCore.cpp.s
 .PHONY : commCore.cpp.s
 
-gpsCore.o: gpsCore.cpp.o
+simpleDGps.o: simpleDGps.cpp.o
 
-.PHONY : gpsCore.o
+.PHONY : simpleDGps.o
 
 # target to build an object file
-gpsCore.cpp.o:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/gpsCore.cpp.o
-.PHONY : gpsCore.cpp.o
+simpleDGps.cpp.o:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o
+.PHONY : simpleDGps.cpp.o
 
-gpsCore.i: gpsCore.cpp.i
+simpleDGps.i: simpleDGps.cpp.i
 
-.PHONY : gpsCore.i
+.PHONY : simpleDGps.i
 
 # target to preprocess a source file
-gpsCore.cpp.i:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/gpsCore.cpp.i
-.PHONY : gpsCore.cpp.i
+simpleDGps.cpp.i:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.i
+.PHONY : simpleDGps.cpp.i
 
-gpsCore.s: gpsCore.cpp.s
+simpleDGps.s: simpleDGps.cpp.s
 
-.PHONY : gpsCore.s
+.PHONY : simpleDGps.s
 
 # target to generate assembly for a file
-gpsCore.cpp.s:
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/GpsCore.dir/build.make src/CMakeFiles/GpsCore.dir/gpsCore.cpp.s
-.PHONY : gpsCore.cpp.s
+simpleDGps.cpp.s:
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/SimpleDGps.dir/build.make src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.s
+.PHONY : simpleDGps.cpp.s
 
 # Help Target
 help:
@@ -272,13 +272,13 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... CommCore"
-	@echo "... GpsCore"
+	@echo "... SimpleDGps"
 	@echo "... commCore.o"
 	@echo "... commCore.i"
 	@echo "... commCore.s"
-	@echo "... gpsCore.o"
-	@echo "... gpsCore.i"
-	@echo "... gpsCore.s"
+	@echo "... simpleDGps.o"
+	@echo "... simpleDGps.i"
+	@echo "... simpleDGps.s"
 .PHONY : help
 
 
