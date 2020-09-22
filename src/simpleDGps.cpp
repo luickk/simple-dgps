@@ -256,7 +256,35 @@ static satRanges simpleDGps::applyCorrectionOnPseudoRange(satRanges corrRanges, 
   }
 }
 
-static latLonAltPos calcPosFromRange(satRanges finalRanges)
+static latLonAltPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
 {
+  std::map<int, ecefPos>::iterator it_; 
+  std::map<int, double>::iterator finalSatRangesMap;
 
+  double x, y, z;
+  double Am, Bm, Cm, Dm;
+  double range;
+
+  for (it_ = finalSatPos.locations.begin(); it_ != finalSatPos.locations.end(); it_++)
+  {
+    // look up for pseudo range with same sat id
+    finalSatRangesMap = finalSatRanges.ranges.find(it_->first);
+    range = it_->second;
+
+    if (finalSatRangesMap != finalSatRangesMap.locations.end()) 
+    {
+      x = it_->second.x;
+      y = it_->second.y;
+      z = it_->second.z;
+      Am = -2*x
+      Bm = -2*y
+      Cm = -2*z
+      Dm = EARTH_RADIUS_KM*EARTH_RADIUS_KM + (pow(x,2)+pow(y,2)+pow(z,2)) - pow(range,2)
+      // todo SVD
+    } else
+    {
+      std::cout << "could not find sat pos for user pos trilateration" << std::endl;
+    }
+  }
+  
 }
