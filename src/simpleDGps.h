@@ -2,6 +2,7 @@
 #include <cmath>
 #include <map>
 #include <array>
+#include "simpleDGps.cpp"
 
 using namespace std;
 
@@ -9,9 +10,9 @@ using namespace std;
 #define NR_END 1
 #define FREE_ARG char*
 #define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
-#define DMAX(a,b) (dmaxarg1=(a),dmaxarg2=(b),(dmaxarg1) > (dmaxarg2) ? \ 
+#define DMAX(a,b) (dmaxarg1=(a),dmaxarg2=(b),(dmaxarg1) > (dmaxarg2)?\ 
 (dmaxarg1) : (dmaxarg2))
-#define IMIN(a,b) (iminarg1=(a),iminarg2=(b),(iminarg1) < (iminarg2) ? \ 
+#define IMIN(a,b) (iminarg1=(a),iminarg2=(b),(iminarg1) < (iminarg2)?\ 
 (iminarg1) : (iminarg2))
 
 namespace simpleDGps 
@@ -90,13 +91,11 @@ namespace simpleDGps
     // required for svd
     // svd calc for range trillat
     // by http://cacs.usc.edu/education/phys516/src/TB/svdcmp.c
-    static double dmaxarg1,dmaxarg2;
-    static int iminarg1,iminarg2;
     static double **dmatrix(int nrl, int nrh, int ncl, int nch);
     static double *dvector(int nl, int nh);
     static void free_dvector(double *v, int nl, int nh);
     static double pythag(double a, double b);
-    static void svdcmp(double a[][], int m, int n, double w[], double **v);
+    static void svdcmp(double a[][4], int m, int n, double w[], double **v);
 
     // latLonAlt distance calculations
     // by https://stackoverflow.com/questions/10198985/calculating-the-distance-between-2-latitudes-and-longitudes-that-are-saved-in-a
@@ -104,6 +103,8 @@ namespace simpleDGps
     static double rad2deg(double rad); 
     static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d);
 
+    // range position trillateration
+    static ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges);
 
     // calculates non geodetic, 3 dim distance (straight line)
     static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos);

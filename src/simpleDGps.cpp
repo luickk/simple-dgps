@@ -1,8 +1,6 @@
-#include "simpleDGps.h"
+#include <cmath>
 
-using namespace simpleDGps;
-
-static double simpleDGps::calcTimeFromEpoch(double t, double t_ref) 
+static double calcTimeFromEpoch(double t, double t_ref) 
 {
   t-= t_ref;
   if      (t> 302400) t -= 604800;
@@ -10,7 +8,7 @@ static double simpleDGps::calcTimeFromEpoch(double t, double t_ref)
   return t;
 }
 
-static double simpleDGps::calcEccentricAnomaly(ephemeris *ephem, double t_k) 
+static double calcEccentricAnomaly(ephemeris *ephem, double t_k) 
 {
   // Semi-major axis
   int A = ephem->sqrtA*ephem->sqrtA;
@@ -36,7 +34,7 @@ static double simpleDGps::calcEccentricAnomaly(ephemeris *ephem, double t_k)
   return E_k;
 }
 
-static latLonAltPos simpleDGps::ecefToLatLonAlt(ecefPos ecef)
+static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
 {
   latLonAltPos finalLatLonPos = { 0, 0, 0 };
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
@@ -91,7 +89,7 @@ static latLonAltPos simpleDGps::ecefToLatLonAlt(ecefPos ecef)
   return finalLatLonPos;
 }
 
-static ecefPos simpleDGps::latLonAltToEcef(latLonAltPos latlonAlt)
+static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 {
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
   double g, rg, rf, u, v, m, f, p, x, y, z; 
@@ -113,18 +111,18 @@ static ecefPos simpleDGps::latLonAltToEcef(latLonAltPos latlonAlt)
 }
 
 // This function converts decimal degrees to radians
-static double simpleDGps::deg2rad(double deg) 
+static double deg2rad(double deg) 
 {
   return (deg * M_PI / 180);
 }
 
 //  This function converts radians to decimal degrees
-static double simpleDGps::rad2deg(double rad) 
+static double rad2deg(double rad) 
 {
   return (rad * 180 / M_PI);
 }
 
-static double **simpleDGps::dmatrix(int nrl, int nrh, int ncl, int nch)
+static double **dmatrix(int nrl, int nrh, int ncl, int nch)
 /* allocate a double matrix with subscript range m[nrl..nrh][ncl..nch] */
 {
 	int i,nrow=nrh-nrl+1,ncol=nch-ncl+1;
@@ -142,7 +140,7 @@ static double **simpleDGps::dmatrix(int nrl, int nrh, int ncl, int nch)
 	return m;
 }
 
-static double *simpleDGps::dvector(int nl, int nh)
+static double *dvector(int nl, int nh)
 /* allocate a double vector with subscript range v[nl..nh] */
 {
 	double *v;
@@ -150,13 +148,13 @@ static double *simpleDGps::dvector(int nl, int nh)
 	return v-nl+NR_END;
 }
 
-static void simpleDGps::free_dvector(double *v, int nl, int nh)
+static void free_dvector(double *v, int nl, int nh)
 /* free a double vector allocated with dvector() */
 {
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-static double simpleDGps::pythag(double a, double b)
+static double pythag(double a, double b)
 /* compute (a2 + b2)^1/2 without destructive underflow or overflow */
 {
 	double absa,absb;
@@ -167,7 +165,7 @@ static double simpleDGps::pythag(double a, double b)
 }
 
 /******************************************************************************/
-static void simpleDGps::svdcmp(double a[][], int m, int n, double w[], double **v)
+static void svdcmp(double a[][4], int m, int n, double w[], double **v)
 /*******************************************************************************
 Given a matrix a[1..m][1..n], this routine computes its singular value
 decomposition, A = U.W.VT.  The matrix U replaces a on output.  The diagonal
@@ -360,7 +358,7 @@ the transpose VT) is output as v[1..n][1..n].
  * @param lon2d Longitude of the second point in degrees
  * @return The distance between the two points in kilometers
  */
-static double simpleDGps::calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d) 
+static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d) 
 {
   double lat1r, lon1r, lat2r, lon2r, u, v;
   lat1r = deg2rad(lat1d);
@@ -372,13 +370,13 @@ static double simpleDGps::calcGeodeticDistance(double lat1d, double lon1d, doubl
   return 2.0 * EARTH_RADIUS_KM * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v));
 }
 
-static double simpleDGps::calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos) 
+static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos) 
 {
   ecefPos ecefBaseStationPoos = latLonAltToEcef(baseStationPos);
   return sqrt(pow(satPos.x-ecefBaseStationPoos.x, 2) + pow(satPos.y-ecefBaseStationPoos.y, 2) + pow(satPos.z-ecefBaseStationPoos.z, 2));
 }
 
-static ecefPos simpleDGps::calcSatPos(ephemeris *ephem, double t) 
+static ecefPos calcSatPos(ephemeris *ephem, double t) 
 { // Get satellite position at time t
   // Time from ephemeris reference epoch
   double t_k = calcTimeFromEpoch(t, ephem->t_oe);
@@ -421,7 +419,7 @@ static ecefPos simpleDGps::calcSatPos(ephemeris *ephem, double t)
   return satPos;
 }
 
-static satRanges simpleDGps::calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges) 
+static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges) 
 {
   satRanges trueRanges{};
 
@@ -461,7 +459,7 @@ static satRanges simpleDGps::calcSatRangeCorrection(satLocation satPos, latLonAl
   return rangeCorrection;
 }
 
-static satRanges simpleDGps::applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges) 
+static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges) 
 {
   std::map<int, double>::iterator it_; 
   std::map<int, double>::iterator pseudoRangeMap;
@@ -481,9 +479,10 @@ static satRanges simpleDGps::applyCorrectionOnPseudoRange(satRanges corrRanges, 
       std::cout << "could not find pseudo range for available correction" << std::endl;
     }
   }
+  return rangeCorrection;
 }
 
-static latLonAltPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
+static ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
 {
   std::map<int, ecefPos>::iterator it_; 
   std::map<int, double>::iterator finalSatRangesMap;
@@ -492,6 +491,7 @@ static latLonAltPos trillatPosFromRange(satLocation finalSatPos, satRanges final
   double Am, Bm, Cm, Dm;
   double range;
   int nSat = finalSatPos.locations.size();
+
 
   double matrixA[nSat][4];
   // manually initialize matrix
@@ -525,8 +525,13 @@ static latLonAltPos trillatPosFromRange(satLocation finalSatPos, satRanges final
     }
   }
   
+
   double **v;
   double w[] = {};
-  simpleDGps::svdcmp(matrixA, sizeof(matrixA)/sizeof(double), sizeof(matrixA[0])/sizeof(double), w, v);
-    
+  svdcmp(matrixA, sizeof(matrixA)/sizeof(double), sizeof(matrixA[0])/sizeof(double), w, v);
+  
+  double ws = *v[3];
+  // Resulting position in ECEF
+  ws /= w[3];
+  std::cout << (ws) << std::endl;
 }
