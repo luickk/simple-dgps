@@ -5,7 +5,7 @@ using namespace simpleDGps;
 using namespace std;
 
 int main() {
-  cout << "Hello World!";
+  cout << "Hello World s";
 
   satRanges testPseudoRanges;
   testPseudoRanges.ranges.insert({1, 23399263.4});
@@ -25,7 +25,9 @@ int main() {
   testSatPos.locations.insert({14, ecefPos{-17104.3, -5228.5, 19811.5}});
   testSatPos.locations.insert({6, ecefPos{-17104.3, -5228.5, 19811.5}});
   
-  trillatPosFromRange(testSatPos, testPseudoRanges);
-
+  ecefPos res = trillatPosFromRange(testSatPos, testPseudoRanges);
+  cout << res.x << endl;
+  cout << res.y << endl;
+  cout << res.z << endl;
   return 0;
 }
