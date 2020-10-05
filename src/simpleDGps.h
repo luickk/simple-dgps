@@ -10,14 +10,6 @@ namespace simpleDGps
     static double calcEccentricAnomaly(ephemeris *ephem, double t_k);
     static ecefPos calcSatPos(ephemeris *ephem, double t);
 
-    // required for svd
-    // svd calc for range trillat
-    // by http://cacs.usc.edu/education/phys516/src/TB/svdcmp.c
-    static double *dvector(int nl, int nh);
-    static void free_dvector(double *v, int nl, int nh);
-    static double pythag(double a, double b);
-    static void svdcmp(double a[][4], int m, int n, double w[], double **v);
-
     // latLonAlt distance calculations
     // by https://stackoverflow.com/questions/10198985/calculating-the-distance-between-2-latitudes-and-longitudes-that-are-saved-in-a
     static double deg2rad(double deg);
@@ -40,6 +32,16 @@ namespace simpleDGps
     static latLonAltPos ecefToLatLonAlt(ecefPos ecef);
     static ecefPos latLonAltToEcef(latLonAltPos latlonAlt);
 
+
+    //basic
+    static double** multiplyMatrices(double matrixA[][posMTrillatAColumSize], double matrixB[][posMTrillatAColumSize], int matrixArows)
+    static double** transpose2DimMatrix(double inputArr[][posMTrillatAColumSize]);
+    
     // range position trillateration
+    static double** calcInverse(int A[][posMTrillatAColumSize], int matrixArows);
+    static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows);
+    int clacDeterminant(double A[][posMTrillatAColumSize], int n);
+    static double** leastSquareReg(double matrixA[][4]);
+    
     static ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges);
 };

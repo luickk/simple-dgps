@@ -3,7 +3,9 @@
 #include <map>
 #include <array>
 
-#include "SVD.cpp"
+#include "include/SVD.cpp"
+
+#define posMTrillatAColumSize 4
 
 // conts for coord conversion transformation
 const double  A = 6378137.0;              //WGS-84 semi-major axis
@@ -325,11 +327,173 @@ namespace simpleDGps
     return rangeCorrection;
   }
 
+    
+// Function to get cofactor of A[p][q] in temp[][]. n is current 
+// dimension of A[][] 
+static double** getCofactor(double A[][posMTrillatAColumSize], int p, int q, int n) 
+{ 
+  double** temp = 0;
+  int i = 0, j = 0; 
+
+  // Looping for each element of the matrix 
+  for (int row = 0; row < n; row++) 
+  { 
+      for (int col = 0; col < n; col++) 
+      { 
+          //  Copying into temporary matrix only those element 
+          //  which are not in given row and column 
+          if (row != p && col != q) 
+          { 
+              temp[i][j++] = A[row][col]; 
+
+              // Row is filled, so increase row index and 
+              // reset col index 
+              if (j == n - 1) 
+              { 
+                  j = 0; 
+                  i++; 
+              } 
+          } 
+      } 
+  } 
+  return temp;
+} 
+  
+/* Recursive function for finding determinant of matrix. 
+   n is current dimension of A[][]. */
+int clacDeterminant(double A[][posMTrillatAColumSize], int n) 
+{ 
+  int D = 0; // Initialize result 
+
+  //  Base case : if matrix contains single element 
+  if (n == 1) 
+      return A[0][0]; 
+
+  int sign = 1;  // To store sign multiplier 
+
+    // Iterate for each element of first row 
+  for (int f = 0; f < n; f++) 
+  { 
+      // Getting Cofactor of A[0][f] 
+      double **temp = getCofactor(A, temp, 0, f, n); 
+      D += sign * A[0][f] * determinant(temp, n - 1); 
+
+      // terms are to be added with alternate sign 
+      sign = -sign; 
+  } 
+
+  return D; 
+} 
+  
+// Function to get adjoint of A[N][N] in adj[N][N]. 
+static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows) 
+{ 
+  double** adj = 0;
+  
+  for (int i=0; i<matrixArows; i++) 
+  { 
+      for (int j=0; j<posMTrillatAColumSize; j++) 
+      { 
+          // Get cofactor of A[i][j] 
+          double **temp = getCofactor(A, i, j, posMTrillatAColumSize); 
+
+          // sign of adj[j][i] positive if sum of row 
+          // and column indexes is even. 
+          sign = ((i+j)%2==0)? 1: -1; 
+
+          // Interchanging rows and columns to get the 
+          // transpose of the cofactor matrix 
+          adj[j][i] = (sign)*(clacDeterminant(temp, posMTrillatAColumSize-1)); 
+      } 
+  } 
+  return adj;
+} 
+
+  // by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
+  // method assumes that matrices have same dim sizes
+  static double** multiplyMatrices(double matrixA[][posMTrillatAColumSize], double matrixB[][posMTrillatAColumSize], int matrixArows)
+  {
+    double** outputMatrix = 0;
+    int i, j, k;
+
+    // Initializing elements of matrix mult to 0.
+    for(i = 0; i < matrixArows; ++i)
+    {
+      for(j = 0; j < posMTrillatAColumSize; ++j)
+      {
+        outputMatrix[i][j] = 0;
+      }
+    }
+
+    // Multiplying matrix matrixA and matrixB and storing in array mult.
+    for(i = 0; i < matrixArows; ++i)
+    {
+      for(j = 0; j < posMTrillatAColumSize; ++j)
+      {
+        for(k=0; k<posMTrillatAColumSize; ++k)
+        {
+          outputMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+        }
+      }
+    }
+    return outputMatrix;
+  }
+
+  static double** transpose2DimMatrix(double inputArr[][posMTrillatAColumSize])
+  {
+    double **outputArr = 0;
+    for (int i = 0; i < sizeof(*inputArr)/sizeof(double); ++i)
+    {
+      for (int j = 0; j < sizeof(inputArr[0])/sizeof(double); ++j)
+      {
+        outputArr[j][i]= inputArr[i][j];
+      }
+    }
+    return outputArr;  
+  }
+
+  // Function to calculate and store inverse, returns 0 if false
+  // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
+  static double** calcInverse(int A[][posMTrillatAColumSize], int matrixArows) 
+  { 
+    double** inverse = 0;
+    // Find determinant of A[][] 
+    int det = clacDeterminant(A, posMTrillatAColumSize); 
+    if (det == 0) 
+    { 
+        cout << "Singular matrix, can't find its inverse"; 
+        return 0; 
+    } 
+  
+    // Find adjoint 
+    double **adj = calcAdjoint(A); 
+  
+    // Find Inverse using formula "inverse(A) = adj(A)/det(A)" 
+    for (int i=0; i<matrixArows; i++) 
+        for (int j=0; j<posMTrillatAColumSize; j++) 
+            inverse[i][j] = adj[i][j]/float(det); 
+  
+    return inverse; 
+  }
+
+  static double** leastSquareReg(double matrixA[][4]) 
+  {
+    double **matrixATransposed = transpose2DimMatrix(matrixA);
+
+    // A = np.array(A)
+    // b = np.array(b)
+    // AT = A.T
+    // ATA = np.matmul(AT,A)
+    // ATA_inv = np.linalg.inv(ATA)
+    // Aplus = np.matmul(ATA_inv,AT)
+    // x = np.matmul(Aplus,b)
+  }
+
   static ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   {
     std::map<int, ecefPos>::iterator it_; 
     std::map<int, double>::iterator finalSatRangesMap;
-
+    int matrixArows,matrixAcol = 0;
     double x, y, z;
     double Am, Bm, Cm, Dm;
     double range;
@@ -337,8 +501,11 @@ namespace simpleDGps
     ecefPos finalPos = { 0.0, 0.0, 0.0 };
     double matrixA[nSat][4];
 
+    matrixAcol = posMTrillatAColumSize;
+    matrixArows = nSat;
+
     // manually initialize matrix
-    memset(matrixA, 0, nSat*4*sizeof(double));
+    memset(matrixA, 0, matrixArows*matrixAcol*sizeof(double));
 
     int i = 0;
     for (it_ = finalSatPos.locations.begin(); it_ != finalSatPos.locations.end(); it_++)
@@ -369,16 +536,7 @@ namespace simpleDGps
     }
     
 
-    double v[][4] = {};
-    double w[] = {};
-    std::cout << sizeof(matrixA)/sizeof(double) << std::endl;
-    std::cout << sizeof(matrixA[0])/sizeof(double) << std::endl;
-    dsvd(matrixA, sizeof(matrixA[0])/sizeof(double), sizeof(matrixA)/sizeof(double), w, v);
-    
-    double ws = *v[3];
-    // Resulting position in ECEF
-    ws /= w[3];
-    std::cout << (ws) << std::endl;
+    // least square regression
 
     return finalPos;
   }
