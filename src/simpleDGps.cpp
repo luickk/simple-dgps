@@ -3,9 +3,7 @@
 #include <map>
 #include <array>
 
-#include "include/SVD.cpp"
-
-#define posMTrillatAColumSize 4
+#define posMTrillatAColumSize 3
 
 // conts for coord conversion transformation
 const double  A = 6378137.0;              //WGS-84 semi-major axis
@@ -17,6 +15,8 @@ const double A3 = 1.4291722289812413e+2;  //A3 = a1*e2/2
 const double A4 = 4.5577281365188637e+9;  //A4 = 2.5*a2
 const double A5 = 4.2840589930055659e+4;  //A5 = a1+a3
 const double A6 = 9.9330562000986220e-1;  //A6 = 1-e2
+
+using namespace std;
 
 namespace simpleDGps 
 {    
@@ -327,91 +327,92 @@ namespace simpleDGps
     return rangeCorrection;
   }
 
+      
+  // Function to get cofactor of A[p][q] in temp[][]. n is current 
+  // dimension of A[][] 
+  static double** getCofactor(double **A, int p, int q, int n) 
+  { 
+    double** temp = 0;
+    int i = 0, j = 0; 
+
+    // Looping for each element of the matrix 
+    for (int row = 0; row < n; row++) 
+    { 
+        for (int col = 0; col < n; col++) 
+        { 
+            //  Copying into temporary matrix only those element 
+            //  which are not in given row and column 
+            if (row != p && col != q) 
+            { 
+                temp[i][j++] = A[row][col]; 
+
+                // Row is filled, so increase row index and 
+                // reset col index 
+                if (j == n - 1) 
+                { 
+                    j = 0; 
+                    i++; 
+                } 
+            } 
+        } 
+    } 
+    return temp;
+  } 
     
-// Function to get cofactor of A[p][q] in temp[][]. n is current 
-// dimension of A[][] 
-static double** getCofactor(double A[][posMTrillatAColumSize], int p, int q, int n) 
-{ 
-  double** temp = 0;
-  int i = 0, j = 0; 
-
-  // Looping for each element of the matrix 
-  for (int row = 0; row < n; row++) 
+  /* Recursive function for finding determinant of matrix. 
+    n is current dimension of A[][]. */
+  static double clacDeterminant(double **A, int n) 
   { 
-      for (int col = 0; col < n; col++) 
-      { 
-          //  Copying into temporary matrix only those element 
-          //  which are not in given row and column 
-          if (row != p && col != q) 
-          { 
-              temp[i][j++] = A[row][col]; 
+    double D = 0; // Initialize result 
 
-              // Row is filled, so increase row index and 
-              // reset col index 
-              if (j == n - 1) 
-              { 
-                  j = 0; 
-                  i++; 
-              } 
-          } 
-      } 
+    //  Base case : if matrix contains single element 
+    if (n == 1) 
+        return A[0][0]; 
+
+    int sign = 1;  // To store sign multiplier 
+
+      // Iterate for each element of first row 
+    for (int f = 0; f < n; f++) 
+    { 
+        // Getting Cofactor of A[0][f] 
+        double **temp = getCofactor(A, 0, f, n); 
+        D += sign * A[0][f] * clacDeterminant(A, n - 1); 
+
+        // terms are to be added with alternate sign 
+        sign = -sign; 
+    } 
+
+    return D; 
   } 
-  return temp;
-} 
-  
-/* Recursive function for finding determinant of matrix. 
-   n is current dimension of A[][]. */
-int clacDeterminant(double A[][posMTrillatAColumSize], int n) 
-{ 
-  int D = 0; // Initialize result 
-
-  //  Base case : if matrix contains single element 
-  if (n == 1) 
-      return A[0][0]; 
-
-  int sign = 1;  // To store sign multiplier 
-
-    // Iterate for each element of first row 
-  for (int f = 0; f < n; f++) 
+    
+  // Function to get adjoint of A[N][N] in adj[N][N]. 
+  static double** calcAdjoint(double **A, int matrixArows) 
   { 
-      // Getting Cofactor of A[0][f] 
-      double **temp = getCofactor(A, temp, 0, f, n); 
-      D += sign * A[0][f] * determinant(temp, n - 1); 
+    double** adj = 0;
+    int sign = 1, temp[][posMTrillatAColumSize] = {};
+    
+    for (int i=0; i<matrixArows; i++) 
+    { 
+        for (int j=0; j<posMTrillatAColumSize; j++) 
+        { 
+            // Get cofactor of A[i][j] 
+            double **temp = getCofactor(A, i, j, posMTrillatAColumSize); 
 
-      // terms are to be added with alternate sign 
-      sign = -sign; 
+            // sign of adj[j][i] positive if sum of row 
+            // and column indexes is even. 
+            sign = ((i+j)%2==0)? 1: -1; 
+
+            // Interchanging rows and columns to get the 
+            // transpose of the cofactor matrix 
+            adj[j][i] = (sign)*(clacDeterminant(A, posMTrillatAColumSize-1)); 
+        } 
+    } 
+    return adj;
   } 
-
-  return D; 
-} 
-  
-// Function to get adjoint of A[N][N] in adj[N][N]. 
-static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows) 
-{ 
-  double** adj = 0;
-  
-  for (int i=0; i<matrixArows; i++) 
-  { 
-      for (int j=0; j<posMTrillatAColumSize; j++) 
-      { 
-          // Get cofactor of A[i][j] 
-          double **temp = getCofactor(A, i, j, posMTrillatAColumSize); 
-
-          // sign of adj[j][i] positive if sum of row 
-          // and column indexes is even. 
-          sign = ((i+j)%2==0)? 1: -1; 
-
-          // Interchanging rows and columns to get the 
-          // transpose of the cofactor matrix 
-          adj[j][i] = (sign)*(clacDeterminant(temp, posMTrillatAColumSize-1)); 
-      } 
-  } 
-  return adj;
-} 
 
   // by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
   // method assumes that matrices have same dim sizes
-  static double** multiplyMatrices(double matrixA[][posMTrillatAColumSize], double matrixB[][posMTrillatAColumSize], int matrixArows)
+  static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
   {
     double** outputMatrix = 0;
     int i, j, k;
@@ -439,12 +440,42 @@ static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows)
     return outputMatrix;
   }
 
-  static double** transpose2DimMatrix(double inputArr[][posMTrillatAColumSize])
+  // by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
+  // method assumes that matrices have same dim sizes
+  static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int matrixArows)
+  {
+    double** outputMatrix = 0;
+    int i, j, k;
+
+    // Initializing elements of matrix mult to 0.
+    for(i = 0; i < matrixArows; ++i)
+    {
+      for(j = 0; j < posMTrillatAColumSize; ++j)
+      {
+        outputMatrix[i][j] = 0;
+      }
+    }
+
+    // Multiplying matrix matrixA and matrixB and storing in array mult.
+    for(i = 0; i < matrixArows; ++i)
+    {
+      for(j = 0; j < posMTrillatAColumSize; ++j)
+      {
+        for(k=0; k<posMTrillatAColumSize; ++k)
+        {
+          outputMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+        }
+      }
+    }
+    return outputMatrix;
+  }
+
+  static double** transpose2DimMatrix(double **inputArr)
   {
     double **outputArr = 0;
-    for (int i = 0; i < sizeof(*inputArr)/sizeof(double); ++i)
+    for (int i = 0; i < sizeof(**inputArr)/sizeof(double); ++i)
     {
-      for (int j = 0; j < sizeof(inputArr[0])/sizeof(double); ++j)
+      for (int j = 0; j < sizeof(*inputArr[0])/sizeof(double); ++j)
       {
         outputArr[j][i]= inputArr[i][j];
       }
@@ -454,7 +485,7 @@ static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows)
 
   // Function to calculate and store inverse, returns 0 if false
   // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
-  static double** calcInverse(int A[][posMTrillatAColumSize], int matrixArows) 
+  static double** calcInverse(double **A, int matrixArows) 
   { 
     double** inverse = 0;
     // Find determinant of A[][] 
@@ -466,7 +497,7 @@ static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows)
     } 
   
     // Find adjoint 
-    double **adj = calcAdjoint(A); 
+    double **adj = calcAdjoint(A, matrixArows); 
   
     // Find Inverse using formula "inverse(A) = adj(A)/det(A)" 
     for (int i=0; i<matrixArows; i++) 
@@ -476,17 +507,15 @@ static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows)
     return inverse; 
   }
 
-  static double** leastSquareReg(double matrixA[][4]) 
+  static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows) 
   {
     double **matrixATransposed = transpose2DimMatrix(matrixA);
+    double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixArows);
+    double **matrixATransposedAInverse = calcInverse(matrixATransposedA, matrixArows);
+    double **matrixATransposedAAdd = multiplyMatrices(matrixATransposedAInverse, matrixATransposed, matrixArows);
+    double **finalX = multiplyMatricesND1D(matrixATransposedAAdd, matrixB, matrixArows);
 
-    // A = np.array(A)
-    // b = np.array(b)
-    // AT = A.T
-    // ATA = np.matmul(AT,A)
-    // ATA_inv = np.linalg.inv(ATA)
-    // Aplus = np.matmul(ATA_inv,AT)
-    // x = np.matmul(Aplus,b)
+    return finalX;
   }
 
   static ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
@@ -500,12 +529,14 @@ static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows)
     int nSat = finalSatPos.locations.size();
     ecefPos finalPos = { 0.0, 0.0, 0.0 };
     double matrixA[nSat][4];
+    double matrixB[nSat][1];
 
     matrixAcol = posMTrillatAColumSize;
     matrixArows = nSat;
 
     // manually initialize matrix
     memset(matrixA, 0, matrixArows*matrixAcol*sizeof(double));
+    memset(matrixB, 0, nSat*1*sizeof(double));
 
     int i = 0;
     for (it_ = finalSatPos.locations.begin(); it_ != finalSatPos.locations.end(); it_++)
@@ -523,11 +554,11 @@ static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows)
         Bm = -2*y;
         Cm = -2*z;
         Dm = EARTH_RADIUS_KM*EARTH_RADIUS_KM + (pow(x,2)+pow(y,2)+pow(z,2)) - pow(range,2);
-        // todo SVD
+
         matrixA[i][0] = Am;
         matrixA[i][1] = Bm;
         matrixA[i][2] = Cm;
-        matrixA[i][3] = Dm;
+        matrixB[i][0] = Dm;
         i++;
       } else
       {

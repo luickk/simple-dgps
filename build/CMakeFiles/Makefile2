@@ -193,8 +193,8 @@ test/clean: test/CMakeFiles/coreTest.dir/clean
 # Target rules for target include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir
 
 # All Build rule for target.
-include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
 include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/all
+include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/all: include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/all
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/depend
 	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=5,6 "Built target cc.ublox.commsdsl"

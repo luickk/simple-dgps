@@ -34,13 +34,15 @@ namespace simpleDGps
 
 
     //basic
-    static double** multiplyMatrices(double matrixA[][posMTrillatAColumSize], double matrixB[][posMTrillatAColumSize], int matrixArows)
+    static double** multiplyMatrices(double matrixA[][posMTrillatAColumSize], double matrixB[][posMTrillatAColumSize], int matrixArows);
     static double** transpose2DimMatrix(double inputArr[][posMTrillatAColumSize]);
     
     // range position trillateration
-    static double** calcInverse(int A[][posMTrillatAColumSize], int matrixArows);
+    static double** getCofactor(double A[][posMTrillatAColumSize], int p, int q, int n);
+    static double clacDeterminant(double A[][posMTrillatAColumSize], int n);
+    static double** calcInverse(double A[][posMTrillatAColumSize], int matrixArows);
     static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows);
-    int clacDeterminant(double A[][posMTrillatAColumSize], int n);
+    static double clacDeterminant(double A[][posMTrillatAColumSize], int n);
     static double** leastSquareReg(double matrixA[][4]);
     
     static ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges);
