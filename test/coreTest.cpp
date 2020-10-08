@@ -1,7 +1,6 @@
 #include <iostream>
 #include "simpleDGps.h"
 
-using namespace simpleDGps;
 using namespace std;
 
 int main() {
