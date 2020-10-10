@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="ublox"
+        endian="little"
+        nonUniqueMsgIdAllowed="true">
+    <platform name="ublox5" />
+    <platform name="ublox6" />
+    <platform name="ublox7" />
+    <platform name="ublox8" />
+    
+    <fields>
+        <enum name="MsgId" type="uint16" semanticType="messageId" hexAssign="true" endian="big">
+            <validValue name="NavPosecef" val="0x0101" displayName="NAV-POSECEF" />
+            <validValue name="NavPosllh" val="0x0102" displayName="NAV-POSLLH" />
+            <validValue name="NavStatus" val="0x0103" displayName="NAV-STATUS" />
+            <validValue name="NavDop" val="0x0104" displayName="NAV-DOP" />
+            <validValue name="NavAtt" val="0x0105" displayName="NAV-ATT" />
+            <validValue name="NavSol" val="0x0106" displayName="NAV-SOL" />
+            <validValue name="NavPvt" val="0x0107" displayName="NAV-PVT" />
+            <validValue name="NavOdo" val="0x0109" displayName="NAV-ODO" />
+            <validValue name="NavResetodo" val="0x0110" displayName="NAV-RESETODO" />
+            <validValue name="NavVelecef" val="0x0111" displayName="NAV-VELECEF" />
+            <validValue name="NavVelned" val="0x0112" displayName="NAV-VELNED" />
+            <validValue name="NavHpposecef" val="0x0113" displayName="NAV-HPPOSECEF" />
+            <validValue name="NavHpposllh" val="0x0114" displayName="NAV-HPPOSLLH" />
+            <validValue name="NavTimegps" val="0x0120" displayName="NAV-TIMEGPS" />
+            <validValue name="NavTimeutc" val="0x0121" displayName="NAV-TIMEUTC" />
+            <validValue name="NavClock" val="0x0122" displayName="NAV-CLOCK " />
+            <validValue name="NavTimeglo" val="0x0123" displayName="NAV-TIMEGLO" />
+            <validValue name="NavTimebds" val="0x0124" displayName="NAV-TIMEBDS" />
+            <validValue name="NavTimegal" val="0x0125" displayName="NAV-TIMEGAL" />
+            <validValue name="NavTimels" val="0x0126" displayName="NAV-MsgId_NAV_TIMELS" />
+            <validValue name="NavSvinfo" val="0x0130" displayName="NAV-SVINFO" />
+            <validValue name="NavDgps" val="0x0131" displayName="NAV-DGPS" />
+            <validValue name="NavSbas" val="0x0132" displayName="NAV-SBAS" />
+            <validValue name="NavOrb" val="0x0134" displayName="NAV-ORB" />
+            <validValue name="NavSat" val="0x0135" displayName="NAV-SAT" />
+            <validValue name="NavGeofence" val="0x0139" displayName="NAV-GEOFENCE" />
+            <validValue name="NavSvin" val="0x013B" displayName="NAV-SVIN" />
+            <validValue name="NavRelposned" val="0x013C" displayName="NAV-RELPOSNED" />
+            <validValue name="NavEkfstatus" val="0x0140" displayName="NAV-EKFSTATUS" />
+            <validValue name="NavAopstatus" val="0x0160" displayName="NAV-AOPSTATUS" />
+            <validValue name="NavEoe" val="0x0161" displayName="NAV-EOE" />
+            <validValue name="RxmRaw" val="0x0210" displayName="RXM-RAW" />
+            <validValue name="RxmSfrb" val="0x0211" displayName="RXM-SFRB" />
+            <validValue name="RxmSfrbx" val="0x0213" displayName="RXM-SFRBX" />
+            <validValue name="RxmMeasx" val="0x0214" displayName="RXM-MEASX" />
+            <validValue name="RxmRawx" val="0x0215" displayName="RXM-RAWX" />
+            <validValue name="RxmSvsi" val="0x0220" displayName="RXM-SVSI" />
+            <validValue name="RxmAlm" val="0x0230" displayName="RXM-ALM" />
+            <validValue name="RxmEph" val="0x0231" displayName="RXM-EPH" />
+            <validValue name="RxmRtcm" val="0x0232" displayName="RXM-RTCM" />
+            <validValue name="RxmPmreq" val="0x0241" displayName="RXM-PMREQ" />
+            <validValue name="RxmRlm" val="0x0259" displayName="RXM-RLM" />
+            <validValue name="RxmImes" val="0x0261" displayName="RXM-IMES" />
+            <validValue name="InfError" val="0x0400" displayName="INF-ERROR" />
+            <validValue name="InfWarning" val="0x0401" displayName="INF-WARNING" />
+            <validValue name="InfNotice" val="0x0402" displayName="INF-NOTICE" />
+            <validValue name="InfTest" val="0x0403" displayName="INF-TEST" />
+            <validValue name="InfDebug" val="0x0404" displayName="INF-DEBUG" />
+            <validValue name="AckNak" val="0x0500" displayName="ACK-NAK" />
+            <validValue name="AckAck" val="0x0501" displayName="ACK-ACK" />
+            <validValue name="CfgPrt" val="0x0600" displayName="CFG-PRT" />
+            <validValue name="CfgMsg" val="0x0601" displayName="CFG-MSG" />
+            <validValue name="CfgInf" val="0x0602" displayName="CFG-INF" />
+            <validValue name="CfgRst" val="0x0604" displayName="CFG-RST" />
+            <validValue name="CfgDat" val="0x0606" displayName="CFG-DAT" />
+            <validValue name="CfgTp" val="0x0607" displayName="CFG-TP" />
+            <validValue name="CfgRate" val="0x0608" displayName="CFG-RATE" />
+            <validValue name="CfgCfg" val="0x0609" displayName="CFG-CFG" />
+            <validValue name="CfgFxn" val="0x060E" displayName="CFG-FXN" />
+            <validValue name="CfgRxm" val="0x0611" displayName="CFG-RXM" />
+            <validValue name="CfgEkf" val="0x0612" displayName="CFG-EKF" />
+            <validValue name="CfgAnt" val="0x0613" displayName="CFG-ANT" />
+            <validValue name="CfgSbas" val="0x0616" displayName="CFG-SBAS" />
+            <validValue name="CfgNmea" val="0x0617" displayName="CFG-NMEA" />
+            <validValue name="CfgUsb" val="0x061b" displayName="CFG-USB" />
+            <validValue name="CfgTmode" val="0x061d" displayName="CFG-TMODE" />
+            <validValue name="CfgOdo" val="0x061e" displayName="CFG-ODO" />
+            <validValue name="CfgNvs" val="0x0622" displayName="CFG-NVS" />
+            <validValue name="CfgNavx5" val="0x0623" displayName="CFG-NAVX5" />
+            <validValue name="CfgNav5" val="0x0624" displayName="CFG-NAV5" />
+            <validValue name="CfgEsfgwt" val="0x0629" displayName="CFG-ESFGWT" />
+            <validValue name="CfgTp5" val="0x0631" displayName="CFG-TP5" />
+            <validValue name="CfgPm" val="0x0632" displayName="CFG-PM" />
+            <validValue name="CfgRinv" val="0x0634" displayName="CFG-RINV" />
+            <validValue name="CfgItfm" val="0x0639" displayName="CFG-ITFM" />
+            <validValue name="CfgPm2" val="0x063b" displayName="CFG-PM2" />
+            <validValue name="CfgTmode2" val="0x063d" displayName="CFG-TMODE2" />
+            <validValue name="CfgGnss" val="0x063e" displayName="CFG-GNSS" />
+            <validValue name="CfgLogfilter" val="0x0647" displayName="CFG-LOGFILTER" />
+            <validValue name="CfgTxslot" val="0x0653" displayName="CFG-TXSLOT" />
+            <validValue name="CfgPwr" val="0x0657" displayName="CFG-PWR" />
+            <validValue name="CfgHnr" val="0x065C" displayName="CFG-HNR" />
+            <validValue name="CfgEsrc" val="0x0660" displayName="CFG-ESRC" />
+            <validValue name="CfgDosc" val="0x0661" displayName="CFG-DOSC" />
+            <validValue name="CfgSmgr" val="0x0662" displayName="CFG-SMGR" />
+            <validValue name="CfgGeofence" val="0x0669" displayName="CFG-GEOFENCE" />
+            <validValue name="CfgDgnss" val="0x0670" displayName="CFG-DGNSS" />
+            <validValue name="CfgTmode3" val="0x0671" displayName="CFG-TMODE3" />
+            <validValue name="CfgFixseed" val="0x0684" displayName="CFG-FIXSEED" />
+            <validValue name="CfgDynseed" val="0x0685" displayName="CFG-DYNSEED" />
+            <validValue name="CfgPms" val="0x0686" displayName="CFG-PMS" />
+            <validValue name="UpdSos" val="0x0914" displayName="UPD-SOS" />
+            <validValue name="MonIo" val="0x0a02" displayName="MON-IO" />
+            <validValue name="MonVer" val="0x0a04" displayName="MON-VER" />
+            <validValue name="MonMsgpp" val="0x0a06" displayName="MON-MSGPP" />
+            <validValue name="MonRxbuf" val="0x0a07" displayName="MON-RXBUF" />
+            <validValue name="MonTxbuf" val="0x0a08" displayName="MON-TXBUF" />
+            <validValue name="MonHw" val="0x0a09" displayName="MON-HW" />
+            <validValue name="MonHw2" val="0x0a0b" displayName="MON-HW2" />
+            <validValue name="MonRxr" val="0x0a21" displayName="MON-RXR" />
+            <validValue name="MonPatch" val="0x0a27" displayName="MON-PATCH" />
+            <validValue name="MonGnss" val="0x0a28" displayName="MON-GNSS" />
+            <validValue name="MonSmgr" val="0x0a2e" displayName="MON-SMGR" />
+            <validValue name="AidReq" val="0x0b00" displayName="AID-REQ" />
+            <validValue name="AidIni" val="0x0b01" displayName="AID-INI" />
+            <validValue name="AidHui" val="0x0b02" displayName="AID-HUI" />
+            <validValue name="AidData" val="0x0b10" displayName="AID-DATA" />
+            <validValue name="AidAlm" val="0x0b30" displayName="AID-ALM" />
+            <validValue name="AidEph" val="0x0b31" displayName="AID-EPH" />
+            <validValue name="AidAlpsrv" val="0x0b32" displayName="AID-ALPSRV" />
+            <validValue name="AidAop" val="0x0b33" displayName="AID-AOP" />
+            <validValue name="AidAlp" val="0x0b50" displayName="AID-ALP" />
+            <validValue name="TimTp" val="0x0d01" displayName="TIM-TP" />
+            <validValue name="TimTm2" val="0x0d03" displayName="TIM-TM2" />
+            <validValue name="TimSvin" val="0x0d06" displayName="TIM-SVIN" />
+            <validValue name="TimVrfy" val="0x0d04" displayName="TIM-VRFY" />
+            <validValue name="TimDosc" val="0x0d11" displayName="TIM-DOSC" />
+            <validValue name="TimTos" val="0x0d12" displayName="TIM-TOS" />
+            <validValue name="TimSmeas" val="0x0d13" displayName="TIM-SMEAS" />
+            <validValue name="TimVcocal" val="0x0d15" displayName="TIM-VCOCAL" />
+            <validValue name="TimFchg" val="0x0d16" displayName="TIM-FCHG" />
+            <validValue name="TimHoc" val="0x0d17" displayName="TIM-HOC" />
+            <validValue name="EsfMeas" val="0x1002" displayName="ESF-MEAS" />
+            <validValue name="EsfRaw" val="0x1003" displayName="ESF-RAW" />
+            <validValue name="EsfStatus" val="0x1010" displayName="ESF-STATUS" />
+            <validValue name="EsfIns" val="0x1015" displayName="ESF-INS" />
+            <validValue name="MgaGps" val="0x1300" displayName="MGA-GPS" />
+            <validValue name="MgaGal" val="0x1302" displayName="MGA-GAL" />
+            <validValue name="MgaBds" val="0x1303" displayName="MGA-BDS" />
+            <validValue name="MgaQzss" val="0x1305" displayName="MGA-QZSS" />
+            <validValue name="MgaGlo" val="0x1306" displayName="MGA-GLO" />
+            <validValue name="MgaAno" val="0x1320" displayName="MGA-ANO" />
+            <validValue name="MgaFlash" val="0x1321" displayName="MGA-FLASH" />
+            <validValue name="MgaIni" val="0x1340" displayName="MGA-INI" />
+            <validValue name="MgaAck" val="0x1360" displayName="MGA-ACK" />
+            <validValue name="MgaDbd" val="0x1380" displayName="MGA-DBD" />
+            <validValue name="LogErase" val="0x2103" displayName="LOG-ERASE" />
+            <validValue name="LogString" val="0x2104" displayName="LOG-STRING" />
+            <validValue name="LogCreate" val="0x2107" displayName="LOG-CREATE" />
+            <validValue name="LogInfo" val="0x2108" displayName="LOG-INFO" />
+            <validValue name="LogRetrieve" val="0x2109" displayName="LOG-RETRIEVE" />
+            <validValue name="LogRetrievepos" val="0x210b" displayName="LOG-RETRIEVEPOS" />
+            <validValue name="LogRetrievestring" val="0x210d" displayName="LOG-RETRIEVESTRING" />
+            <validValue name="LogFindtime" val="0x210e" displayName="LOG-FINDTIME" />
+            <validValue name="LogRetrieveposextra" val="0x210f" displayName="LOG-RETRIEVEPOSEXTRA" />
+            <validValue name="SecSign" val="0x2701" displayName="SEC-SIGN" />
+            <validValue name="SecUniqid" val="0x2703" displayName="SEC-UNIQID" />
+            <validValue name="HnrPvt" val="0x2800" displayName="HNR-PVT" />
+        </enum>
+    </fields>
+    
+    <frame name="UbloxFrame">
+        <sync name="Sync">
+            <field>
+                <int name="Sync" type="uint16" defaultValue="0x62b5" validValue="0x62b5" displayName="SYNC"/> 
+            </field>
+        </sync>
+        <id name="Id">
+            <field>
+                <ref field="MsgId" displayName="CLASS + ID" />
+            </field>
+        </id>
+        <size name="Length">
+            <field>
+                <int name="LENGTH" type="uint16" /> 
+            </field>
+        </size>
+        <payload name="Payload" />
+        <checksum name="Checksum" alg="custom" algName="UbloxChecksum" from="Id" >
+            <field>
+                <int name="Checksum" type="uint16" displayName="CK" />
+            </field>
+        </checksum>
+    </frame>       
+</schema>
