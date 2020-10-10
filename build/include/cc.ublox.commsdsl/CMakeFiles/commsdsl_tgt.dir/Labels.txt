@@ -1,0 +1,13 @@
+# Target labels
+ commsdsl_tgt
+# Source files and their labels
+/Users/luickklippel/Documents/projekte/simple-dgps/build/include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt
+/Users/luickklippel/Documents/projekte/simple-dgps/build/include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/build/include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt-complete.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-install.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-mkdir.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-download.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-update.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-patch.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-configure.rule
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/commsdsl_tgt-build.rule

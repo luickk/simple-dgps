@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/simpleDGps.h
+array
+-
+iostream
+-
+map
+-
+
+/Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp
+iostream
+-
+simpleDGps.h
+/Users/luickklippel/Documents/projekte/simple-dgps/test/simpleDGps.h
+

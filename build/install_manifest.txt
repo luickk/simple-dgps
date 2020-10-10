@@ -1,0 +1,4 @@
+/usr/local/bin/cc_ublox_simple_pos_example
+/Users/luickklippel/Documents/projekte/simple-dgps/lib/libSimpleDGps.a
+/Users/luickklippel/Documents/projekte/simple-dgps/lib/libCommCore.a
+/Users/luickklippel/Documents/projekte/simple-dgps/bin/coreTest
