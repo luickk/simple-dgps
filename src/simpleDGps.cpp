@@ -13,7 +13,7 @@ const double A4 = 4.5577281365188637e+9;  //A4 = 2.5*a2
 const double A5 = 4.2840589930055659e+4;  //A5 = a1+a3
 const double A6 = 9.9330562000986220e-1;  //A6 = 1-e2
 
-static double calcTimeFromEpoch(double t, double t_ref) 
+static double calcTimeFromEpoch(double t, double t_ref)
 {
   t-= t_ref;
   if      (t> 302400) t -= 604800;
@@ -21,7 +21,7 @@ static double calcTimeFromEpoch(double t, double t_ref)
   return t;
 }
 
-static double calcEccentricAnomaly(ephemeris *ephem, double t_k) 
+static double calcEccentricAnomaly(ephemeris *ephem, double t_k)
 {
   // Semi-major axis
   int A = ephem->sqrtA*ephem->sqrtA;
@@ -37,7 +37,7 @@ static double calcEccentricAnomaly(ephemeris *ephem, double t_k)
 
   // Solve Kepler's Equation for Eccentric Anomaly
   double E_k = M_k;
-  for(;;) 
+  for(;;)
   {
       double temp = E_k;
       E_k = M_k + ephem->e*sin(E_k);
@@ -51,7 +51,7 @@ static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
 {
   latLonAltPos finalLatLonPos = { 0, 0, 0 };
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
-  double g, rg, rf, u, v, m, f, p, x, y, z; 
+  double g, rg, rf, u, v, m, f, p, x, y, z;
   double n, lat, lon, alt;
 
   x = ecef.x;
@@ -61,7 +61,7 @@ static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
   zp = abs(z);
   w2 = x*x + y*y;
   w = sqrt(w2);
-  
+
   r2 = w2 + z*z;
   r = sqrt(r2);
   finalLatLonPos.lon = atan2(y, x);
@@ -105,7 +105,7 @@ static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
 static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 {
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
-  double g, rg, rf, u, v, m, f, p, x, y, z; 
+  double g, rg, rf, u, v, m, f, p, x, y, z;
   double n, lat, lon, alt;
 
   ecefPos ecef = { 0, 0, 0 };
@@ -124,13 +124,13 @@ static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 }
 
 // This function converts decimal degrees to radians
-static double deg2rad(double deg) 
+static double deg2rad(double deg)
 {
   return (deg * M_PI / 180);
 }
 
 //  This function converts radians to decimal degrees
-static double rad2deg(double rad) 
+static double rad2deg(double rad)
 {
   return (rad * 180 / M_PI);
 }
@@ -144,7 +144,7 @@ static double rad2deg(double rad)
 * @param lon2d Longitude of the second point in degrees
 * @return The distance between the two points in kilometers
 */
-static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d) 
+static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d)
 {
   double lat1r, lon1r, lat2r, lon2r, u, v;
   lat1r = deg2rad(lat1d);
@@ -156,13 +156,13 @@ static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, dou
   return 2.0 * EARTH_RADIUS_KM * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v));
 }
 
-static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos) 
+static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos)
 {
   ecefPos ecefBaseStationPoos = latLonAltToEcef(baseStationPos);
   return sqrt(pow(satPos.x-ecefBaseStationPoos.x, 2) + pow(satPos.y-ecefBaseStationPoos.y, 2) + pow(satPos.z-ecefBaseStationPoos.z, 2));
 }
 
-static ecefPos calcSatPos(ephemeris *ephem, double t) 
+static ecefPos calcSatPos(ephemeris *ephem, double t)
 { // Get satellite position at time t
   // Time from ephemeris reference epoch
   double t_k = calcTimeFromEpoch(t, ephem->t_oe);
@@ -205,7 +205,7 @@ static ecefPos calcSatPos(ephemeris *ephem, double t)
   return satPos;
 }
 
-static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges) 
+static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges)
 {
   satRanges trueRanges{};
 
@@ -213,7 +213,7 @@ static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseSta
   int id;
   double trueRange;
 
-  std::map<int, ecefPos>::iterator it; 
+  std::map<int, ecefPos>::iterator it;
 
   for (it = satPos.locations.begin(); it != satPos.locations.end(); it++)
   {
@@ -224,8 +224,8 @@ static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseSta
 
     trueRanges.ranges.insert(std::pair<int, double>(id, trueRange));
   }
-  
-  std::map<int, double>::iterator it_; 
+
+  std::map<int, double>::iterator it_;
   std::map<int, double>::iterator trueRangeMap, pseudoRangeMap;
   satRanges rangeCorrection;
   double correction = 0;
@@ -233,7 +233,7 @@ static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseSta
   {
     pseudoRangeMap = pseudoRanges.ranges.find(it_->first);
 
-    if (pseudoRangeMap != pseudoRanges.ranges.end()) 
+    if (pseudoRangeMap != pseudoRanges.ranges.end())
     {
       correction = abs(it_->second - pseudoRangeMap->second);
       rangeCorrection.ranges.insert(std::pair<int, double>(it_->first, correction));
@@ -245,9 +245,9 @@ static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseSta
   return rangeCorrection;
 }
 
-static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges) 
+static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges)
 {
-  std::map<int, double>::iterator it_; 
+  std::map<int, double>::iterator it_;
   std::map<int, double>::iterator pseudoRangeMap;
   satRanges rangeCorrection;
   double correctedRange = 0;
@@ -256,7 +256,7 @@ static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges ps
     // look up for pseudo range with same sat id
     pseudoRangeMap = pseudoRanges.ranges.find(it_->first);
 
-    if (pseudoRangeMap != pseudoRanges.ranges.end()) 
+    if (pseudoRangeMap != pseudoRanges.ranges.end())
     {
       correctedRange = it_->second;
       rangeCorrection.ranges.insert(std::pair<int, double>(it_->first, correctedRange));
@@ -268,88 +268,88 @@ static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges ps
   return rangeCorrection;
 }
 
-    
-// Function to get cofactor of A[p][q] in temp[][]. n is current 
-// dimension of A[][] 
-static double** getCofactor(double **A, int p, int q, int n) 
-{ 
+
+// Function to get cofactor of A[p][q] in temp[][]. n is current
+// dimension of A[][]
+static double** getCofactor(double **A, int p, int q, int n)
+{
   double** temp = 0;
-  int i = 0, j = 0; 
+  int i = 0, j = 0;
 
-  // Looping for each element of the matrix 
-  for (int row = 0; row < n; row++) 
-  { 
-      for (int col = 0; col < n; col++) 
-      { 
-          //  Copying into temporary matrix only those element 
-          //  which are not in given row and column 
-          if (row != p && col != q) 
-          { 
-              temp[i][j++] = A[row][col]; 
+  // Looping for each element of the matrix
+  for (int row = 0; row < n; row++)
+  {
+      for (int col = 0; col < n; col++)
+      {
+          //  Copying into temporary matrix only those element
+          //  which are not in given row and column
+          if (row != p && col != q)
+          {
+              temp[i][j++] = A[row][col];
 
-              // Row is filled, so increase row index and 
-              // reset col index 
-              if (j == n - 1) 
-              { 
-                  j = 0; 
-                  i++; 
-              } 
-          } 
-      } 
-  } 
+              // Row is filled, so increase row index and
+              // reset col index
+              if (j == n - 1)
+              {
+                  j = 0;
+                  i++;
+              }
+          }
+      }
+  }
   return temp;
-} 
-  
-/* Recursive function for finding determinant of matrix. 
+}
+
+/* Recursive function for finding determinant of matrix.
   n is current dimension of A[][]. */
-static double clacDeterminant(double **A, int n) 
-{ 
-  double D = 0; // Initialize result 
+static double clacDeterminant(double **A, int n)
+{
+  double D = 0; // Initialize result
 
-  //  Base case : if matrix contains single element 
-  if (n == 1) 
-      return A[0][0]; 
+  //  Base case : if matrix contains single element
+  if (n == 1)
+      return A[0][0];
 
-  int sign = 1;  // To store sign multiplier 
+  int sign = 1;  // To store sign multiplier
 
-    // Iterate for each element of first row 
-  for (int f = 0; f < n; f++) 
-  { 
-      // Getting Cofactor of A[0][f] 
-      double **temp = getCofactor(A, 0, f, n); 
-      D += sign * A[0][f] * clacDeterminant(A, n - 1); 
+    // Iterate for each element of first row
+  for (int f = 0; f < n; f++)
+  {
+      // Getting Cofactor of A[0][f]
+      double **temp = getCofactor(A, 0, f, n);
+      D += sign * A[0][f] * clacDeterminant(A, n - 1);
 
-      // terms are to be added with alternate sign 
-      sign = -sign; 
-  } 
+      // terms are to be added with alternate sign
+      sign = -sign;
+  }
 
-  return D; 
-} 
-  
-// Function to get adjoint of A[N][N] in adj[N][N]. 
-static double** calcAdjoint(double **A, int matrixArows) 
-{ 
+  return D;
+}
+
+// Function to get adjoint of A[N][N] in adj[N][N].
+static double** calcAdjoint(double **A, int matrixArows)
+{
   double** adj = 0;
-  int sign = 1, temp[][posMTrillatAColumSize] = {};
-  
-  for (int i=0; i<matrixArows; i++) 
-  { 
-      for (int j=0; j<posMTrillatAColumSize; j++) 
-      { 
-          // Get cofactor of A[i][j] 
-          double **temp = getCofactor(A, i, j, posMTrillatAColumSize); 
+  int sign = 0;
 
-          // sign of adj[j][i] positive if sum of row 
-          // and column indexes is even. 
-          sign = ((i+j)%2==0)? 1: -1; 
+  for (int i=0; i<matrixArows; i++)
+  {
+      for (int j=0; j<posMTrillatAColumSize; j++)
+      {
+          // Get cofactor of A[i][j]
+          double **temp = getCofactor(A, i, j, posMTrillatAColumSize);
 
-          // Interchanging rows and columns to get the 
-          // transpose of the cofactor matrix 
-          adj[j][i] = (sign)*(clacDeterminant(A, posMTrillatAColumSize-1)); 
-      } 
-  } 
+          // sign of adj[j][i] positive if sum of row
+          // and column indexes is even.
+          sign = ((i+j)%2==0)? 1: -1;
+
+          // Interchanging rows and columns to get the
+          // transpose of the cofactor matrix
+          adj[j][i] = (sign)*(clacDeterminant(A, posMTrillatAColumSize-1));
+      }
+  }
   return adj;
-} 
+}
 
 // by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
 // method assumes that matrices have same dim sizes
@@ -421,34 +421,34 @@ static double** transpose2DimMatrix(double **inputArr)
       outputArr[j][i]= inputArr[i][j];
     }
   }
-  return outputArr;  
+  return outputArr;
 }
 
 // Function to calculate and store inverse, returns 0 if false
 // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
-static double** calcInverse(double **A, int matrixArows) 
-{ 
+static double** calcInverse(double **A, int matrixArows)
+{
   double** inverse = 0;
-  // Find determinant of A[][] 
-  int det = clacDeterminant(A, posMTrillatAColumSize); 
-  if (det == 0) 
-  { 
-      cout << "Singular matrix, can't find its inverse"; 
-      return 0; 
-  } 
+  // Find determinant of A[][]
+  int det = clacDeterminant(A, posMTrillatAColumSize);
+  if (det == 0)
+  {
+      cout << "Singular matrix, can't find its inverse";
+      return 0;
+  }
 
-  // Find adjoint 
-  double **adj = calcAdjoint(A, matrixArows); 
+  // Find adjoint
+  double **adj = calcAdjoint(A, matrixArows);
 
-  // Find Inverse using formula "inverse(A) = adj(A)/det(A)" 
-  for (int i=0; i<matrixArows; i++) 
-      for (int j=0; j<posMTrillatAColumSize; j++) 
-          inverse[i][j] = adj[i][j]/float(det); 
+  // Find Inverse using formula "inverse(A) = adj(A)/det(A)"
+  for (int i=0; i<matrixArows; i++)
+      for (int j=0; j<posMTrillatAColumSize; j++)
+          inverse[i][j] = adj[i][j]/float(det);
 
-  return inverse; 
+  return inverse;
 }
 
-static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows) 
+static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows)
 {
   double **matrixATransposed = transpose2DimMatrix(matrixA);
   double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixArows);
@@ -461,7 +461,7 @@ static double** leastSquareReg(double **matrixA, double **matrixB, int matrixAro
 
 ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
 {
-  std::map<int, ecefPos>::iterator it_; 
+  std::map<int, ecefPos>::iterator it_;
   std::map<int, double>::iterator finalSatRangesMap;
   int matrixArows,matrixAcol = 0;
   double x, y, z;
@@ -482,7 +482,7 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
     finalSatRangesMap = finalSatRanges.ranges.find(it_->first);
     range = finalSatRangesMap->second;
 
-    if (it_ != finalSatPos.locations.end()) 
+    if (it_ != finalSatPos.locations.end())
     {
       x = it_->second.x;
       y = it_->second.y;
@@ -502,7 +502,7 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
       std::cout << "could not find sat pos for user pos trilateration" << std::endl;
     }
   }
-  
+
   // least square regression
   double **finalECEF = leastSquareReg(matrixA, matrixB, matrixArows);
 

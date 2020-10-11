@@ -5,15 +5,34 @@ set (ALL_MESSAGES_LIB "all_messages")
 function (cc_plugin_all_messages)
     set (name "${ALL_MESSAGES_LIB}")
     set (src
+        field/CfgNavx5AopCfg.cpp
+        field/CfgNavx5AopOrbMaxErr.cpp
+        field/CfgNavx5Mask1.cpp
+        field/CfgNavx5Mask2.cpp
+        field/CfgNavx5SigAttenCompMode.cpp
+        field/GeofenceState.cpp
         field/CfgNmeaVersion.cpp
+        field/MsgId.cpp
+        field/CfgCfgMask.cpp
+        field/CfgDatD.cpp
+        field/CfgDatDatumNum.cpp
+        field/CfgDatFlat.cpp
+        field/CfgDatMajA.cpp
+        field/CfgDatRot.cpp
+        field/CfgDatScale.cpp
+        field/CfgMainTalkerId.cpp
+        field/CfgNmeaFilter.cpp
+        field/CfgNmeaFlags.cpp
+        field/CfgNmeaGnssToFilter.cpp
+        field/CfgNmeaGsvTalkerId.cpp
         field/CfgNmeaNumSV.cpp
         field/CfgNmeaSvNumbering.cpp
         field/CfgPrtFlags.cpp
+        field/CfgPrtOutProtoMask.cpp
         field/CfgNvsMask.cpp
         field/CfgPm2Flags.cpp
-        field/CfgTp5TpIdx.cpp
         field/CfgPrtInProtoMask.cpp
-        field/CfgPrtOutProtoMask.cpp
+        field/CfgTp5TpIdx.cpp
         field/CfgPrtPortId.cpp
         field/CfgPrtTxReady.cpp
         field/Day.cpp
@@ -52,29 +71,10 @@ function (cc_plugin_all_messages)
         field/SAcc.cpp
         field/SbasService.cpp
         field/SbasSys.cpp
+        field/Sec.cpp
         field/VAcc.cpp
         field/Vel.cpp
         field/Year.cpp
-        field/CfgNavx5AopCfg.cpp
-        field/CfgNavx5AopOrbMaxErr.cpp
-        field/CfgNavx5Mask1.cpp
-        field/CfgNavx5Mask2.cpp
-        field/CfgNavx5SigAttenCompMode.cpp
-        field/GeofenceState.cpp
-        field/MsgId.cpp
-        field/CfgCfgMask.cpp
-        field/CfgDatD.cpp
-        field/CfgDatDatumNum.cpp
-        field/CfgDatFlat.cpp
-        field/CfgDatMajA.cpp
-        field/CfgDatRot.cpp
-        field/CfgDatScale.cpp
-        field/CfgMainTalkerId.cpp
-        field/CfgNmeaFilter.cpp
-        field/CfgNmeaFlags.cpp
-        field/CfgNmeaGnssToFilter.cpp
-        field/CfgNmeaGsvTalkerId.cpp
-        field/Sec.cpp
         Message.cpp
         message/AckAck.cpp
         message/AckNak.cpp

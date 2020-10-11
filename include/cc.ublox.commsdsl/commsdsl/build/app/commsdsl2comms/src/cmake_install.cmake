@@ -42,10 +42,10 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/commsdsl2comms" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/commsdsl2comms")
     execute_process(COMMAND /usr/bin/install_name_tool
-      -delete_rpath "/usr/local/lib"
+      -delete_rpath "/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/lib/src"
       "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/commsdsl2comms")
     execute_process(COMMAND /usr/bin/install_name_tool
-      -delete_rpath "/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/lib/src"
+      -delete_rpath "/usr/local/lib"
       "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/commsdsl2comms")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/commsdsl2comms")
