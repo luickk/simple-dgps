@@ -273,7 +273,7 @@ static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges ps
 // dimension of A[][]
 static double** getCofactor(double **A, int p, int q, int n)
 {
-  double** temp = 0;
+  double** temp = new double*[posMTrillatAColumSize];
   int i = 0, j = 0;
 
   // Looping for each element of the matrix
@@ -329,7 +329,7 @@ static double clacDeterminant(double **A, int n)
 // Function to get adjoint of A[N][N] in adj[N][N].
 static double** calcAdjoint(double **A, int matrixArows)
 {
-  double** adj = 0;
+  double** adj = new double*[matrixArows];
   int sign = 0;
 
   for (int i=0; i<matrixArows; i++)
@@ -355,7 +355,7 @@ static double** calcAdjoint(double **A, int matrixArows)
 // method assumes that matrices have same dim sizes
 static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
 {
-  double** outputMatrix = 0;
+  double** outputMatrix = new double*[posMTrillatAColumSize];
   int i, j, k;
 
   // Initializing elements of matrix mult to 0.
@@ -385,7 +385,7 @@ static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixA
 // method assumes that matrices have same dim sizes
 static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int matrixArows)
 {
-  double** outputMatrix = 0;
+  double** outputMatrix = new double*[posMTrillatAColumSize];
   int i, j, k;
 
   // Initializing elements of matrix mult to 0.
@@ -411,12 +411,12 @@ static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int mat
   return outputMatrix;
 }
 
-static double** transpose2DimMatrix(double **inputArr)
+static double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix)
 {
-  double **outputArr = 0;
-  for (int i = 0; i < sizeof(**inputArr)/sizeof(double); ++i)
+  double **outputArr = new double*[matrixArows];
+  for (int i = 0; i < matrixArows; ++i)
   {
-    for (int j = 0; j < sizeof(*inputArr[0])/sizeof(double); ++j)
+    for (int j = 0; j < transpose2DimMatrix; ++j)
     {
       outputArr[j][i]= inputArr[i][j];
     }
@@ -428,7 +428,7 @@ static double** transpose2DimMatrix(double **inputArr)
 // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
 static double** calcInverse(double **A, int matrixArows)
 {
-  double** inverse = 0;
+  double** inverse = new double*[posMTrillatAColumSize];
   // Find determinant of A[][]
   int det = clacDeterminant(A, posMTrillatAColumSize);
   if (det == 0)
@@ -448,9 +448,9 @@ static double** calcInverse(double **A, int matrixArows)
   return inverse;
 }
 
-static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows)
+static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows, int matrixAcol)
 {
-  double **matrixATransposed = transpose2DimMatrix(matrixA);
+  double **matrixATransposed = transpose2DimMatrix(matrixA, matrixArows, matrixAcol);
   double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixArows);
   double **matrixATransposedAInverse = calcInverse(matrixATransposedA, matrixArows);
   double **matrixATransposedAAdd = multiplyMatrices(matrixATransposedAInverse, matrixATransposed, matrixArows);
@@ -463,14 +463,14 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
 {
   std::map<int, ecefPos>::iterator it_;
   std::map<int, double>::iterator finalSatRangesMap;
-  int matrixArows,matrixAcol = 0;
+  int matrixArows, matrixAcol = 0;
   double x, y, z;
   double Am, Bm, Cm, Dm;
   double range;
   int nSat = finalSatPos.locations.size();
   ecefPos finalPos = { 0.0, 0.0, 0.0 };
-  double **matrixA = 0;
-  double **matrixB = 0;
+  double **matrixA = new double*[3];
+  double **matrixB = new double*[1];
 
   matrixAcol = posMTrillatAColumSize;
   matrixArows = nSat;
@@ -504,7 +504,7 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   }
 
   // least square regression
-  double **finalECEF = leastSquareReg(matrixA, matrixB, matrixArows);
+  double **finalECEF = leastSquareReg(matrixA, matrixB, matrixArows, matrixAcol);
 
   finalPos.x = *finalECEF[0];
   finalPos.y = *finalECEF[1];

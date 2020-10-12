@@ -6,11 +6,11 @@ function (cc_plugin_all_messages)
     set (name "${ALL_MESSAGES_LIB}")
     set (src
         field/CfgNavx5AopCfg.cpp
+        field/CfgNavx5Mask2.cpp
         field/CfgNavx5AopOrbMaxErr.cpp
         field/CfgNavx5Mask1.cpp
-        field/CfgNavx5Mask2.cpp
-        field/CfgNavx5SigAttenCompMode.cpp
         field/GeofenceState.cpp
+        field/CfgNavx5SigAttenCompMode.cpp
         field/CfgNmeaVersion.cpp
         field/MsgId.cpp
         field/CfgCfgMask.cpp
