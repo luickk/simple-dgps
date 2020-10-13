@@ -6,15 +6,16 @@ function (cc_plugin_all_messages)
     set (name "${ALL_MESSAGES_LIB}")
     set (src
         field/CfgNavx5AopCfg.cpp
-        field/CfgNavx5Mask2.cpp
+        field/CfgCfgMask.cpp
         field/CfgNavx5AopOrbMaxErr.cpp
         field/CfgNavx5Mask1.cpp
-        field/GeofenceState.cpp
+        field/CfgNavx5Mask2.cpp
         field/CfgNavx5SigAttenCompMode.cpp
-        field/CfgNmeaVersion.cpp
-        field/MsgId.cpp
-        field/CfgCfgMask.cpp
+        field/GeofenceState.cpp
         field/CfgDatD.cpp
+        field/MsgId.cpp
+        field/CfgPrtFlags.cpp
+        field/CfgPrtInProtoMask.cpp
         field/CfgDatDatumNum.cpp
         field/CfgDatFlat.cpp
         field/CfgDatMajA.cpp
@@ -27,16 +28,15 @@ function (cc_plugin_all_messages)
         field/CfgNmeaGsvTalkerId.cpp
         field/CfgNmeaNumSV.cpp
         field/CfgNmeaSvNumbering.cpp
-        field/CfgPrtFlags.cpp
-        field/CfgPrtOutProtoMask.cpp
+        field/CfgNmeaVersion.cpp
         field/CfgNvsMask.cpp
         field/CfgPm2Flags.cpp
-        field/CfgPrtInProtoMask.cpp
         field/CfgTp5TpIdx.cpp
+        field/Dop.cpp
+        field/CfgPrtOutProtoMask.cpp
         field/CfgPrtPortId.cpp
         field/CfgPrtTxReady.cpp
         field/Day.cpp
-        field/Dop.cpp
         field/EcefHP.cpp
         field/EcefVX.cpp
         field/EcefVY.cpp

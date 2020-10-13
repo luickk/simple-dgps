@@ -79,15 +79,15 @@ include test/CMakeFiles/coreTest.dir/flags.make
 test/CMakeFiles/coreTest.dir/coreTest.cpp.o: test/CMakeFiles/coreTest.dir/flags.make
 test/CMakeFiles/coreTest.dir/coreTest.cpp.o: ../test/coreTest.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/coreTest.dir/coreTest.cpp.o"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coreTest.dir/coreTest.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/test && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coreTest.dir/coreTest.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp
 
 test/CMakeFiles/coreTest.dir/coreTest.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coreTest.dir/coreTest.cpp.i"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp > CMakeFiles/coreTest.dir/coreTest.cpp.i
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/test && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp > CMakeFiles/coreTest.dir/coreTest.cpp.i
 
 test/CMakeFiles/coreTest.dir/coreTest.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coreTest.dir/coreTest.cpp.s"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp -o CMakeFiles/coreTest.dir/coreTest.cpp.s
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/test && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/test/coreTest.cpp -o CMakeFiles/coreTest.dir/coreTest.cpp.s
 
 # Object files for target coreTest
 coreTest_OBJECTS = \

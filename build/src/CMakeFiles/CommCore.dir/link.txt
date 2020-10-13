@@ -1,2 +1,2 @@
-/usr/bin/ar qc libCommCore.a CMakeFiles/CommCore.dir/commCore.cpp.o
-/usr/bin/ranlib libCommCore.a
+/Library/Developer/CommandLineTools/usr/bin/ar qc libCommCore.a CMakeFiles/CommCore.dir/commCore.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libCommCore.a

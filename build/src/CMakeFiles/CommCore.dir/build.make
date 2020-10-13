@@ -79,15 +79,15 @@ include src/CMakeFiles/CommCore.dir/flags.make
 src/CMakeFiles/CommCore.dir/commCore.cpp.o: src/CMakeFiles/CommCore.dir/flags.make
 src/CMakeFiles/CommCore.dir/commCore.cpp.o: ../src/commCore.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/CommCore.dir/commCore.cpp.o"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CommCore.dir/commCore.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/src/commCore.cpp
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CommCore.dir/commCore.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/src/commCore.cpp
 
 src/CMakeFiles/CommCore.dir/commCore.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CommCore.dir/commCore.cpp.i"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/src/commCore.cpp > CMakeFiles/CommCore.dir/commCore.cpp.i
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/src/commCore.cpp > CMakeFiles/CommCore.dir/commCore.cpp.i
 
 src/CMakeFiles/CommCore.dir/commCore.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CommCore.dir/commCore.cpp.s"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/src/commCore.cpp -o CMakeFiles/CommCore.dir/commCore.cpp.s
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/src/commCore.cpp -o CMakeFiles/CommCore.dir/commCore.cpp.s
 
 # Object files for target CommCore
 CommCore_OBJECTS = \

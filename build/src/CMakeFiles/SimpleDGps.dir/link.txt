@@ -1,2 +1,2 @@
-/usr/bin/ar qc libSimpleDGps.a CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o
-/usr/bin/ranlib libSimpleDGps.a
+/Library/Developer/CommandLineTools/usr/bin/ar qc libSimpleDGps.a CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libSimpleDGps.a

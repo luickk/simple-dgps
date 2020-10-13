@@ -469,11 +469,18 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   double range;
   int nSat = finalSatPos.locations.size();
   ecefPos finalPos = { 0.0, 0.0, 0.0 };
-  double **matrixA = new double*[3];
-  double **matrixB = new double*[1];
 
   matrixAcol = posMTrillatAColumSize;
   matrixArows = nSat;
+
+  double **matrixA = new double*[3];
+  double **matrixB = new double*[1];
+
+  for (int count = 0; matrixArows < 3; ++count)
+    matrixA[count] = new double[matrixAcol];
+
+  matrixB[0] = new double[matrixAcol];
+
 
   int i = 0;
   for (it_ = finalSatPos.locations.begin(); it_ != finalSatPos.locations.end(); it_++)
@@ -492,11 +499,15 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
       Cm = -2*z;
       Dm = EARTH_RADIUS_KM*EARTH_RADIUS_KM + (pow(x,2)+pow(y,2)+pow(z,2)) - pow(range,2);
 
+      std::cout << i << std::endl;
+
+
       matrixA[i][0] = Am;
       matrixA[i][1] = Bm;
       matrixA[i][2] = Cm;
       matrixB[i][0] = Dm;
       i++;
+
     } else
     {
       std::cout << "could not find sat pos for user pos trilateration" << std::endl;

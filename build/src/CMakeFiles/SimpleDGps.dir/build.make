@@ -79,15 +79,15 @@ include src/CMakeFiles/SimpleDGps.dir/flags.make
 src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o: src/CMakeFiles/SimpleDGps.dir/flags.make
 src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o: ../src/simpleDGps.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/luickklippel/Documents/projekte/simple-dgps/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/src/simpleDGps.cpp
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.o -c /Users/luickklippel/Documents/projekte/simple-dgps/src/simpleDGps.cpp
 
 src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.i"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/src/simpleDGps.cpp > CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.i
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/luickklippel/Documents/projekte/simple-dgps/src/simpleDGps.cpp > CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.i
 
 src/CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.s"
-	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/src/simpleDGps.cpp -o CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.s
+	cd /Users/luickklippel/Documents/projekte/simple-dgps/build/src && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/luickklippel/Documents/projekte/simple-dgps/src/simpleDGps.cpp -o CMakeFiles/SimpleDGps.dir/simpleDGps.cpp.s
 
 # Object files for target SimpleDGps
 SimpleDGps_OBJECTS = \

@@ -30,7 +30,7 @@
 /Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/lib/libcommsdsl.dylib
 /Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/lib/LibCommsdsl/cmake/LibCommsdslConfig.cmake
 /Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/lib/LibCommsdsl/cmake/LibCommsdslTargets.cmake
-/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/lib/LibCommsdsl/cmake/LibCommsdslTargets-noconfig.cmake
+/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/lib/LibCommsdsl/cmake/LibCommsdslTargets-debug.cmake
 /Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/lib/LibCommsdsl/cmake/LibCommsdslConfigVersion.cmake
 /Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/bin/commsdsl2comms.sh
 /Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/install/bin/commsdsl2comms

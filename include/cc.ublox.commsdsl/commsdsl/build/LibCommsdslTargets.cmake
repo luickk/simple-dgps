@@ -48,11 +48,11 @@ set_target_properties(commsdsl PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/externals/commsdsl/lib/include"
 )
 
-# Import target "commsdsl" for configuration ""
-set_property(TARGET commsdsl APPEND PROPERTY IMPORTED_CONFIGURATIONS NOCONFIG)
+# Import target "commsdsl" for configuration "Debug"
+set_property(TARGET commsdsl APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
 set_target_properties(commsdsl PROPERTIES
-  IMPORTED_LOCATION_NOCONFIG "/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/lib/src/libcommsdsl.3.5.2.dylib"
-  IMPORTED_SONAME_NOCONFIG "@rpath/libcommsdsl.3.5.2.dylib"
+  IMPORTED_LOCATION_DEBUG "/Users/luickklippel/Documents/projekte/simple-dgps/include/cc.ublox.commsdsl/commsdsl/build/lib/src/libcommsdsl.3.5.2.dylib"
+  IMPORTED_SONAME_DEBUG "@rpath/libcommsdsl.3.5.2.dylib"
   )
 
 # This file does not depend on other imported targets which have

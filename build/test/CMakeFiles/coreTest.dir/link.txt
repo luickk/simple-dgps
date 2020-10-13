@@ -1,1 +1,1 @@
-/usr/bin/g++  -std=c++11 -O3 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/coreTest.dir/coreTest.cpp.o -o coreTest  ../src/libSimpleDGps.a 
+/Library/Developer/CommandLineTools/usr/bin/c++  -std=c++11 -O3 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/coreTest.dir/coreTest.cpp.o -o coreTest  ../src/libSimpleDGps.a 
