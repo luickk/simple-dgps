@@ -70,7 +70,7 @@ static ecefPos calcSatPos(ephemeris *ephem, double t);
 // latLonAlt distance calculations
 // by https://stackoverflow.com/questions/10198985/calculating-the-distance-between-2-latitudes-and-longitudes-that-are-saved-in-a
 static double deg2rad(double deg);
-static double rad2deg(double rad); 
+static double rad2deg(double rad);
 static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d);
 
 // calculates non geodetic, 3 dim distance (straight line)
@@ -92,6 +92,9 @@ static double clacDeterminant(double A[][posMTrillatAColumSize], int n);
 
 // range position trillateration
 static double** leastSquareReg(double matrixA[][4]);
+
+static double** allocate2Ddouble(int row, int col);
+static void free2Dchar(char** final2D);
 
 // returns position of given pseudo ranges via mult trilateration(solving via least square)
 ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges);

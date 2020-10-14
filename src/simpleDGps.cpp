@@ -2,6 +2,31 @@
 
 #include <cmath>
 
+// by https://stackoverflow.com/questions/5040496/how-can-i-allocate-a-2d-array-using-double-pointers
+static double** allocate2Ddouble(int row, int col)
+{
+  int i;
+
+  // allocate space for actual data
+  double *data = (double*)malloc(sizeof(double) * row * col);
+
+  // create array or pointers to first elem in each 2D row
+  double **final2D = (double**)malloc(sizeof(double*) * row);
+  for (i = 0; i < row; i++)
+  {
+    final2D[i] = data + (i*col);
+  }
+  return final2D;
+}
+
+/* free data array first, then pointer to rows */
+static void free2Dchar(char** final2D)
+{
+    if (!final2D) return;
+    if (final2D[0]) free(final2D[0]);
+    free(final2D);
+}
+
 // conts for coord conversion transformation
 const double  A = 6378137.0;              //WGS-84 semi-major axis
 const double EARTH_RADIUS_KM = 6378.8; // earth radius in km
@@ -273,7 +298,7 @@ static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges ps
 // dimension of A[][]
 static double** getCofactor(double **A, int p, int q, int n)
 {
-  double** temp = new double*[posMTrillatAColumSize];
+  double** temp = allocate2Ddouble(n, posMTrillatAColumSize);
   int i = 0, j = 0;
 
   // Looping for each element of the matrix
@@ -329,7 +354,7 @@ static double clacDeterminant(double **A, int n)
 // Function to get adjoint of A[N][N] in adj[N][N].
 static double** calcAdjoint(double **A, int matrixArows)
 {
-  double** adj = new double*[matrixArows];
+  double** adj = allocate2Ddouble(posMTrillatAColumSize, matrixArows);
   int sign = 0;
 
   for (int i=0; i<matrixArows; i++)
@@ -355,7 +380,7 @@ static double** calcAdjoint(double **A, int matrixArows)
 // method assumes that matrices have same dim sizes
 static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
 {
-  double** outputMatrix = new double*[posMTrillatAColumSize];
+  double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   int i, j, k;
 
   // Initializing elements of matrix mult to 0.
@@ -385,7 +410,7 @@ static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixA
 // method assumes that matrices have same dim sizes
 static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int matrixArows)
 {
-  double** outputMatrix = new double*[posMTrillatAColumSize];
+  double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   int i, j, k;
 
   // Initializing elements of matrix mult to 0.
@@ -413,7 +438,7 @@ static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int mat
 
 static double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix)
 {
-  double **outputArr = new double*[matrixArows];
+  double **outputArr = allocate2Ddouble(transpose2DimMatrix, matrixArows);
   for (int i = 0; i < matrixArows; ++i)
   {
     for (int j = 0; j < transpose2DimMatrix; ++j)
@@ -428,7 +453,7 @@ static double** transpose2DimMatrix(double **inputArr, int matrixArows, int tran
 // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
 static double** calcInverse(double **A, int matrixArows)
 {
-  double** inverse = new double*[posMTrillatAColumSize];
+  double** inverse = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   // Find determinant of A[][]
   int det = clacDeterminant(A, posMTrillatAColumSize);
   if (det == 0)
@@ -451,7 +476,7 @@ static double** calcInverse(double **A, int matrixArows)
 static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows, int matrixAcol)
 {
   double **matrixATransposed = transpose2DimMatrix(matrixA, matrixArows, matrixAcol);
-  double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixArows);
+  double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixAcol);
   double **matrixATransposedAInverse = calcInverse(matrixATransposedA, matrixArows);
   double **matrixATransposedAAdd = multiplyMatrices(matrixATransposedAInverse, matrixATransposed, matrixArows);
   double **finalX = multiplyMatricesND1D(matrixATransposedAAdd, matrixB, matrixArows);
@@ -473,14 +498,8 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   matrixAcol = posMTrillatAColumSize;
   matrixArows = nSat;
 
-  double **matrixA = new double*[3];
-  double **matrixB = new double*[1];
-
-  for (int count = 0; matrixArows < 3; ++count)
-    matrixA[count] = new double[matrixAcol];
-
-  matrixB[0] = new double[matrixAcol];
-
+  double **matrixA = allocate2Ddouble(nSat, 3);
+  double **matrixB = allocate2Ddouble(nSat, 1);
 
   int i = 0;
   for (it_ = finalSatPos.locations.begin(); it_ != finalSatPos.locations.end(); it_++)
@@ -500,7 +519,6 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
       Dm = EARTH_RADIUS_KM*EARTH_RADIUS_KM + (pow(x,2)+pow(y,2)+pow(z,2)) - pow(range,2);
 
       std::cout << i << std::endl;
-
 
       matrixA[i][0] = Am;
       matrixA[i][1] = Bm;
