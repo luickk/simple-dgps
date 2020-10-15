@@ -354,7 +354,7 @@ static double clacDeterminant(double **A, int n)
 // Function to get adjoint of A[N][N] in adj[N][N].
 static double** calcAdjoint(double **A, int matrixArows)
 {
-  double** adj = allocate2Ddouble(posMTrillatAColumSize, matrixArows);
+  double** adj = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   int sign = 0;
 
   for (int i=0; i<matrixArows; i++)
@@ -370,7 +370,7 @@ static double** calcAdjoint(double **A, int matrixArows)
 
           // Interchanging rows and columns to get the
           // transpose of the cofactor matrix
-          adj[j][i] = (sign)*(clacDeterminant(A, posMTrillatAColumSize-1));
+          adj[i][j] = (sign)*(clacDeterminant(A, posMTrillatAColumSize-1));
       }
   }
   return adj;
@@ -443,7 +443,7 @@ static double** transpose2DimMatrix(double **inputArr, int matrixArows, int tran
   {
     for (int j = 0; j < transpose2DimMatrix; ++j)
     {
-      outputArr[j][i]= inputArr[i][j];
+      outputArr[j][i] = inputArr[i][j];
     }
   }
   return outputArr;
@@ -468,7 +468,7 @@ static double** calcInverse(double **A, int matrixArows)
   // Find Inverse using formula "inverse(A) = adj(A)/det(A)"
   for (int i=0; i<matrixArows; i++)
       for (int j=0; j<posMTrillatAColumSize; j++)
-          inverse[i][j] = adj[i][j]/float(det);
+          inverse[i][j] = adj[i][j]/double(det);
 
   return inverse;
 }
@@ -517,8 +517,6 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
       Bm = -2*y;
       Cm = -2*z;
       Dm = EARTH_RADIUS_KM*EARTH_RADIUS_KM + (pow(x,2)+pow(y,2)+pow(z,2)) - pow(range,2);
-
-      std::cout << i << std::endl;
 
       matrixA[i][0] = Am;
       matrixA[i][1] = Bm;

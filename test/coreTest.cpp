@@ -4,8 +4,6 @@
 using namespace std;
 
 int main() {
-  cout << "Hello World s";
-
   satRanges testPseudoRanges;
   testPseudoRanges.ranges.insert({1, 23399263.4});
   testPseudoRanges.ranges.insert({2, 22473250.5});
@@ -23,7 +21,7 @@ int main() {
   testSatPos.locations.insert({25, ecefPos{-17104.3, -5228.5, 19811.5}});
   testSatPos.locations.insert({14, ecefPos{-17104.3, -5228.5, 19811.5}});
   testSatPos.locations.insert({6, ecefPos{-17104.3, -5228.5, 19811.5}});
-  
+
   ecefPos res = trillatPosFromRange(testSatPos, testPseudoRanges);
   cout << res.x << endl;
   cout << res.y << endl;
