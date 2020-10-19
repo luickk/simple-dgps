@@ -12,8 +12,8 @@ set(CMAKE_CXX_COMPILER_ID "AppleClang")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/local/include"
   "../src/include"
-  "include/cc.ublox.commsdsl/comms_champion/install/include"
-  "../include/cc.ublox.commsdsl/output/include"
+  "/Users/luickklippel/Documents/projekte/cc.ublox.commsdsl/build/comms_champion/install/include"
+  "/Users/luickklippel/Documents/projekte/cc.ublox.commsdsl/build/output/include"
   )
 
 # Targets to which this target links.

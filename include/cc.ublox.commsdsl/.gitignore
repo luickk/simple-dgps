@@ -1,4 +1,0 @@
-include/cc.ublox.commsdsl/commsdsl/
-build*
-.vscode
-externals

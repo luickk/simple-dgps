@@ -176,58 +176,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named cc.ublox.commsdsl
-
-# Build rule for target.
-cc.ublox.commsdsl: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cc.ublox.commsdsl
-.PHONY : cc.ublox.commsdsl
-
-# fast build rule for target.
-cc.ublox.commsdsl/fast:
-	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/cc.ublox.commsdsl.dir/build
-.PHONY : cc.ublox.commsdsl/fast
-
-#=============================================================================
-# Target rules for targets named rm_tmp_tgt
-
-# Build rule for target.
-rm_tmp_tgt: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 rm_tmp_tgt
-.PHONY : rm_tmp_tgt
-
-# fast build rule for target.
-rm_tmp_tgt/fast:
-	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/rm_tmp_tgt.dir/build
-.PHONY : rm_tmp_tgt/fast
-
-#=============================================================================
-# Target rules for targets named commsdsl_tgt
-
-# Build rule for target.
-commsdsl_tgt: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 commsdsl_tgt
-.PHONY : commsdsl_tgt
-
-# fast build rule for target.
-commsdsl_tgt/fast:
-	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build.make include/cc.ublox.commsdsl/CMakeFiles/commsdsl_tgt.dir/build
-.PHONY : commsdsl_tgt/fast
-
-#=============================================================================
-# Target rules for targets named cc_ublox_simple_pos_example
-
-# Build rule for target.
-cc_ublox_simple_pos_example: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cc_ublox_simple_pos_example
-.PHONY : cc_ublox_simple_pos_example
-
-# fast build rule for target.
-cc_ublox_simple_pos_example/fast:
-	$(MAKE) $(MAKESILENT) -f include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build.make include/cc.ublox.commsdsl/examples/simple_pos/CMakeFiles/cc_ublox_simple_pos_example.dir/build
-.PHONY : cc_ublox_simple_pos_example/fast
-
-#=============================================================================
 # Target rules for targets named CommCore
 
 # Build rule for target.
@@ -278,12 +226,8 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... cc.ublox.commsdsl"
-	@echo "... commsdsl_tgt"
-	@echo "... rm_tmp_tgt"
 	@echo "... CommCore"
 	@echo "... SimpleDGps"
-	@echo "... cc_ublox_simple_pos_example"
 	@echo "... coreTest"
 .PHONY : help
 

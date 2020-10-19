@@ -1,3 +1,0 @@
-repository='https://github.com/commschamp/commsdsl.git'
-module=''
-tag='origin'
