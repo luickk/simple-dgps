@@ -55,19 +55,22 @@ All the code for decoding and parsing was copied from RTKLIB.
 
 ## Installation
 
-Clone GitHub repo:
-
-`git clone https://github.com/cy8berpunk/simple-dgps`
 
 Installation:
 
-1. Clean up object files: `make clean`
-2. Compile project: `make`
-3. Run executable `./basestation`
+1. Clone the GitHub repo: `git clone https://github.com/luickk/simple-dgps`
+
+2. Install dependencies: `git clone https://github.com/commschamp/cc.ublox.commsdsl`
+-> follow installation instructions
+
+3. Set dependency (ublox commdsl) project path in main `CMakeLists.txt`
+
+1. Run: `bash rebuild`
+This will cleanup the project build objects and rebuild the project.
 
 ## Dependencies
 
-- wiringPi
+- [cc.ublox.commsdsl](https://github.com/commschamp/cc.ublox.commsdsl)
 
 ## TODO
 - add full support for glonass sats

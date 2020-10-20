@@ -59,47 +59,46 @@ struct latLonAltPos {
 };
 
 
+double** allocate2Ddouble(int row, int col);
+void free2Dchar(char** final2D);
+
 // ephemeris calculations
 // by http://www.aholme.co.uk/GPS/SRC/2013/C++/ephemeris.cpp
-static double calcTimeFromEpoch(double t, double t_ref);
-static double calcEccentricAnomaly(ephemeris *ephem, double t_k);
-static double calcTimeFromEpoch(double t, double t_ref);
-static double calcEccentricAnomaly(ephemeris *ephem, double t_k);
-static ecefPos calcSatPos(ephemeris *ephem, double t);
+double calcTimeFromEpoch(double t, double t_ref);
+double calcEccentricAnomaly(ephemeris *ephem, double t_k);
+double calcTimeFromEpoch(double t, double t_ref);
+double calcEccentricAnomaly(ephemeris *ephem, double t_k);
+ecefPos calcSatPos(ephemeris *ephem, double t);
 
 // latLonAlt distance calculations
 // by https://stackoverflow.com/questions/10198985/calculating-the-distance-between-2-latitudes-and-longitudes-that-are-saved-in-a
-static double deg2rad(double deg);
-static double rad2deg(double rad);
-static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d);
+double deg2rad(double deg);
+double rad2deg(double rad);
+double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d);
 
 // calculates non geodetic, 3 dim distance (straight line)
-static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos);
+double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos);
 
 // geodetic <-> ecef conversion
-static latLonAltPos ecefToLatLonAlt(ecefPos ecef);
-static ecefPos latLonAltToEcef(latLonAltPos latlonAlt);
+latLonAltPos ecefToLatLonAlt(ecefPos ecef);
+ecefPos latLonAltToEcef(latLonAltPos latlonAlt);
 
 
 //basic linear alg
-static double** multiplyMatrices(double matrixA[][posMTrillatAColumSize], double matrixB[][posMTrillatAColumSize], int matrixArows);
-static double** transpose2DimMatrix(double inputArr[][posMTrillatAColumSize]);
-static double** getCofactor(double A[][posMTrillatAColumSize], int p, int q, int n);
-static double clacDeterminant(double A[][posMTrillatAColumSize], int n);
-static double** calcInverse(double A[][posMTrillatAColumSize], int matrixArows);
-static double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows);
-static double clacDeterminant(double A[][posMTrillatAColumSize], int n);
+double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows);
+double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix);
+double** getCofactor(double **A, int p, int q, int n);
+double clacDeterminant(double **A, int n);
+double** calcInverse(double **A, int matrixArows);
+double** calcAdjoint(double **A, int matrixArows);
 
 // range position trillateration
-static double** leastSquareReg(double matrixA[][4]);
-
-static double** allocate2Ddouble(int row, int col);
-static void free2Dchar(char** final2D);
+double** leastSquareReg(double matrixA[][4]);
 
 // returns position of given pseudo ranges via mult trilateration(solving via least square)
 ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges);
 
 // applies corrections from calcSatRangeCorrection to given set of pseudo ranges. (to have range corrections applied, the same sat id's are required)
-static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges);
+satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges);
 // calculates correction range from base station position, the sat pos and pseudo ranges of same fix loc
-static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges);
+satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges);

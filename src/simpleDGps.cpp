@@ -3,7 +3,7 @@
 #include <cmath>
 
 // by https://stackoverflow.com/questions/5040496/how-can-i-allocate-a-2d-array-using-double-pointers
-static double** allocate2Ddouble(int row, int col)
+double** allocate2Ddouble(int row, int col)
 {
   int i;
 
@@ -20,7 +20,7 @@ static double** allocate2Ddouble(int row, int col)
 }
 
 /* free data array first, then pointer to rows */
-static void free2Dchar(char** final2D)
+void free2Dchar(char** final2D)
 {
     if (!final2D) return;
     if (final2D[0]) free(final2D[0]);
@@ -38,7 +38,7 @@ const double A4 = 4.5577281365188637e+9;  //A4 = 2.5*a2
 const double A5 = 4.2840589930055659e+4;  //A5 = a1+a3
 const double A6 = 9.9330562000986220e-1;  //A6 = 1-e2
 
-static double calcTimeFromEpoch(double t, double t_ref)
+double calcTimeFromEpoch(double t, double t_ref)
 {
   t-= t_ref;
   if      (t> 302400) t -= 604800;
@@ -46,7 +46,7 @@ static double calcTimeFromEpoch(double t, double t_ref)
   return t;
 }
 
-static double calcEccentricAnomaly(ephemeris *ephem, double t_k)
+double calcEccentricAnomaly(ephemeris *ephem, double t_k)
 {
   // Semi-major axis
   int A = ephem->sqrtA*ephem->sqrtA;
@@ -72,7 +72,7 @@ static double calcEccentricAnomaly(ephemeris *ephem, double t_k)
   return E_k;
 }
 
-static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
+latLonAltPos ecefToLatLonAlt(ecefPos ecef)
 {
   latLonAltPos finalLatLonPos = { 0, 0, 0 };
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
@@ -127,7 +127,7 @@ static latLonAltPos ecefToLatLonAlt(ecefPos ecef)
   return finalLatLonPos;
 }
 
-static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
+ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 {
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
   double g, rg, rf, u, v, m, f, p, x, y, z;
@@ -149,13 +149,13 @@ static ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 }
 
 // This function converts decimal degrees to radians
-static double deg2rad(double deg)
+double deg2rad(double deg)
 {
   return (deg * M_PI / 180);
 }
 
 //  This function converts radians to decimal degrees
-static double rad2deg(double rad)
+double rad2deg(double rad)
 {
   return (rad * 180 / M_PI);
 }
@@ -169,7 +169,7 @@ static double rad2deg(double rad)
 * @param lon2d Longitude of the second point in degrees
 * @return The distance between the two points in kilometers
 */
-static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d)
+double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, double lon2d)
 {
   double lat1r, lon1r, lat2r, lon2r, u, v;
   lat1r = deg2rad(lat1d);
@@ -181,13 +181,13 @@ static double calcGeodeticDistance(double lat1d, double lon1d, double lat2d, dou
   return 2.0 * EARTH_RADIUS_KM * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v));
 }
 
-static double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos)
+double calcSatToStationRange(ecefPos satPos, latLonAltPos baseStationPos)
 {
   ecefPos ecefBaseStationPoos = latLonAltToEcef(baseStationPos);
   return sqrt(pow(satPos.x-ecefBaseStationPoos.x, 2) + pow(satPos.y-ecefBaseStationPoos.y, 2) + pow(satPos.z-ecefBaseStationPoos.z, 2));
 }
 
-static ecefPos calcSatPos(ephemeris *ephem, double t)
+ecefPos calcSatPos(ephemeris *ephem, double t)
 { // Get satellite position at time t
   // Time from ephemeris reference epoch
   double t_k = calcTimeFromEpoch(t, ephem->t_oe);
@@ -230,7 +230,7 @@ static ecefPos calcSatPos(ephemeris *ephem, double t)
   return satPos;
 }
 
-static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges)
+satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseStationPos, satRanges pseudoRanges)
 {
   satRanges trueRanges{};
 
@@ -270,7 +270,7 @@ static satRanges calcSatRangeCorrection(satLocation satPos, latLonAltPos baseSta
   return rangeCorrection;
 }
 
-static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges)
+satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRanges)
 {
   std::map<int, double>::iterator it_;
   std::map<int, double>::iterator pseudoRangeMap;
@@ -296,7 +296,7 @@ static satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges ps
 
 // Function to get cofactor of A[p][q] in temp[][]. n is current
 // dimension of A[][]
-static double** getCofactor(double **A, int p, int q, int n)
+double** getCofactor(double **A, int p, int q, int n)
 {
   double** temp = allocate2Ddouble(n, posMTrillatAColumSize);
   int i = 0, j = 0;
@@ -326,23 +326,23 @@ static double** getCofactor(double **A, int p, int q, int n)
 }
 
 /* Recursive function for finding determinant of matrix.
-  n is current dimension of A[][]. */
-static double clacDeterminant(double **A, int n)
+  n(rows) is current dimension of A[][]. */
+double clacDeterminant(double **A, int rows)
 {
   double D = 0; // Initialize result
 
   //  Base case : if matrix contains single element
-  if (n == 1)
+  if (rows == 1)
       return A[0][0];
 
   int sign = 1;  // To store sign multiplier
 
-    // Iterate for each element of first row
-  for (int f = 0; f < n; f++)
+  // Iterate for each element of first row
+  for (int f = 0; f < rows; f++)
   {
       // Getting Cofactor of A[0][f]
-      double **temp = getCofactor(A, 0, f, n);
-      D += sign * A[0][f] * clacDeterminant(A, n - 1);
+      double **temp = getCofactor(A, 0, f, rows);
+      D += sign * A[0][f] * clacDeterminant(A, rows - 1);
 
       // terms are to be added with alternate sign
       sign = -sign;
@@ -352,7 +352,7 @@ static double clacDeterminant(double **A, int n)
 }
 
 // Function to get adjoint of A[N][N] in adj[N][N].
-static double** calcAdjoint(double **A, int matrixArows)
+double** calcAdjoint(double **A, int matrixArows)
 {
   double** adj = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   int sign = 0;
@@ -378,7 +378,7 @@ static double** calcAdjoint(double **A, int matrixArows)
 
 // by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
 // method assumes that matrices have same dim sizes
-static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
+double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
 {
   double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   int i, j, k;
@@ -408,7 +408,7 @@ static double** multiplyMatrices(double **matrixA, double **matrixB, int matrixA
 
 // by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
 // method assumes that matrices have same dim sizes
-static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int matrixArows)
+double** multiplyMatricesND1D(double **matrixA, double **matrixB, int matrixArows)
 {
   double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   int i, j, k;
@@ -436,7 +436,7 @@ static double** multiplyMatricesND1D(double **matrixA, double **matrixB, int mat
   return outputMatrix;
 }
 
-static double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix)
+double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix)
 {
   double **outputArr = allocate2Ddouble(transpose2DimMatrix, matrixArows);
   for (int i = 0; i < matrixArows; ++i)
@@ -451,7 +451,7 @@ static double** transpose2DimMatrix(double **inputArr, int matrixArows, int tran
 
 // Function to calculate and store inverse, returns 0 if false
 // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
-static double** calcInverse(double **A, int matrixArows)
+double** calcInverse(double **A, int matrixArows)
 {
   double** inverse = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
   // Find determinant of A[][]
@@ -473,7 +473,7 @@ static double** calcInverse(double **A, int matrixArows)
   return inverse;
 }
 
-static double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows, int matrixAcol)
+double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows, int matrixAcol)
 {
   double **matrixATransposed = transpose2DimMatrix(matrixA, matrixArows, matrixAcol);
   double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixAcol);
