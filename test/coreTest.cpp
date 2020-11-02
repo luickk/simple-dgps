@@ -18,15 +18,6 @@ int main() {
   testMatrixA[2][1] = 8;
   testMatrixA[2][2] = 7;
 
-
-  // double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows);
-  // double** transpose2DimMatrix(double inputArr[][posMTrillatAColumSize]);
-  // double** getCofactor(double A[][posMTrillatAColumSize], int p, int q, int n);
-  // double clacDeterminant(double A[][posMTrillatAColumSize], int n);
-  // double** calcInverse(double A[][posMTrillatAColumSize], int matrixArows);
-  // double** calcAdjoint(double A[][posMTrillatAColumSize], int matrixArows);
-
-
   std::cout << "transpose:" << std::endl;
   double **testTranspose = transpose2DimMatrix(testMatrixA, t, t);
   for (int i = 0; i < t; ++i)
@@ -69,19 +60,11 @@ int main() {
   testPseudoRanges.ranges.insert({1, 23399263.4});
   testPseudoRanges.ranges.insert({2, 22473250.5});
   testPseudoRanges.ranges.insert({16, 21269160.8});
-  testPseudoRanges.ranges.insert({20, 21606540.7});
-  testPseudoRanges.ranges.insert({25, 21200953.2});
-  testPseudoRanges.ranges.insert({14, 23681041.7});
-  testPseudoRanges.ranges.insert({6, 24601072.2});
 
   satLocation testSatPos;
   testSatPos.locations.insert({1, ecefPos{-17104.3, -5228.5, 19811.5}});
   testSatPos.locations.insert({2, ecefPos{-3772.1, -26415.5, 117.6}});
   testSatPos.locations.insert({16, ecefPos{2600.4, -25804.1, 5853.2 }});
-  testSatPos.locations.insert({20, ecefPos{-13061.1, -14974.6, 17541.7}});
-  testSatPos.locations.insert({25, ecefPos{8151.9, -13641.5, 21624.2}});
-  testSatPos.locations.insert({14, ecefPos{20887.1, -16159.8, 3069.0}});
-  testSatPos.locations.insert({6, ecefPos{22666.0, -2990.0, 13842.9}});
 
   ecefPos res = trillatPosFromRange(testSatPos, testPseudoRanges);
 

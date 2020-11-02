@@ -4,7 +4,7 @@
 
 using namespace std;
 
-#define posMTrillatAColumSize 3
+#define posMTrillatASize 3
 
 // ephemeris data from sat
 struct ephemeris {
@@ -86,6 +86,7 @@ ecefPos latLonAltToEcef(latLonAltPos latlonAlt);
 
 //basic linear alg
 double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows);
+double* multiplyMatrixByVector(double **matrixA, double vectorB[]);
 double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix);
 double** getCofactor(double **A, int p, int q, int n);
 double clacDeterminant(double **A, int n);

@@ -298,7 +298,7 @@ satRanges applyCorrectionOnPseudoRange(satRanges corrRanges, satRanges pseudoRan
 // dimension of A[][]
 double** getCofactor(double **A, int p, int q, int n)
 {
-  double** temp = allocate2Ddouble(n, posMTrillatAColumSize);
+  double** temp = allocate2Ddouble(n, posMTrillatASize);
   int i = 0, j = 0;
 
   // Looping for each element of the matrix
@@ -354,15 +354,15 @@ double clacDeterminant(double **A, int rows)
 // Function to get adjoint of A[N][N] in adj[N][N].
 double** calcAdjoint(double **A, int matrixArows)
 {
-  double** adj = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
+  double** adj = allocate2Ddouble(matrixArows, posMTrillatASize);
   int sign = 0;
 
   for (int i=0; i<matrixArows; i++)
   {
-      for (int j=0; j<posMTrillatAColumSize; j++)
+      for (int j=0; j<posMTrillatASize; j++)
       {
           // Get cofactor of A[i][j]
-          double **temp = getCofactor(A, i, j, posMTrillatAColumSize);
+          double **temp = getCofactor(A, i, j, posMTrillatASize);
 
           // sign of adj[j][i] positive if sum of row
           // and column indexes is even.
@@ -370,7 +370,7 @@ double** calcAdjoint(double **A, int matrixArows)
 
           // Interchanging rows and columns to get the
           // transpose of the cofactor matrix
-          adj[i][j] = (sign)*(clacDeterminant(A, posMTrillatAColumSize-1));
+          adj[i][j] = (sign)*(clacDeterminant(A, posMTrillatASize-1));
       }
   }
   return adj;
@@ -380,13 +380,13 @@ double** calcAdjoint(double **A, int matrixArows)
 // method assumes that matrices have same dim sizes
 double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
 {
-  double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
+  double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatASize);
   int i, j, k;
 
   // Initializing elements of matrix mult to 0.
   for(i = 0; i < matrixArows; ++i)
   {
-    for(j = 0; j < posMTrillatAColumSize; ++j)
+    for(j = 0; j < posMTrillatASize; ++j)
     {
       outputMatrix[i][j] = 0;
     }
@@ -395,9 +395,9 @@ double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
   // Multiplying matrix matrixA and matrixB and storing in array mult.
   for(i = 0; i < matrixArows; ++i)
   {
-    for(j = 0; j < posMTrillatAColumSize; ++j)
+    for(j = 0; j < posMTrillatASize; ++j)
     {
-      for(k=0; k<posMTrillatAColumSize; ++k)
+      for(k=0; k<posMTrillatASize; ++k)
       {
         outputMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
       }
@@ -406,34 +406,20 @@ double** multiplyMatrices(double **matrixA, double **matrixB, int matrixArows)
   return outputMatrix;
 }
 
-// by https://www.programiz.com/cpp-programming/examples/matrix-multiplication-function modified by L.K.
-// method assumes that matrices have same dim sizes
-double** multiplyMatricesND1D(double **matrixA, double **matrixB, int matrixArows)
+double* multiplyMatrixByVector(double **matrixA, double vectorB[])
 {
-  double** outputMatrix = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
-  int i, j, k;
+  double vectorRes[posMTrillatASize];
+  memset(vectorRes, 0, posMTrillatASize*sizeof(double));
 
-  // Initializing elements of matrix mult to 0.
-  for(i = 0; i < matrixArows; ++i)
+  for (int i=0;i<posMTrillatASize;i++)
   {
-    for(j = 0; j < posMTrillatAColumSize; ++j)
-    {
-      outputMatrix[i][j] = 0;
-    }
-  }
-
-  // Multiplying matrix matrixA and matrixB and storing in array mult.
-  for(i = 0; i < matrixArows; ++i)
-  {
-    for(j = 0; j < posMTrillatAColumSize; ++j)
-    {
-      for(k=0; k<posMTrillatAColumSize; ++k)
+      for (int j=0;j<posMTrillatASize;j++)
       {
-        outputMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+          vectorRes[i]+= (matrixA[i][j]*vectorB[j]);
       }
-    }
   }
-  return outputMatrix;
+
+  return vectorRes;
 }
 
 double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2DimMatrix)
@@ -453,9 +439,9 @@ double** transpose2DimMatrix(double **inputArr, int matrixArows, int transpose2D
 // matrix is singular by https://www.geeksforgeeks.org/adjoint-inverse-matrix/
 double** calcInverse(double **A, int matrixArows)
 {
-  double** inverse = allocate2Ddouble(matrixArows, posMTrillatAColumSize);
+  double** inverse = allocate2Ddouble(matrixArows, posMTrillatASize);
   // Find determinant of A[][]
-  int det = clacDeterminant(A, posMTrillatAColumSize);
+  int det = clacDeterminant(A, posMTrillatASize);
   if (det == 0)
   {
       cout << "Singular matrix, can't find its inverse";
@@ -467,19 +453,19 @@ double** calcInverse(double **A, int matrixArows)
 
   // Find Inverse using formula "inverse(A) = adj(A)/det(A)"
   for (int i=0; i<matrixArows; i++)
-      for (int j=0; j<posMTrillatAColumSize; j++)
+      for (int j=0; j<posMTrillatASize; j++)
           inverse[i][j] = adj[i][j]/double(det);
 
   return inverse;
 }
 
-double** leastSquareReg(double **matrixA, double **matrixB, int matrixArows, int matrixAcol)
+double* leastSquareReg(double **matrixA, double vectorB[], int matrixArows, int matrixAcol)
 {
   double **matrixATransposed = transpose2DimMatrix(matrixA, matrixArows, matrixAcol);
   double **matrixATransposedA = multiplyMatrices(matrixATransposed, matrixA, matrixAcol);
   double **matrixATransposedAInverse = calcInverse(matrixATransposedA, matrixArows);
   double **matrixATransposedAAdd = multiplyMatrices(matrixATransposedAInverse, matrixATransposed, matrixArows);
-  double **finalX = multiplyMatricesND1D(matrixATransposedAAdd, matrixB, matrixArows);
+  double *finalX = multiplyMatrixByVector(matrixATransposedAAdd, vectorB);
 
   return finalX;
 }
@@ -495,11 +481,11 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   int nSat = finalSatPos.locations.size();
   ecefPos finalPos = { 0.0, 0.0, 0.0 };
 
-  matrixAcol = posMTrillatAColumSize;
+  matrixAcol = posMTrillatASize;
   matrixArows = nSat;
 
   double **matrixA = allocate2Ddouble(nSat, 3);
-  double **matrixB = allocate2Ddouble(nSat, 1);
+  double vectorB[posMTrillatASize] = {};
 
   int i = 0;
   for (it_ = finalSatPos.locations.begin(); it_ != finalSatPos.locations.end(); it_++)
@@ -521,7 +507,7 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
       matrixA[i][0] = Am;
       matrixA[i][1] = Bm;
       matrixA[i][2] = Cm;
-      matrixB[i][0] = Dm;
+      vectorB[i] = Dm;
       i++;
 
     } else
@@ -531,11 +517,15 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   }
 
   // least square regression
-  double **finalECEF = leastSquareReg(matrixA, matrixB, matrixArows, matrixAcol);
+  double *finalECEF = leastSquareReg(matrixA, vectorB, matrixArows, matrixAcol);
 
-  finalPos.x = *finalECEF[0];
-  finalPos.y = *finalECEF[1];
-  finalPos.z = *finalECEF[2];
+  finalPos.x = finalECEF[0];
+  finalPos.y = finalECEF[1];
+  finalPos.z = finalECEF[2];
 
+  for (int i = 0; i < 5; ++i)
+  {
+    std::cout << finalECEF[i] << std::endl;
+  }
   return finalPos;
 }
