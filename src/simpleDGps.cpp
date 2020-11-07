@@ -48,9 +48,6 @@ double calcTimeFromEpoch(double t, double t_ref)
 
 double calcEccentricAnomaly(ephemeris *ephem, double t_k)
 {
-  // Semi-major axis
-  int A = ephem->sqrtA*ephem->sqrtA;
-
   // Computed mean motion (rad/sec)
   double n_0 = sqrt(ephem->MU/(ephem->A*ephem->A*ephem->A));
 
@@ -77,7 +74,6 @@ latLonAltPos ecefToLatLonAlt(ecefPos ecef)
   latLonAltPos finalLatLonPos = { 0, 0, 0 };
   double zp, w2, w, r2, r, s2, c2, s, c, ss;
   double g, rg, rf, u, v, m, f, p, x, y, z;
-  double n, lat, lon, alt;
 
   x = ecef.x;
   y = ecef.y;
@@ -129,8 +125,6 @@ latLonAltPos ecefToLatLonAlt(ecefPos ecef)
 
 ecefPos latLonAltToEcef(latLonAltPos latlonAlt)
 {
-  double zp, w2, w, r2, r, s2, c2, s, c, ss;
-  double g, rg, rf, u, v, m, f, p, x, y, z;
   double n, lat, lon, alt;
 
   ecefPos ecef = { 0, 0, 0 };
@@ -340,8 +334,6 @@ double clacDeterminant(double **A, int rows)
   // Iterate for each element of first row
   for (int f = 0; f < rows; f++)
   {
-      // Getting Cofactor of A[0][f]
-      double **temp = getCofactor(A, 0, f, rows);
       D += sign * A[0][f] * clacDeterminant(A, rows - 1);
 
       // terms are to be added with alternate sign
@@ -361,9 +353,6 @@ double** calcAdjoint(double **A, int matrixArows)
   {
       for (int j=0; j<posMTrillatASize; j++)
       {
-          // Get cofactor of A[i][j]
-          double **temp = getCofactor(A, i, j, posMTrillatASize);
-
           // sign of adj[j][i] positive if sum of row
           // and column indexes is even.
           sign = ((i+j)%2==0)? 1: -1;
@@ -523,9 +512,5 @@ ecefPos trillatPosFromRange(satLocation finalSatPos, satRanges finalSatRanges)
   finalPos.y = finalECEF[1];
   finalPos.z = finalECEF[2];
 
-  for (int i = 0; i < 5; ++i)
-  {
-    std::cout << finalECEF[i] << std::endl;
-  }
   return finalPos;
 }

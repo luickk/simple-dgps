@@ -18,6 +18,35 @@ int main() {
   testMatrixA[2][1] = 8;
   testMatrixA[2][2] = 7;
 
+  ephemeris eph = {
+      797;
+      t_gd;
+      224;
+      t_oc;
+      a_f[2];
+      26560300;
+      -2.62555;
+      IODE2;
+      87.6875;
+      dn;
+      M_0;
+      C_uc;
+      e;
+      C_us;
+      sqrtA;
+      t_oe;
+      C_ic;
+      OMEGA_0;
+      OMEGA_E;
+      C_is;
+      i_0;
+      C_rc;
+      omega;
+      OMEGA_dot;
+      IODE3;
+      IDOT;
+  };
+
   std::cout << "transpose:" << std::endl;
   double **testTranspose = transpose2DimMatrix(testMatrixA, t, t);
   for (int i = 0; i < t; ++i)
@@ -72,5 +101,28 @@ int main() {
   cout << res.x << endl;
   cout << res.y << endl;
   cout << res.z << endl;
+
+  // basestation correction, required for correction
+  latLonAltPos baseStationPos;
+  baseStationPos.lat = 85.934710;
+  baseStationPos.lon = 17.747955;
+  baseStationPos.alt = 5;
+
+  // calculating range correction set
+  satRanges correctionRanges = calcSatRangeCorrection(testSatPos, baseStationPos, testPseudoRanges);
+  // applying correction to measured uncorrected pseudo ranges
+  satRanges correctedPseudoRanges = applyCorrectionOnPseudoRange(correctionRanges, testPseudoRanges);
+
+  // calculating position from corrected pseudo ranges
+  ecefPos resCorrected = trillatPosFromRange(testSatPos, correctedPseudoRanges);
+
+  std::cout << "Test corrected trillat:" << std::endl;
+  cout << resCorrected.x << endl;
+  cout << resCorrected.y << endl;
+  cout << resCorrected.z << endl;
+
+
+  ecefPos satPos = calcSatPos(ephemeris *ephem, double t);
+
   return 0;
 }
